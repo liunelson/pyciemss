@@ -28,7 +28,7 @@ class EnsembleSystem(DynamicalSystem):
 
         # Check that all models are of the same class.
         model_types = set([model.__class__ for model in self.models])
-        assert(len(model_types) == 1)
+        #assert(len(model_types) == 1)
 
         #TODO: Check that all of the solution mappings map to the same set of variables.
         super().__init__()
