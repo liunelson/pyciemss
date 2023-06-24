@@ -7,3 +7,8 @@
 *.egg-info
 venv/
 .env/
+.idea/
+*\#*\#
+.*
+.DS_Store
+*~
