@@ -17,25 +17,28 @@ def get_fips(US_region):
     '''
     return str(fips_dict[US_region])
 
-# Get incident case data (by county) and sort by date
-url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Cases.csv'
-raw_cases = pd.read_csv(url)
-raw_cases['date'] = pd.to_datetime(raw_cases.date, infer_datetime_format = True)
-raw_cases.sort_values(by = 'date', ascending = True, inplace = True)
+def get_all_data():
+    # Get incident case data (by county) and sort by date
+    url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Cases.csv'
+    raw_cases = pd.read_csv(url)
+    raw_cases['date'] = pd.to_datetime(raw_cases.date, infer_datetime_format = True)
+    raw_cases.sort_values(by = 'date', ascending = True, inplace = True)
 
-# Get hosp census data (by state) and sort by date
-url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Hospitalizations.csv'
-raw_hosp = pd.read_csv(url)
-raw_hosp['date'] = pd.to_datetime(raw_hosp.date, infer_datetime_format = True)
-raw_hosp.sort_values(by = 'date', ascending = True, inplace = True)
+    # Get hosp census data (by state) and sort by date
+    url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Hospitalizations.csv'
+    raw_hosp = pd.read_csv(url)
+    raw_hosp['date'] = pd.to_datetime(raw_hosp.date, infer_datetime_format = True)
+    raw_hosp.sort_values(by = 'date', ascending = True, inplace = True)
 
-# Get cumulative death data (by county) and sort by date
-url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Cumulative%20Deaths.csv'
-raw_deaths = pd.read_csv(url)
-raw_deaths['date'] = pd.to_datetime(raw_deaths.date, infer_datetime_format = True)
-raw_deaths.sort_values(by = 'date', ascending = True, inplace = True)
+    # Get cumulative death data (by county) and sort by date
+    url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Cumulative%20Deaths.csv'
+    raw_deaths = pd.read_csv(url)
+    raw_deaths['date'] = pd.to_datetime(raw_deaths.date, infer_datetime_format = True)
+    raw_deaths.sort_values(by = 'date', ascending = True, inplace = True)
+    
+    return raw_cases, raw_hosp, raw_deaths
 
-def get_case_hosp_data(US_region, infectious_period):
+def get_case_hosp_death_data(US_region, infectious_period):
     '''This function returns the number of cases, hospitalizations, and deaths for a given US region and infectious period.
 
     :param US_region: 2-letter state abbreviation as a string
@@ -44,6 +47,7 @@ def get_case_hosp_data(US_region, infectious_period):
     '''
     # Get the FIPS code for the given region as a string
     fips_code = get_fips(US_region)
+    raw_cases, raw_hosp, raw_deaths = get_all_data()
 
     # Select data for the given region
     regional_hosp = raw_hosp[raw_hosp["location"] == fips_code]
