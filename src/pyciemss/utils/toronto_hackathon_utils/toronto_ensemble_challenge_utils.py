@@ -9,6 +9,7 @@ US_regions = ['US', 'AL', 'AK', 'Skip', 'AZ', 'AR', 'CA', 'Skip 2', 'CO', 'CT', 
 fips_dict = {state: fips for state, fips in zip(US_regions, range(0, 100))}
 fips_dict["US"] = "US"
 
+
 def get_fips(US_region):
     '''This function returns the 1 or 2 digit FIPS code corresponding to the 2-letter state abbreviation.
 
@@ -18,27 +19,28 @@ def get_fips(US_region):
     return str(fips_dict[US_region])
 
 def get_all_data():
+
     # Get incident case data (by county) and sort by date
     url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Cases.csv'
     raw_cases = pd.read_csv(url)
-    raw_cases['date'] = pd.to_datetime(raw_cases.date, infer_datetime_format = True)
-    raw_cases.sort_values(by = 'date', ascending = True, inplace = True)
+    raw_cases['date'] = pd.to_datetime(raw_cases.date, infer_datetime_format=True)
+    raw_cases.sort_values(by='date', ascending=True, inplace=True)
 
     # Get hosp census data (by state) and sort by date
     url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Incident%20Hospitalizations.csv'
     raw_hosp = pd.read_csv(url)
-    raw_hosp['date'] = pd.to_datetime(raw_hosp.date, infer_datetime_format = True)
-    raw_hosp.sort_values(by = 'date', ascending = True, inplace = True)
+    raw_hosp['date'] = pd.to_datetime(raw_hosp.date, infer_datetime_format=True)
+    raw_hosp.sort_values(by='date', ascending=True, inplace=True)
 
     # Get cumulative death data (by county) and sort by date
     url = 'https://media.githubusercontent.com/media/reichlab/covid19-forecast-hub/master/data-truth/truth-Cumulative%20Deaths.csv'
     raw_deaths = pd.read_csv(url)
-    raw_deaths['date'] = pd.to_datetime(raw_deaths.date, infer_datetime_format = True)
-    raw_deaths.sort_values(by = 'date', ascending = True, inplace = True)
+    raw_deaths['date'] = pd.to_datetime(raw_deaths.date, infer_datetime_format=True)
+    raw_deaths.sort_values(by='date', ascending=True, inplace=True)
     
     return raw_cases, raw_hosp, raw_deaths
 
-def get_case_hosp_death_data(US_region, infectious_period):
+def get_case_hosp_death_data(US_region, infectious_period, make_csv=True):
     '''This function returns the number of cases, hospitalizations, and deaths for a given US region and infectious period.
 
     :param US_region: 2-letter state abbreviation as a string
@@ -68,14 +70,13 @@ def get_case_hosp_death_data(US_region, infectious_period):
     # Set up DataFrame to hold COVID data and convert incident cases to case census and
     regional_cases["case census"] = 0
     regional_cases = regional_cases.reset_index(drop=True)
-
     regional_hosp = regional_hosp.reset_index(drop=True)
-    regional_hosp = regional_hosp.set_index("date")
-    regional_hosp = regional_hosp.rename(columns={"value": "hosp_census"})
+    regional_hosp = regional_hosp.groupby("date")["value"].sum()
+    regional_hosp = pd.DataFrame({"hosp_census": regional_hosp})
 
     regional_deaths = regional_deaths.reset_index(drop=True)
-    regional_deaths = regional_deaths.set_index("date")
-    regional_deaths = regional_deaths.rename(columns={"value": "cumulative_deaths"})
+    regional_deaths = regional_deaths.groupby("date")["value"].sum()
+    regional_deaths = pd.DataFrame({"cumulative_deaths": regional_deaths})
 
     covid_data_df = {}
     covid_data_df["date"] = regional_cases["date"].unique()
@@ -87,13 +88,11 @@ def get_case_hosp_death_data(US_region, infectious_period):
 
     # Add hosp and death data to covid_data_df
     covid_data_df = pd.merge(covid_data_df, regional_hosp, how="inner", left_index=True, right_index=True)
-    covid_data_df = covid_data_df.drop(columns=["location", "location_name"])
-    covid_data_df
     covid_data_df = pd.merge(covid_data_df, regional_deaths, how="inner", left_index=True, right_index=True)
-    covid_data_df = covid_data_df.drop(columns=["location", "location_name"])
 
-    filename = US_region + "_case_hospital_death.csv"
-    covid_data_df.to_csv(filename, index=True, header=True)
+    if make_csv:
+        filename = US_region + "_case_hospital_death.csv"
+        covid_data_df.to_csv(filename, index=True, header=True)
 
     return covid_data_df
 
