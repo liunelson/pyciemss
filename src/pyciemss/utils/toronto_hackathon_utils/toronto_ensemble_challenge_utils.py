@@ -125,3 +125,43 @@ def get_train_test_data(data: pd.DataFrame, train_start_date: str, test_start_da
     all_timepoints = np.concatenate((train_timepoints, test_timepoints))
 
     return train_data, train_cases, train_timepoints, test_cases, test_timepoints, all_timepoints
+
+# Plotting utilities
+def setup_ax(ax=None):
+
+    if not ax:
+        fig = plt.figure(facecolor='w', figsize=(9, 9))
+        ax = fig.add_subplot(111, axisbelow=True)
+
+    ax.set_xlabel('Time since start of pandemic (days)')
+    ax.set_ylabel('Cases (Prop. of Population)')
+    ax.set_yscale('log')
+    return ax
+
+def plot_predictive(prediction, tspan, var_name="Cases_sol", ax=None, title=None, alpha=0.2, color="black", **kwargs):
+    tspan = torch.as_tensor(tspan)
+    indeces = torch.ones_like(tspan).bool()
+    
+    I_low = torch.quantile(prediction[var_name], 0.05, dim=0).detach().numpy()
+    I_up = torch.quantile(prediction[var_name], 0.95, dim=0).detach().numpy()
+
+    if not ax:
+        fig = plt.figure(facecolor='w')
+        ax = fig.add_subplot(111, facecolor='#dddddd', axisbelow=True)
+
+    if title:
+        ax.set_title(title)
+
+    ax.fill_between(tspan[indeces], I_low[indeces], I_up[indeces], alpha=alpha, color=color, **kwargs)
+
+    legend = ax.legend()
+    legend.get_frame().set_alpha(0.5)
+
+    return ax
+
+# Function to plot ensemble prior and posterior with data
+def plot_prior_posterior(data_df, ensemble_prior_forecasts, calibrated_solution=None):
+    ax = plot_predictive(ensemble_prior_forecasts, all_timepoints, ax=setup_ax(), title="Prior Forecasts - Ensemble", color="blue", label="Ensemble Model Prior Forecasts")
+    if not (calibrated_solution == None):
+        ax = plot_predictive(calibrated_solution, all_timepoints, ax=ax, title="Posterior Forecasts - Ensemble", color="red", label="Ensemble Model Posterior Forecasts")
+    ax = plot_observations(data_df, all_timepoints, ax=ax, color="black", label="Reported Cases")
