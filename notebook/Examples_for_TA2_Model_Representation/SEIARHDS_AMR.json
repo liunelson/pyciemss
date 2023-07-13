@@ -318,16 +318,16 @@
           "value": 0.7
         },
         {
+          "id": "dnh",
+          "value": 0.001
+        },
+        {
           "id": "gamma",
           "value": 0.2
         },
         {
           "id": "hosp",
           "value": 0.1
-        },
-        {
-          "id": "dnh",
-          "value": 0.001
         },
         {
           "id": "dh",
