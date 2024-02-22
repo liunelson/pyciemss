@@ -156,9 +156,10 @@ results_baseline = pyciemss.sample(
     model3, 
     end_time, 
     logging_step_size, 
-    num_samples, 
+    # num_samples, 
+    1,
     start_time = start_time, 
-    static_parameter_interventions = {torch.tensor(0.0): {intervened_params: torch.tensor(0.35)}},
+    # static_parameter_interventions = {torch.tensor(0.0): {intervened_params: torch.tensor(0.35)}},
     solver_method = "euler"
 )
 
@@ -181,7 +182,8 @@ def plot_results(results: pd.DataFrame, agg: str = "mean") -> NoReturn:
     variables = [c for c in results["data"].columns if c.split("_")[-1] in ("sol", "state")]
     parameters = [c for c in results["data"].columns if c.split('_')[-1] == "param"]
 
-    
+    parameters = ["persistent_p_cbeta_param", "persistent_p_cbeta_param"]
+
     fig, axes = plt.subplots(2, 1, figsize = (8, 8))
 
     # Trajectories
