@@ -68,17 +68,17 @@ intervened_params = "p_cbeta"
 # p_cbeta_current = 0.35
 p_cbeta_current = model3_tm.parameters[intervened_params].value
 initial_guess_interventions = p_cbeta_current
-# bounds_interventions = [[0.1], [0.5]]
-bounds_interventions = [
-    [model3_tm.parameters["p_cbeta"].distribution.parameters["minimum"]], 
-    [model3_tm.parameters["p_cbeta"].distribution.parameters["maximum"]]
-]
+bounds_interventions = [[0.01], [1.0]]
+# bounds_interventions = [
+#     [model3_tm.parameters["p_cbeta"].distribution.parameters["minimum"]], 
+#     [model3_tm.parameters["p_cbeta"].distribution.parameters["maximum"]]
+# ]
 
 # Define QoI
 observed_params = ["I_state"]
 qoi = lambda x: obs_nday_average_qoi(x, observed_params, 3)
 # risk_bound = 300.0
-risk_bound = 50.0
+risk_bound = 100.0
 
 objfun = lambda x: np.abs(p_cbeta_current - x)
 static_parameter_interventions = {intervention_time: intervened_params}
@@ -147,7 +147,7 @@ results_opt = pyciemss.sample(
     static_parameter_interventions = {
         intervention_time: {intervened_params: opt_result["policy"]}
     }, 
-    solver_method = "euler"
+    solver_method = "dopri5"
 )
 
 # %%
@@ -156,12 +156,16 @@ results_baseline = pyciemss.sample(
     model3, 
     end_time, 
     logging_step_size, 
-    # num_samples, 
-    1,
+    num_samples, 
     start_time = start_time, 
     # static_parameter_interventions = {torch.tensor(0.0): {intervened_params: torch.tensor(0.35)}},
-    solver_method = "euler"
+    solver_method = "dopri5"
 )
+
+# %%
+
+
+
 
 # %%
 # results = 
@@ -182,7 +186,7 @@ def plot_results(results: pd.DataFrame, agg: str = "mean") -> NoReturn:
     variables = [c for c in results["data"].columns if c.split("_")[-1] in ("sol", "state")]
     parameters = [c for c in results["data"].columns if c.split('_')[-1] == "param"]
 
-    parameters = ["persistent_p_cbeta_param", "persistent_p_cbeta_param"]
+    # parameters = ["persistent_p_cbeta_param", "persistent_p_cbeta_param"]
 
     fig, axes = plt.subplots(2, 1, figsize = (8, 8))
 
