@@ -167,6 +167,18 @@ results_baseline = pyciemss.sample(
 
 
 
+model_dan = "https://raw.githubusercontent.com/liunelson/pyciemss/nl-test/notebook/integration_demo/nliu/model_dan.json"
+results_dan = pyciemss.sample(
+    model_dan, 
+    end_time, 
+    logging_step_size, 
+    num_samples, 
+    start_time = start_time, 
+    solver_method = "euler"
+)
+
+plot_results(results_dan, agg = "none")
+
 # %%
 # results = 
 #     data = <pandas.DataFrame> simulation results in tabular form
