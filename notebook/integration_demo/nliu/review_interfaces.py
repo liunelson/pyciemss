@@ -56,7 +56,7 @@ model3_tm.draw_jupyter("model3.png")
 # Specify time
 start_time = 0.0
 end_time = 50.0
-logging_step_size = 1.0
+logging_step_size = 0.5
 
 # %%
 # Define intervention
@@ -65,9 +65,9 @@ logging_step_size = 1.0
 intervention_time = torch.tensor(15.0)
 
 intervened_params = "p_cbeta"
-# p_cbeta_current = 0.35
 p_cbeta_current = model3_tm.parameters[intervened_params].value
-initial_guess_interventions = p_cbeta_current
+# initial_guess_interventions = p_cbeta_current
+initial_guess_interventions = 0.15
 bounds_interventions = [[0.01], [1.0]]
 # bounds_interventions = [
 #     [model3_tm.parameters["p_cbeta"].distribution.parameters["minimum"]], 
@@ -76,9 +76,8 @@ bounds_interventions = [[0.01], [1.0]]
 
 # Define QoI
 observed_params = ["I_state"]
-qoi = lambda x: obs_nday_average_qoi(x, observed_params, 3)
-# risk_bound = 300.0
-risk_bound = 100.0
+qoi = lambda x: obs_nday_average_qoi(x, observed_params, 1)
+risk_bound = 300.0
 
 objfun = lambda x: np.abs(p_cbeta_current - x)
 static_parameter_interventions = {intervention_time: intervened_params}
@@ -120,7 +119,15 @@ with open("opt_result.dill", "rb") as f:
 #         success
 #         fun
 #         x
-#         ...
+#         nit
+#         minimization_failures
+#         lowest_optimization_Result
+#             success
+#             status
+#             function
+#             x
+#             nfev
+#             maxcv
 
 
 # ???
@@ -147,7 +154,7 @@ results_opt = pyciemss.sample(
     static_parameter_interventions = {
         intervention_time: {intervened_params: opt_result["policy"]}
     }, 
-    solver_method = "dopri5"
+    solver_method = "euler"
 )
 
 # %%
@@ -159,25 +166,21 @@ results_baseline = pyciemss.sample(
     num_samples, 
     start_time = start_time, 
     # static_parameter_interventions = {torch.tensor(0.0): {intervened_params: torch.tensor(0.35)}},
-    solver_method = "dopri5"
-)
-
-# %%
-
-
-
-
-model_dan = "https://raw.githubusercontent.com/liunelson/pyciemss/nl-test/notebook/integration_demo/nliu/model_dan.json"
-results_dan = pyciemss.sample(
-    model_dan, 
-    end_time, 
-    logging_step_size, 
-    num_samples, 
-    start_time = start_time, 
     solver_method = "euler"
 )
 
-plot_results(results_dan, agg = "none")
+# %%
+# model_dan = "https://raw.githubusercontent.com/liunelson/pyciemss/nl-test/notebook/integration_demo/nliu/model_dan.json"
+# results_dan = pyciemss.sample(
+#     model_dan, 
+#     end_time, 
+#     logging_step_size, 
+#     num_samples, 
+#     start_time = start_time, 
+#     solver_method = "euler"
+# )
+
+# plot_results(results_dan, agg = "none")
 
 # %%
 # results = 
