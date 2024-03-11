@@ -12,7 +12,7 @@
 import os
 import numpy as np
 import torch
-from typing import Dict, List, NoReturn
+from typing import Dict, List, NoReturn, Optional
 import pyciemss
 import mira
 import dill
@@ -77,7 +77,7 @@ bounds_interventions = [[0.01], [1.0]]
 # Define QoI
 observed_params = ["I_state"]
 qoi = lambda x: obs_nday_average_qoi(x, observed_params, 1)
-risk_bound = 300.0
+risk_bound = 500.0
 
 objfun = lambda x: np.abs(p_cbeta_current - x)
 static_parameter_interventions = {intervention_time: intervened_params}
@@ -95,8 +95,8 @@ opt_result = pyciemss.optimize(
     bounds_interventions = bounds_interventions, 
     start_time = 0.0, 
     n_samples_ouu = int(1e2), 
-    maxiter = 1, 
-    maxfeval = 20, 
+    maxiter = 2, 
+    maxfeval = 50, 
     solver_method = "euler"
 )
 
@@ -154,7 +154,7 @@ results_opt = pyciemss.sample(
     static_parameter_interventions = {
         intervention_time: {intervened_params: opt_result["policy"]}
     }, 
-    solver_method = "euler"
+    solver_method = "dopri5"
 )
 
 # %%
@@ -165,22 +165,8 @@ results_baseline = pyciemss.sample(
     logging_step_size, 
     num_samples, 
     start_time = start_time, 
-    # static_parameter_interventions = {torch.tensor(0.0): {intervened_params: torch.tensor(0.35)}},
-    solver_method = "euler"
+    solver_method = "dopri5"
 )
-
-# %%
-# model_dan = "https://raw.githubusercontent.com/liunelson/pyciemss/nl-test/notebook/integration_demo/nliu/model_dan.json"
-# results_dan = pyciemss.sample(
-#     model_dan, 
-#     end_time, 
-#     logging_step_size, 
-#     num_samples, 
-#     start_time = start_time, 
-#     solver_method = "euler"
-# )
-
-# plot_results(results_dan, agg = "none")
 
 # %%
 # results = 
@@ -193,7 +179,7 @@ results_baseline = pyciemss.sample(
 
 # %%
 # Plot
-def plot_results(results: pd.DataFrame, agg: str = "mean") -> NoReturn:
+def plot_results(results: pd.DataFrame, agg: str = "mean", observed_param: Optional[str] = None, risk_bound: Optional[float] = None) -> NoReturn:
 
     cmap = mpl.colormaps["tab10"]
     colors = cmap(np.linspace(0, 1, 10))
@@ -260,9 +246,21 @@ def plot_results(results: pd.DataFrame, agg: str = "mean") -> NoReturn:
             if j == 0:
                 __ = plt.setp(ax, ylabel = f'{"_".join(parameters[i].split("_")[:-1])}')
 
+    # Distribution of QoI
+    fig, ax = plt.subplots(1, 1, figsize = (4, 4))
+    h, b = np.histogram(results["risk"][observed_param]["qoi"])
+    ax.barh(b[:-1], h, height = b[1] - b[0], align = "center", label = "QoI Distribution")
+    r = results_opt["risk"]["I_state"]["risk"]
+    if risk_bound != None:
+        ax.plot([0, max(h)], [risk_bound, risk_bound], label = "QoI Risk Bound", color = "k")
+    if observed_params != None:
+        ax.plot([0, max(h)], [r, r], label = "95% Risk Threshold")
+    __ = plt.setp(ax, xlabel = "Sample Count")
+    __ = ax.legend()
+
 # %%
-plot_results(results_opt, agg = "none")
-plot_results(results_baseline, agg = "none")
+plot_results(results_opt, agg = "none", observed_param = "I_state", risk_bound = risk_bound)
+plot_results(results_baseline, agg = "none", observed_param = "I_state", risk_bound = risk_bound)
 
 # %%
 plot_results(results_opt, agg = "mean")
@@ -280,5 +278,3 @@ for s in results["data"]["sample_id"].unique():
     x = results["data"][["timepoint_id", "sample_id", h]][results["data"]["sample_id"] == s]["timepoint_id"]
     y = results["data"][["timepoint_id", "sample_id", h]][results["data"]["sample_id"] == s][h]
     plt.plot(x, y, color = 'k', alpha = 0.2)
-
-# %%
