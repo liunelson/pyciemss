@@ -60,7 +60,7 @@ calibrated_results
 
 # calibrated_results = {
 #     "inferred_parameters": AutoGuideList((0): AutoDelta(), (1): AutoLowRankMultivariateNormal())
-#     "loss": <float>
+#     "loss": <float>y
 # }
 
 # %%
