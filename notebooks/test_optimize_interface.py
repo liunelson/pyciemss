@@ -1,7 +1,7 @@
 # %%[markdown]
-# # Test Calibrate Interface
+# # Test Optimize Interface
 #
-# Run Calibrate and do exploratory analysis of the results.
+# Run Optimize and do exploratory analysis of the results.
 
 
 # %%
@@ -25,6 +25,8 @@ from pyciemss.integration_utils.intervention_builder import (
     start_time_objective,
 )
 
+from pyciemss.ouu.qoi import obs_nday_average_qoi
+
 # %%
 # Models and datasets
 MODEL_PATH = "https://raw.githubusercontent.com/DARPA-ASKEM/simulation-integration/main/data/models/"
@@ -39,118 +41,128 @@ d = {k: v.numpy() for k, v in d.items()}
 dataset1_df = pd.DataFrame(d)
 
 # %%
-# Calibrate Settings
+# Common Settings
 
 start_time = 0.0
-end_time = 5.0
-logging_step_size = 0.1
+end_time = 60.0
+logging_step_size = 1.0
 num_samples = 100
 
 # %%
-# Run pre-calibration Simulate
-
-result_precalibrate = pyciemss.sample(model1, end_time, logging_step_size, num_samples, start_time=start_time)
-
-result_precalibrate["data"].head()
-
-# %%
-# Run Calibrate
-
-data_mapping = {"case": "infected", "hosp": "hospitalized"} # data is mapped to observables
-# data_mapping = {"case": "I", "hosp": "H"} # data is mapped to state variables
-
-num_iterations = 10
-
-result_calibrate = pyciemss.calibrate(
-    model1, 
-    dataset1, 
-    data_mapping = data_mapping, 
-    num_iterations = num_iterations
-)
+# Define interventions
+static_parameter_interventions = {
+    10.0: {"beta_c": torch.tensor(0.2)},
+    15.0: {"gamma": torch.tensor(0.4)}
+}
 
 # %%
-result_calibrate
+# Sample before optimize
 
-# result_calibrate = {
-#     "inferred_parameters": AutoGuideList((0): AutoDelta(), (1): AutoLowRankMultivariateNormal())
-#     "loss": <float>y
-# }
-
-# %%
-parameter_estimates = result_calibrate["inferred_parameters"]
-parameter_estimates()
-
-# parameter_estimates() = {
-#     'persistent_beta_c': tensor(0.4848, grad_fn=<ExpandBackward0>),
-#     'persistent_kappa': tensor(0.4330, grad_fn=<ExpandBackward0>),
-#     'persistent_gamma': tensor(0.3387, grad_fn=<ExpandBackward0>),
-#     'persistent_hosp': tensor(0.0777, grad_fn=<ExpandBackward0>),
-#     'persistent_death_hosp': tensor(0.0567, grad_fn=<ExpandBackward0>),
-#     'persistent_I0': tensor(9.1598, grad_fn=<ExpandBackward0>)
-# }
-
-# %%
-# Run post-calibration Simulate
-result_postcalibrate = pyciemss.sample(
-    model1, 
-    end_time, 
-    logging_step_size, 
+result_preoptimize = pyciemss.sample(
+    model1,
+    end_time,
+    logging_step_size,
     num_samples,
-    start_time = start_time, 
-    inferred_parameters = result_calibrate["inferred_parameters"]
+    start_time = start_time,
+    static_parameter_interventions = static_parameter_interventions,
+    solver_method="dopri5"
 )
 
-result_postcalibrate["data"].head()
+# %%
+# Optimize settings
+
+num_samples_ouu = 100
+maxiter = 5
+maxfeval = 5
 
 # %%
-# Plot trajectories
+# Define interventions
 
-cmap = mpl.colormaps["tab10"](range(10))
-fig, axes = plt.subplots(nrows = 2, ncols = 1, figsize = (8, 8))
-fig.suptitle("State Variable Trajectories")
-fig.tight_layout()
+observed_params = ["I_state"]
+intervention_time = [torch.tensor(10.0), torch.tensor(15.0)]
+intervened_params = ["beta_c", "gamma"]
+param_current = [0.35, 0.2]
+initial_guess_interventions = [0.2, 0.4]
+bounds_interventions = [[0.1, 0.1], [0.5, 0.5]]
 
-for ax, (train_data_state, model_state) in zip(axes, data_mapping.items()):
+static_parameter_interventions = param_value_objective(
+    param_name = intervened_params,
+    start_time = intervention_time,
+)
 
-    # Pre-/post-calibrate trajectories
-    for result_, label, color in zip((result_precalibrate, result_postcalibrate), ("Pre-Calibration", "Post-Calibration"), (cmap[0, :], cmap[1, :])):
+risk_bound = 5000
+qoi = lambda y: obs_nday_average_qoi(y, observed_params, 1)
+objfun = lambda x: np.sum(np.abs(x - param_current))
 
-        # Timepoints
-        x = result_["data"][result_["data"]["sample_id"] == 0]["timepoint_unknown"]
+# %%
+result_optimize = pyciemss.optimize(
+    model1,
+    end_time,
+    logging_step_size,
+    qoi,
+    risk_bound,
+    static_parameter_interventions,
+    objfun,
+    initial_guess_interventions = initial_guess_interventions,
+    bounds_interventions = bounds_interventions,
+    start_time = start_time,
+    n_samples_ouu = num_samples_ouu,
+    maxiter = maxiter,
+    maxfeval = maxfeval,
+    solver_method = "dopri5",
+)
 
-        for i in range(num_samples):
-            result = result_["data"][result_["data"]["sample_id"] == i]
-            
-            if "_".join([model_state, "state"]) in result.columns:
-                l = "_".join([model_state, "state"])
-                y = result[l]
-            elif "_".join([model_state, "observable", "state"]) in result.columns:
-                l = "_".join([model_state, "observable", "state"])
-                y = result[l]
-            else:
-                l = None
-                y = None
-            
-            if ~isinstance(y, type(None)):
-                ax.plot(x, y, linewidth = 0.5, color = color, alpha = 0.8, label = label)
+print(result_optimize)
+
+# %%
+print("Optimal intervention: ", static_parameter_interventions(result_optimize["policy"]))
+
+# %%
+# Run Sample after Optimize
+
+result_postoptimize = pyciemss.sample(
+    model1,
+    end_time,
+    logging_step_size,
+    num_samples,
+    start_time = start_time,
+    static_parameter_interventions = static_parameter_interventions(result_optimize["policy"]),
+    solver_method="dopri5"
+)
+
+# %%
+fig, axes = plt.subplots(3, 1, figsize = (12, 12))
+
+data = result_preoptimize["data"].groupby(["timepoint_id"]).mean()
+
+x = data["timepoint_unknown"]
+y = data["persistent_beta_c_param"]
+__ = axes[0].plot(x, y, linestyle = "--", color = "b", label = "beta_c (pre-optimized)")
+
+y = data["persistent_gamma_param"]
+__ = axes[0].plot(x, y, linestyle = "--", color = "r", label = "gamma (pre-optimized)")
+
+x = data["timepoint_unknown"]
+y = data["I_state"]
+__ = axes[1].plot(x, y, linestyle = "--", color = "g", label = "I (pre-optimized)")
+
+data = result_postoptimize["data"].groupby(["timepoint_id"]).mean()
+
+x = data["timepoint_unknown"]
+y = data["persistent_beta_c_param"]
+__ = axes[0].plot(x, y, linestyle = "-", color = "b", label = "beta_c (pre-optimized)")
+
+y = data["persistent_gamma_param"]
+__ = axes[0].plot(x, y, linestyle = "-", color = "r", label = "gamma (pre-optimized)")
+
+x = data["timepoint_unknown"]
+y = data["I_state"]
+__ = axes[1].plot(x, y, linestyle = "-", color = "g", label = "I (pre-optimized)")
+
+# %%
 
 
-    # Training dataset trajectories
-    ax.plot(dataset1_df["timepoint"], dataset1_df[train_data_state], marker = "o", color = "black", markeredgecolor = "black", markerfacecolor= "white", label = train_data_state)      
-    
-    # Axis labels
-    __ = plt.setp(ax, xlabel = "Time (Days)", ylabel = model_state)
 
-    # Legend
-    l = [
-        mpl.lines.Line2D([0], [0], label = "Observations", marker = "o", color = "black", markeredgecolor = "black", markerfacecolor= "white"),
-        mpl.lines.Line2D([0], [0], label = "Pre-Calibration", linewidth = 0.5, color = cmap[0, :], alpha = 0.8),
-        mpl.lines.Line2D([0], [0], label = "Post-Calibration", linewidth = 0.5, color = cmap[1, :], alpha = 0.8)
-    ]
-    __ = ax.legend(handles = l)
-
-
-fig.savefig("./figures/test_calibrate_interface_state_trajectories.png")
 
 # %%
 # Plot parameter distributions
