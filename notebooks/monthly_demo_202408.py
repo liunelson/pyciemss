@@ -570,7 +570,6 @@ model_seirhd = copy.deepcopy(tm)
 model_seirhd.annotations.name = "SEIRHD model"
 model_seirhd.annotations.description = "Edit of the SIDARTHE model from Giodano 2020."
 
-
 GraphicalModel.for_jupyter(model_seirhd)
 
 # %%
@@ -583,12 +582,12 @@ generate_odesys(model_seirhd)
 # Configure the model
 
 # Note: tedious to require existing parameter to add a value
-model_seirhd.add_parameter(parameter_id = "S0")
-model_seirhd.add_parameter(parameter_id = "E0")
-model_seirhd.add_parameter(parameter_id = "I0")
-model_seirhd.add_parameter(parameter_id = "R0")
-model_seirhd.add_parameter(parameter_id = "H0")
-model_seirhd.add_parameter(parameter_id = "D0")
+model_seirhd.add_parameter(parameter_id = "S0", name = "S0")
+model_seirhd.add_parameter(parameter_id = "E0", name = "E0")
+model_seirhd.add_parameter(parameter_id = "I0", name = "I0")
+model_seirhd.add_parameter(parameter_id = "R0", name = "R0")
+model_seirhd.add_parameter(parameter_id = "H0", name = "H0")
+model_seirhd.add_parameter(parameter_id = "D0", name = "D0")
 
 model_seirhd.set_parameters(
     param_dict = {
@@ -652,6 +651,10 @@ amr = replace_rate_law_sympy(amr, "t1", new_rate_law = sympy.Symbol("b") * (1 - 
 
 model_seirhd_mod = template_model_from_amr_json(amr)
 
+# Rename the model
+model_seirhd_mod.annotations.name = "SEIRHD model (modified beta)"
+model_seirhd_mod.annotations.description = "Edit of the SIDARTHE model from Giodano 2020 with beta modified per Srivastava 2021."
+
 generate_odesys(model_seirhd_mod)
 
 # %%
@@ -689,6 +692,10 @@ model_seirhd_mod_mask = mira.metamodel.stratify(
 
 GraphicalModel.for_jupyter(model_seirhd_mod_mask)
 
+# Rename the model
+model_seirhd_mod_mask.annotations.name = "SEIRHD model (modified beta, stratified by masking)"
+model_seirhd_mod_mask.annotations.description = "Edit of the SIDARTHE model from Giodano 2020 with beta modified per Srivastava 2021 and stratified by masking compliance."
+
 # %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_mod_mask.json", "w") as f:
@@ -714,6 +721,10 @@ model_seirhd_age = mira.metamodel.stratify(
     params_to_stratify = ["b"],
     cartesian_control = True
 )
+
+model_seirhd_age.annotations.name = "SEIRHD model (stratified by age)"
+model_seirhd_age.annotations.description = "Edit of the SIDARTHE model from Giodano 2020, stratified by 18 age groups."
+
 
 # %%
 # Save as AMR
