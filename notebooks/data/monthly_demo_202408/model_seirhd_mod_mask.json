@@ -1,0 +1,693 @@
+{
+    "header": {
+        "name": "SEIRHD model (modified beta, stratified by masking)",
+        "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
+        "schema_name": "petrinet",
+        "description": "Edit of the SIDARTHE model from Giodano 2020 with beta modified per Srivastava 2021 and stratified by masking compliance.",
+        "model_version": "0.1"
+    },
+    "properties": {},
+    "model": {
+        "states": [
+            {
+                "id": "S_c",
+                "name": "Susceptible",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000514"
+                    },
+                    "modifiers": {
+                        "masking": "c"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "I_c",
+                "name": "Diagnosed",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "diagnosis": "ncit:C15220",
+                        "masking": "c"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "E_c",
+                "name": "Infected",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "masking": "c"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "I_n",
+                "name": "Diagnosed",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "diagnosis": "ncit:C15220",
+                        "masking": "n"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "S_n",
+                "name": "Susceptible",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000514"
+                    },
+                    "modifiers": {
+                        "masking": "n"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "E_n",
+                "name": "Infected",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "masking": "n"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "R",
+                "name": "Healed",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000592"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "H",
+                "name": "Threatened",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "disease_severity": "ncit:C25467"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "D",
+                "name": "Extinct",
+                "grounding": {
+                    "identifiers": {
+                        "ncit": "C28554"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            }
+        ],
+        "transitions": [
+            {
+                "id": "t1",
+                "input": [
+                    "I_c",
+                    "S_c"
+                ],
+                "output": [
+                    "I_c",
+                    "E_c"
+                ],
+                "properties": {
+                    "name": "t1"
+                }
+            },
+            {
+                "id": "t2",
+                "input": [
+                    "I_n",
+                    "S_c"
+                ],
+                "output": [
+                    "I_n",
+                    "E_c"
+                ],
+                "properties": {
+                    "name": "t2"
+                }
+            },
+            {
+                "id": "t3",
+                "input": [
+                    "I_n",
+                    "S_n"
+                ],
+                "output": [
+                    "I_n",
+                    "E_n"
+                ],
+                "properties": {
+                    "name": "t3"
+                }
+            },
+            {
+                "id": "t4",
+                "input": [
+                    "I_c",
+                    "S_n"
+                ],
+                "output": [
+                    "I_c",
+                    "E_n"
+                ],
+                "properties": {
+                    "name": "t4"
+                }
+            },
+            {
+                "id": "t5",
+                "input": [
+                    "E_c"
+                ],
+                "output": [
+                    "I_c"
+                ],
+                "properties": {
+                    "name": "t5"
+                }
+            },
+            {
+                "id": "t6",
+                "input": [
+                    "E_n"
+                ],
+                "output": [
+                    "I_n"
+                ],
+                "properties": {
+                    "name": "t6"
+                }
+            },
+            {
+                "id": "t7",
+                "input": [
+                    "I_c"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t7"
+                }
+            },
+            {
+                "id": "t8",
+                "input": [
+                    "I_n"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t8"
+                }
+            },
+            {
+                "id": "t15",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "D"
+                ],
+                "properties": {
+                    "name": "t15"
+                }
+            },
+            {
+                "id": "t15",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "D"
+                ],
+                "properties": {
+                    "name": "t15"
+                }
+            },
+            {
+                "id": "t16",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t16"
+                }
+            },
+            {
+                "id": "t16",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t16"
+                }
+            },
+            {
+                "id": "t13",
+                "input": [
+                    "I_c"
+                ],
+                "output": [
+                    "H"
+                ],
+                "properties": {
+                    "name": "t13"
+                }
+            },
+            {
+                "id": "t14",
+                "input": [
+                    "I_n"
+                ],
+                "output": [
+                    "H"
+                ],
+                "properties": {
+                    "name": "t14"
+                }
+            },
+            {
+                "id": "t15",
+                "input": [
+                    "S_n"
+                ],
+                "output": [
+                    "S_c"
+                ],
+                "properties": {
+                    "name": "t15"
+                }
+            },
+            {
+                "id": "t16",
+                "input": [
+                    "S_c"
+                ],
+                "output": [
+                    "S_n"
+                ],
+                "properties": {
+                    "name": "t16"
+                }
+            },
+            {
+                "id": "t17",
+                "input": [
+                    "E_n"
+                ],
+                "output": [
+                    "E_c"
+                ],
+                "properties": {
+                    "name": "t17"
+                }
+            },
+            {
+                "id": "t18",
+                "input": [
+                    "E_c"
+                ],
+                "output": [
+                    "E_n"
+                ],
+                "properties": {
+                    "name": "t18"
+                }
+            },
+            {
+                "id": "t19",
+                "input": [
+                    "I_n"
+                ],
+                "output": [
+                    "I_c"
+                ],
+                "properties": {
+                    "name": "t19"
+                }
+            },
+            {
+                "id": "t20",
+                "input": [
+                    "I_c"
+                ],
+                "output": [
+                    "I_n"
+                ],
+                "properties": {
+                    "name": "t20"
+                }
+            }
+        ]
+    },
+    "semantics": {
+        "ode": {
+            "rates": [
+                {
+                    "target": "t1",
+                    "expression": "I_c*S_c*b*invN*(-cM_0*epsilonM_0 + 1)",
+                    "expression_mathml": "<apply><times/><ci>I_c</ci><ci>S_c</ci><ci>b</ci><ci>invN</ci><apply><plus/><apply><minus/><apply><times/><ci>cM_0</ci><ci>epsilonM_0</ci></apply></apply><cn>1</cn></apply></apply>"
+                },
+                {
+                    "target": "t2",
+                    "expression": "I_n*S_c*b*invN*(-cM_1*epsilonM_1 + 1)",
+                    "expression_mathml": "<apply><times/><ci>I_n</ci><ci>S_c</ci><ci>b</ci><ci>invN</ci><apply><plus/><apply><minus/><apply><times/><ci>cM_1</ci><ci>epsilonM_1</ci></apply></apply><cn>1</cn></apply></apply>"
+                },
+                {
+                    "target": "t3",
+                    "expression": "I_n*S_n*b*invN*(-cM_2*epsilonM_2 + 1)",
+                    "expression_mathml": "<apply><times/><ci>I_n</ci><ci>S_n</ci><ci>b</ci><ci>invN</ci><apply><plus/><apply><minus/><apply><times/><ci>cM_2</ci><ci>epsilonM_2</ci></apply></apply><cn>1</cn></apply></apply>"
+                },
+                {
+                    "target": "t4",
+                    "expression": "I_c*S_n*b*invN*(-cM_3*epsilonM_3 + 1)",
+                    "expression_mathml": "<apply><times/><ci>I_c</ci><ci>S_n</ci><ci>b</ci><ci>invN</ci><apply><plus/><apply><minus/><apply><times/><ci>cM_3</ci><ci>epsilonM_3</ci></apply></apply><cn>1</cn></apply></apply>"
+                },
+                {
+                    "target": "t5",
+                    "expression": "E_c*rEI",
+                    "expression_mathml": "<apply><times/><ci>E_c</ci><ci>rEI</ci></apply>"
+                },
+                {
+                    "target": "t6",
+                    "expression": "E_n*rEI",
+                    "expression_mathml": "<apply><times/><ci>E_n</ci><ci>rEI</ci></apply>"
+                },
+                {
+                    "target": "t7",
+                    "expression": "I_c*pIR*rIR",
+                    "expression_mathml": "<apply><times/><ci>I_c</ci><ci>pIR</ci><ci>rIR</ci></apply>"
+                },
+                {
+                    "target": "t8",
+                    "expression": "I_n*pIR*rIR",
+                    "expression_mathml": "<apply><times/><ci>I_n</ci><ci>pIR</ci><ci>rIR</ci></apply>"
+                },
+                {
+                    "target": "t15",
+                    "expression": "H*pHD*rHD",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHD</ci><ci>rHD</ci></apply>"
+                },
+                {
+                    "target": "t15",
+                    "expression": "H*pHD*rHD",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHD</ci><ci>rHD</ci></apply>"
+                },
+                {
+                    "target": "t16",
+                    "expression": "H*pHR*rHR",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHR</ci><ci>rHR</ci></apply>"
+                },
+                {
+                    "target": "t16",
+                    "expression": "H*pHR*rHR",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHR</ci><ci>rHR</ci></apply>"
+                },
+                {
+                    "target": "t13",
+                    "expression": "I_c*pIH*rIH",
+                    "expression_mathml": "<apply><times/><ci>I_c</ci><ci>pIH</ci><ci>rIH</ci></apply>"
+                },
+                {
+                    "target": "t14",
+                    "expression": "I_n*pIH*rIH",
+                    "expression_mathml": "<apply><times/><ci>I_n</ci><ci>pIH</ci><ci>rIH</ci></apply>"
+                },
+                {
+                    "target": "t15",
+                    "expression": "S_n*p_n_c",
+                    "expression_mathml": "<apply><times/><ci>S_n</ci><ci>p_n_c</ci></apply>"
+                },
+                {
+                    "target": "t16",
+                    "expression": "S_c*p_c_n",
+                    "expression_mathml": "<apply><times/><ci>S_c</ci><ci>p_c_n</ci></apply>"
+                },
+                {
+                    "target": "t17",
+                    "expression": "E_n*p_n_c",
+                    "expression_mathml": "<apply><times/><ci>E_n</ci><ci>p_n_c</ci></apply>"
+                },
+                {
+                    "target": "t18",
+                    "expression": "E_c*p_c_n",
+                    "expression_mathml": "<apply><times/><ci>E_c</ci><ci>p_c_n</ci></apply>"
+                },
+                {
+                    "target": "t19",
+                    "expression": "I_n*p_n_c",
+                    "expression_mathml": "<apply><times/><ci>I_n</ci><ci>p_n_c</ci></apply>"
+                },
+                {
+                    "target": "t20",
+                    "expression": "I_c*p_c_n",
+                    "expression_mathml": "<apply><times/><ci>I_c</ci><ci>p_c_n</ci></apply>"
+                }
+            ],
+            "initials": [
+                {
+                    "target": "S_c",
+                    "expression": "S0/2",
+                    "expression_mathml": "<apply><divide/><ci>S0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "I_c",
+                    "expression": "I0/2",
+                    "expression_mathml": "<apply><divide/><ci>I0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "E_c",
+                    "expression": "E0/2",
+                    "expression_mathml": "<apply><divide/><ci>E0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "I_n",
+                    "expression": "I0/2",
+                    "expression_mathml": "<apply><divide/><ci>I0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "S_n",
+                    "expression": "S0/2",
+                    "expression_mathml": "<apply><divide/><ci>S0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "E_n",
+                    "expression": "E0/2",
+                    "expression_mathml": "<apply><divide/><ci>E0</ci><cn>2</cn></apply>"
+                },
+                {
+                    "target": "R",
+                    "expression": "R0",
+                    "expression_mathml": "<ci>R0</ci>"
+                },
+                {
+                    "target": "H",
+                    "expression": "H0",
+                    "expression_mathml": "<ci>H0</ci>"
+                },
+                {
+                    "target": "D",
+                    "expression": "D0",
+                    "expression_mathml": "<ci>D0</ci>"
+                }
+            ],
+            "parameters": [
+                {
+                    "id": "b",
+                    "value": 0.4
+                },
+                {
+                    "id": "cM_0",
+                    "value": 0.0
+                },
+                {
+                    "id": "epsilonM_0",
+                    "value": 0.0
+                },
+                {
+                    "id": "invN",
+                    "value": 5.170630816959669e-08
+                },
+                {
+                    "id": "cM_1",
+                    "value": 0.0
+                },
+                {
+                    "id": "epsilonM_1",
+                    "value": 0.0
+                },
+                {
+                    "id": "cM_2",
+                    "value": 0.0
+                },
+                {
+                    "id": "epsilonM_2",
+                    "value": 0.0
+                },
+                {
+                    "id": "cM_3",
+                    "value": 0.0
+                },
+                {
+                    "id": "epsilonM_3",
+                    "value": 0.0
+                },
+                {
+                    "id": "rEI",
+                    "description": "epsilon",
+                    "value": 0.2,
+                    "units": {
+                        "expression": "1/day",
+                        "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
+                    }
+                },
+                {
+                    "id": "pIR",
+                    "value": 0.8
+                },
+                {
+                    "id": "rIR",
+                    "value": 0.07
+                },
+                {
+                    "id": "pHD",
+                    "value": 0.12
+                },
+                {
+                    "id": "rHD",
+                    "value": 0.1
+                },
+                {
+                    "id": "pHR",
+                    "value": 0.88
+                },
+                {
+                    "id": "rHR",
+                    "value": 0.1
+                },
+                {
+                    "id": "pIH",
+                    "value": 0.2
+                },
+                {
+                    "id": "rIH",
+                    "value": 0.1
+                },
+                {
+                    "id": "p_n_c",
+                    "value": 0.1
+                },
+                {
+                    "id": "p_c_n",
+                    "value": 0.1
+                },
+                {
+                    "id": "S0",
+                    "value": 19340000.0
+                },
+                {
+                    "id": "E0",
+                    "value": 530863.0
+                },
+                {
+                    "id": "I0",
+                    "value": 2123452.0
+                },
+                {
+                    "id": "R0",
+                    "value": 2069902.0
+                },
+                {
+                    "id": "H0",
+                    "value": 744.0
+                },
+                {
+                    "id": "D0",
+                    "value": 53550.0
+                }
+            ],
+            "observables": [],
+            "time": {
+                "id": "t"
+            }
+        }
+    },
+    "metadata": {
+        "annotations": {
+            "license": null,
+            "authors": [],
+            "references": [],
+            "time_scale": null,
+            "time_start": null,
+            "time_end": null,
+            "locations": [],
+            "pathogens": [],
+            "diseases": [],
+            "hosts": [],
+            "model_types": []
+        }
+    }
+}

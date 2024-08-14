@@ -1,9 +1,9 @@
 {
     "header": {
-        "name": "Giordano2020 - SIDARTHE model of COVID-19 spread in Italy",
+        "name": "SEIRHD model (modified beta)",
         "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
         "schema_name": "petrinet",
-        "description": "Giordano2020 - SIDARTHE model of COVID-19 spread in Italy",
+        "description": "Edit of the SIDARTHE model from Giodano 2020 with beta modified per Srivastava 2021.",
         "model_version": "0.1"
     },
     "properties": {},

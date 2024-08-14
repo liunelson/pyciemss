@@ -104,6 +104,9 @@ model_sidarthe.observables["R0"] = mira.metamodel.template_model.Observable(
         + (sympy.Symbol("delta") * sympy.Symbol("zeta") * sympy.Symbol("theta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa")) * (sympy.Symbol("nu") + sympy.Symbol("xi")))
 )
 
+# Rename the model
+model_sidarthe.annotations.name = "SIDARTHE model with observables"
+
 # %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_sidarthe_with_observable.json", "w") as f:
@@ -457,6 +460,10 @@ from mira.modeling.amr.ops import replace_parameter_id
 j = template_model_to_petrinet_json(model_sidarthev)
 model_sidarthev = template_model_from_amr_json(replace_parameter_id(j, "tau", "tau_2"))
 
+# Rename the model
+model_sidarthev.annotations.name = "SIDARTHE-V model"
+model_sidarthev.annotations.description = "Edit of the SIDARTHE model from Giodano 2020 to include vaccination."
+
 generate_summary_table(model_sidarthev)
 
 # %%
@@ -558,6 +565,11 @@ tm.update_parameters({p: 1.0 for p in params})
 
 # Make a copy of the final SEIRHD model
 model_seirhd = copy.deepcopy(tm)
+
+# Rename the model
+model_seirhd.annotations.name = "SEIRHD model"
+model_seirhd.annotations.description = "Edit of the SIDARTHE model from Giodano 2020."
+
 
 GraphicalModel.for_jupyter(model_seirhd)
 
