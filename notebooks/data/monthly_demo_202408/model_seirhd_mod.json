@@ -1,0 +1,348 @@
+{
+    "header": {
+        "name": "Giordano2020 - SIDARTHE model of COVID-19 spread in Italy",
+        "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
+        "schema_name": "petrinet",
+        "description": "Giordano2020 - SIDARTHE model of COVID-19 spread in Italy",
+        "model_version": "0.1"
+    },
+    "properties": {},
+    "model": {
+        "states": [
+            {
+                "id": "S",
+                "name": "Susceptible",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000514"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "I",
+                "name": "Diagnosed",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "diagnosis": "ncit:C15220"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "E",
+                "name": "Infected",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "R",
+                "name": "Healed",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000592"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "H",
+                "name": "Threatened",
+                "grounding": {
+                    "identifiers": {
+                        "ido": "0000511"
+                    },
+                    "modifiers": {
+                        "disease_severity": "ncit:C25467"
+                    }
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            },
+            {
+                "id": "D",
+                "name": "Extinct",
+                "grounding": {
+                    "identifiers": {
+                        "ncit": "C28554"
+                    },
+                    "modifiers": {}
+                },
+                "units": {
+                    "expression": "person",
+                    "expression_mathml": "<ci>person</ci>"
+                }
+            }
+        ],
+        "transitions": [
+            {
+                "id": "t1",
+                "input": [
+                    "I",
+                    "S"
+                ],
+                "output": [
+                    "I",
+                    "E"
+                ],
+                "properties": {
+                    "name": "t1"
+                }
+            },
+            {
+                "id": "t5",
+                "input": [
+                    "E"
+                ],
+                "output": [
+                    "I"
+                ],
+                "properties": {
+                    "name": "t5"
+                }
+            },
+            {
+                "id": "t9",
+                "input": [
+                    "I"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t9"
+                }
+            },
+            {
+                "id": "t15",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "D"
+                ],
+                "properties": {
+                    "name": "t15"
+                }
+            },
+            {
+                "id": "t16",
+                "input": [
+                    "H"
+                ],
+                "output": [
+                    "R"
+                ],
+                "properties": {
+                    "name": "t16"
+                }
+            },
+            {
+                "id": "t17",
+                "input": [
+                    "I"
+                ],
+                "output": [
+                    "H"
+                ],
+                "properties": {
+                    "name": "t17"
+                }
+            }
+        ]
+    },
+    "semantics": {
+        "ode": {
+            "rates": [
+                {
+                    "target": "t1",
+                    "expression": "I*S*b*invN*(-cM*epsilonM + 1)",
+                    "expression_mathml": "<apply><times/><ci>I</ci><ci>S</ci><ci>b</ci><ci>invN</ci><apply><plus/><apply><minus/><apply><times/><ci>cM</ci><ci>epsilonM</ci></apply></apply><cn>1</cn></apply></apply>"
+                },
+                {
+                    "target": "t5",
+                    "expression": "E*rEI",
+                    "expression_mathml": "<apply><times/><ci>E</ci><ci>rEI</ci></apply>"
+                },
+                {
+                    "target": "t9",
+                    "expression": "I*pIR*rIR",
+                    "expression_mathml": "<apply><times/><ci>I</ci><ci>pIR</ci><ci>rIR</ci></apply>"
+                },
+                {
+                    "target": "t15",
+                    "expression": "H*pHD*rHD",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHD</ci><ci>rHD</ci></apply>"
+                },
+                {
+                    "target": "t16",
+                    "expression": "H*pHR*rHR",
+                    "expression_mathml": "<apply><times/><ci>H</ci><ci>pHR</ci><ci>rHR</ci></apply>"
+                },
+                {
+                    "target": "t17",
+                    "expression": "I*pIH*rIH",
+                    "expression_mathml": "<apply><times/><ci>I</ci><ci>pIH</ci><ci>rIH</ci></apply>"
+                }
+            ],
+            "initials": [
+                {
+                    "target": "S",
+                    "expression": "S0",
+                    "expression_mathml": "<ci>S0</ci>"
+                },
+                {
+                    "target": "I",
+                    "expression": "I0",
+                    "expression_mathml": "<ci>I0</ci>"
+                },
+                {
+                    "target": "E",
+                    "expression": "E0",
+                    "expression_mathml": "<ci>E0</ci>"
+                },
+                {
+                    "target": "R",
+                    "expression": "R0",
+                    "expression_mathml": "<ci>R0</ci>"
+                },
+                {
+                    "target": "H",
+                    "expression": "H0",
+                    "expression_mathml": "<ci>H0</ci>"
+                },
+                {
+                    "target": "D",
+                    "expression": "D0",
+                    "expression_mathml": "<ci>D0</ci>"
+                }
+            ],
+            "parameters": [
+                {
+                    "id": "b",
+                    "value": 0.4
+                },
+                {
+                    "id": "cM",
+                    "value": 0.0
+                },
+                {
+                    "id": "epsilonM",
+                    "value": 0.0
+                },
+                {
+                    "id": "invN",
+                    "value": 5.170630816959669e-08
+                },
+                {
+                    "id": "rEI",
+                    "description": "epsilon",
+                    "value": 0.2,
+                    "units": {
+                        "expression": "1/day",
+                        "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
+                    }
+                },
+                {
+                    "id": "pIR",
+                    "value": 0.8
+                },
+                {
+                    "id": "rIR",
+                    "value": 0.07
+                },
+                {
+                    "id": "pHD",
+                    "value": 0.12
+                },
+                {
+                    "id": "rHD",
+                    "value": 0.1
+                },
+                {
+                    "id": "pHR",
+                    "value": 0.88
+                },
+                {
+                    "id": "rHR",
+                    "value": 0.1
+                },
+                {
+                    "id": "pIH",
+                    "value": 0.2
+                },
+                {
+                    "id": "rIH",
+                    "value": 0.1
+                },
+                {
+                    "id": "S0",
+                    "value": 19340000.0
+                },
+                {
+                    "id": "E0",
+                    "value": 530863.0
+                },
+                {
+                    "id": "I0",
+                    "value": 2123452.0
+                },
+                {
+                    "id": "R0",
+                    "value": 2069902.0
+                },
+                {
+                    "id": "H0",
+                    "value": 744.0
+                },
+                {
+                    "id": "D0",
+                    "value": 53550.0
+                }
+            ],
+            "observables": [],
+            "time": {
+                "id": "t"
+            }
+        }
+    },
+    "metadata": {
+        "annotations": {
+            "license": null,
+            "authors": [],
+            "references": [],
+            "time_scale": null,
+            "time_start": null,
+            "time_end": null,
+            "locations": [],
+            "pathogens": [],
+            "diseases": [],
+            "hosts": [],
+            "model_types": []
+        }
+    }
+}
