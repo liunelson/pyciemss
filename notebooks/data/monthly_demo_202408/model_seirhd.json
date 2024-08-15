@@ -244,14 +244,17 @@
             "parameters": [
                 {
                     "id": "b",
-                    "value": 0.4
+                    "value": 0.4,
+                    "name": "b"
                 },
                 {
                     "id": "invN",
-                    "value": 5.170630816959669e-08
+                    "value": 5.170630816959669e-08,
+                    "name": "invN"
                 },
                 {
                     "id": "rEI",
+                    "name": "epsilon",
                     "description": "epsilon",
                     "value": 0.2,
                     "units": {
@@ -261,35 +264,43 @@
                 },
                 {
                     "id": "pIR",
-                    "value": 0.8
+                    "value": 0.8,
+                    "name": "pIR"
                 },
                 {
                     "id": "rIR",
-                    "value": 0.07
+                    "value": 0.07,
+                    "name": "rIR"
                 },
                 {
                     "id": "pHD",
-                    "value": 0.12
+                    "value": 0.12,
+                    "name": "pHD"
                 },
                 {
                     "id": "rHD",
-                    "value": 0.1
+                    "value": 0.1,
+                    "name": "rHD"
                 },
                 {
                     "id": "pHR",
-                    "value": 0.88
+                    "value": 0.88,
+                    "name": "pHR"
                 },
                 {
                     "id": "rHR",
-                    "value": 0.1
+                    "value": 0.1,
+                    "name": "rHR"
                 },
                 {
                     "id": "pIH",
-                    "value": 0.2
+                    "value": 0.2,
+                    "name": "pIH"
                 },
                 {
                     "id": "rIH",
-                    "value": 0.1
+                    "value": 0.1,
+                    "name": "rIH"
                 },
                 {
                     "id": "S0",

@@ -507,6 +507,7 @@
             "parameters": [
                 {
                     "id": "alpha",
+                    "name": "alpha",
                     "description": "alpha",
                     "value": 0.57,
                     "units": {
@@ -516,6 +517,7 @@
                 },
                 {
                     "id": "beta",
+                    "name": "beta",
                     "description": "beta",
                     "value": 0.011,
                     "units": {
@@ -525,6 +527,7 @@
                 },
                 {
                     "id": "delta",
+                    "name": "delta",
                     "description": "delta",
                     "value": 0.011,
                     "units": {
@@ -534,6 +537,7 @@
                 },
                 {
                     "id": "epsilon",
+                    "name": "epsilon",
                     "description": "epsilon",
                     "value": 0.171,
                     "units": {
@@ -543,6 +547,7 @@
                 },
                 {
                     "id": "eta",
+                    "name": "eta",
                     "description": "eta",
                     "value": 0.125,
                     "units": {
@@ -552,6 +557,7 @@
                 },
                 {
                     "id": "gamma",
+                    "name": "gamma",
                     "description": "gamma",
                     "value": 0.456,
                     "units": {
@@ -561,6 +567,7 @@
                 },
                 {
                     "id": "kappa",
+                    "name": "kappa",
                     "description": "kappa",
                     "value": 0.017,
                     "units": {
@@ -570,6 +577,7 @@
                 },
                 {
                     "id": "lambda",
+                    "name": "lambda",
                     "description": "lambda",
                     "value": 0.034,
                     "units": {
@@ -579,6 +587,7 @@
                 },
                 {
                     "id": "mu",
+                    "name": "mu",
                     "description": "mu",
                     "value": 0.017,
                     "units": {
@@ -588,6 +597,7 @@
                 },
                 {
                     "id": "nu",
+                    "name": "nu",
                     "description": "nu",
                     "value": 0.027,
                     "units": {
@@ -597,6 +607,7 @@
                 },
                 {
                     "id": "rho",
+                    "name": "rho",
                     "description": "rho",
                     "value": 0.034,
                     "units": {
@@ -606,6 +617,7 @@
                 },
                 {
                     "id": "theta",
+                    "name": "theta",
                     "description": "theta",
                     "value": 0.371,
                     "units": {
@@ -615,6 +627,7 @@
                 },
                 {
                     "id": "xi",
+                    "name": "xi",
                     "description": "xi",
                     "value": 0.017,
                     "units": {
@@ -624,6 +637,7 @@
                 },
                 {
                     "id": "zeta",
+                    "name": "zeta",
                     "description": "zeta",
                     "value": 0.125,
                     "units": {
@@ -633,6 +647,7 @@
                 },
                 {
                     "id": "tau_2",
+                    "name": "tau",
                     "description": "tau",
                     "value": 0.01,
                     "units": {
@@ -642,6 +657,7 @@
                 },
                 {
                     "id": "sigma",
+                    "name": "sigma",
                     "description": "sigma",
                     "value": 0.017,
                     "units": {
@@ -663,6 +679,7 @@
                 },
                 {
                     "id": "Event_trigger_Fig3b",
+                    "name": "Event_trigger_Fig3b",
                     "description": "Event_trigger_Fig3b",
                     "value": 0.0,
                     "units": {
@@ -672,6 +689,7 @@
                 },
                 {
                     "id": "Event_trigger_Fig3d",
+                    "name": "Event_trigger_Fig3d",
                     "description": "Event_trigger_Fig3d",
                     "value": 0.0,
                     "units": {
@@ -681,6 +699,7 @@
                 },
                 {
                     "id": "Event_trigger_Fig4b",
+                    "name": "Event_trigger_Fig4b",
                     "description": "Event_trigger_Fig4b",
                     "value": 0.0,
                     "units": {
@@ -690,6 +709,7 @@
                 },
                 {
                     "id": "Event_trigger_Fig4d",
+                    "name": "Event_trigger_Fig4d",
                     "description": "Event_trigger_Fig4d",
                     "value": 0.0,
                     "units": {
@@ -699,6 +719,7 @@
                 },
                 {
                     "id": "epsilon_modifier",
+                    "name": "epsilon_modifier",
                     "description": "epsilon_modifier",
                     "value": 1.0,
                     "units": {
@@ -708,6 +729,7 @@
                 },
                 {
                     "id": "alpha_modifier",
+                    "name": "alpha_modifier",
                     "description": "alpha_modifier",
                     "value": 1.0,
                     "units": {
@@ -717,36 +739,43 @@
                 },
                 {
                     "id": "ModelValue_16",
+                    "name": "ModelValue_16",
                     "description": "Initial for Event_trigger_Fig3b",
                     "value": 0.0
                 },
                 {
                     "id": "ModelValue_17",
+                    "name": "ModelValue_17",
                     "description": "Initial for Event_trigger_Fig3d",
                     "value": 0.0
                 },
                 {
                     "id": "ModelValue_18",
+                    "name": "ModelValue_18",
                     "description": "Initial for Event_trigger_Fig4b",
                     "value": 0.0
                 },
                 {
                     "id": "ModelValue_19",
+                    "name": "ModelValue_19",
                     "description": "Initial for Event_trigger_Fig4d",
                     "value": 0.0
                 },
                 {
                     "id": "ModelValue_21",
+                    "name": "ModelValue_21",
                     "description": "Initial for alpha_modifier",
                     "value": 1.0
                 },
                 {
                     "id": "ModelValue_20",
+                    "name": "ModelValue_20",
                     "description": "Initial for epsilon_modifier",
                     "value": 1.0
                 },
                 {
                     "id": "Italy",
+                    "name": "Italy",
                     "description": "Italy",
                     "value": 1.0,
                     "units": {

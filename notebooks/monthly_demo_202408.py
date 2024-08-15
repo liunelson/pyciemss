@@ -49,73 +49,6 @@ from mira.metamodel.io import expression_to_mathml
 
 os.environ["MIRA_REST_URL"] = "http://34.230.33.149:8771/api"
 
-# %%[markdown]
-# ## Problem 1
-# 
-# 6-month evaluation, scenario 2
-# 
-# 1. Start with published SIDARTHE model
-# 2. Unit Test 1: Configure it as per the paper, run the model, and compare the results
-# 3. Unit Test 2: Configure with interventions, run the model, and compare the results with Fig. 2B of the paper.
-# 4. Create SIDARTHE-V model by editing the SIDARTHE model
-# 5. Find optimal policy (at timepoint 30 days) for SIDARTHE-V to keep R0 < 1.0
-
-# %%
-# Load the SIDARTHE model from the BioModels DB
-# (Need to apply `simplify_rate_laws`)
-
-model_sidarthe = biomodels.get_template_model("BIOMD0000000955")
-model_sidarthe = mira.metamodel.ops.simplify_rate_laws(model_sidarthe)
-
-# %%
-# Save as AMR
-with open("./data/monthly_demo_202408/model_sidarthe.json", "w") as f:
-    j = template_model_to_petrinet_json(model_sidarthe)
-    json.dump(j, f, indent = 4)
-
-# %%
-# Add an observable `TotalInfected` =  I + D + A + R + T
-model_sidarthe.observables["TotalInfected"] = mira.metamodel.template_model.Observable(
-    name = "TotalInfected", 
-    expression = sympy.Symbol("Infected") + sympy.Symbol("Diagnosed") + sympy.Symbol("Ailing") + sympy.Symbol("Recognized") + sympy.Symbol("Threatened")
-)
-
-# %%
-# Add an observable `R0`
-# 
-# r1 = epsilon + eta + lambda
-# r2 = eta + rho
-# r3 = theta + mu + kappa
-# r4 = nu + xi
-# r5 = sigma + tau
-# 
-# R0 = alpha / r1
-# + (beta * epsilon) / (r1 * r2) 
-# + (gamma * zeta) / (r1 * r3) 
-# + (delta * eta * epsilon) / (r1 * r2 * r4) 
-# + (delta * zeta * theta) / (r1 * r3 * r4)
-
-model_sidarthe.observables["R0"] = mira.metamodel.template_model.Observable(
-    name = "R0", 
-    expression = sympy.Symbol("alpha") / (sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda"))
-        + (sympy.Symbol("beta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho"))) 
-        + (sympy.Symbol("gamma") * sympy.Symbol("zeta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa"))) 
-        + (sympy.Symbol("delta") * sympy.Symbol("eta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho")) * (sympy.Symbol("nu") + sympy.Symbol("xi"))) 
-        + (sympy.Symbol("delta") * sympy.Symbol("zeta") * sympy.Symbol("theta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa")) * (sympy.Symbol("nu") + sympy.Symbol("xi")))
-)
-
-# Rename the model
-model_sidarthe.annotations.name = "SIDARTHE model with observables"
-
-# %%
-# Save as AMR
-with open("./data/monthly_demo_202408/model_sidarthe_with_observable.json", "w") as f:
-    j = template_model_to_petrinet_json(model_sidarthe)
-    json.dump(j, f, indent = 4)
-
-# %%
-GraphicalModel.for_jupyter(model_sidarthe)
-
 # %%
 # Helper functions
 
@@ -213,6 +146,85 @@ def plot_simulate_results(results: dict) -> None:
 
     return None
 
+# Temporary walkaround for adding missing names/display_names in AMR
+def add_missing_parameter_names(amr: dict) -> dict:
+
+    for param in amr["semantics"]["ode"]["parameters"]:
+        if "name" not in param.keys():
+            param["name"] = param["id"]
+
+    return amr
+
+
+# %%[markdown]
+# ## Problem 1
+# 
+# 6-month evaluation, scenario 2
+# 
+# 1. Start with published SIDARTHE model
+# 2. Unit Test 1: Configure it as per the paper, run the model, and compare the results
+# 3. Unit Test 2: Configure with interventions, run the model, and compare the results with Fig. 2B of the paper.
+# 4. Create SIDARTHE-V model by editing the SIDARTHE model
+# 5. Find optimal policy (at timepoint 30 days) for SIDARTHE-V to keep R0 < 1.0
+
+# %%
+# Load the SIDARTHE model from the BioModels DB
+# (Need to apply `simplify_rate_laws`)
+
+model_sidarthe = biomodels.get_template_model("BIOMD0000000955")
+model_sidarthe = mira.metamodel.ops.simplify_rate_laws(model_sidarthe)
+
+# %%
+# Save as AMR
+with open("./data/monthly_demo_202408/model_sidarthe.json", "w") as f:
+    j = template_model_to_petrinet_json(model_sidarthe)
+    j = add_missing_parameter_names(j) # workaround
+    json.dump(j, f, indent = 4)
+
+# %%
+# Add an observable `TotalInfected` =  I + D + A + R + T
+model_sidarthe.observables["TotalInfected"] = mira.metamodel.template_model.Observable(
+    name = "TotalInfected", 
+    expression = sympy.Symbol("Infected") + sympy.Symbol("Diagnosed") + sympy.Symbol("Ailing") + sympy.Symbol("Recognized") + sympy.Symbol("Threatened")
+)
+
+# %%
+# Add an observable `R0`
+# 
+# r1 = epsilon + eta + lambda
+# r2 = eta + rho
+# r3 = theta + mu + kappa
+# r4 = nu + xi
+# r5 = sigma + tau
+# 
+# R0 = alpha / r1
+# + (beta * epsilon) / (r1 * r2) 
+# + (gamma * zeta) / (r1 * r3) 
+# + (delta * eta * epsilon) / (r1 * r2 * r4) 
+# + (delta * zeta * theta) / (r1 * r3 * r4)
+
+model_sidarthe.observables["R0"] = mira.metamodel.template_model.Observable(
+    name = "R0", 
+    expression = sympy.Symbol("alpha") / (sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda"))
+        + (sympy.Symbol("beta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho"))) 
+        + (sympy.Symbol("gamma") * sympy.Symbol("zeta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa"))) 
+        + (sympy.Symbol("delta") * sympy.Symbol("eta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho")) * (sympy.Symbol("nu") + sympy.Symbol("xi"))) 
+        + (sympy.Symbol("delta") * sympy.Symbol("zeta") * sympy.Symbol("theta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa")) * (sympy.Symbol("nu") + sympy.Symbol("xi")))
+)
+
+# Rename the model
+model_sidarthe.annotations.name = "SIDARTHE model with observables"
+
+# %%
+# Save as AMR
+with open("./data/monthly_demo_202408/model_sidarthe_with_observable.json", "w") as f:
+    j = template_model_to_petrinet_json(model_sidarthe)
+    j = add_missing_parameter_names(j)
+    json.dump(j, f, indent = 4)
+
+# %%
+GraphicalModel.for_jupyter(model_sidarthe)
+
 # %%
 __ = [print(eq) for eq in generate_odesys(model_sidarthe)]
 
@@ -273,7 +285,7 @@ logging_step_size = 1.0
 num_samples = 1
 
 results = pyciemss.sample(
-    template_model_to_petrinet_json(model_sidarthe), 
+    add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
     end_time, 
     logging_step_size, 
     num_samples, 
@@ -341,7 +353,7 @@ static_parameter_interventions = {
 # %%
 # Simulate with interventions
 results = pyciemss.sample(
-    template_model_to_petrinet_json(model_sidarthe), 
+    add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
     end_time, 
     logging_step_size, 
     num_samples, 
@@ -391,7 +403,7 @@ objfun = lambda x: numpy.abs(x)
 maxiter = 1
 maxfeval = 10
 # opt_results = pyciemss.optimize(
-#     template_model_to_petrinet_json(model_sidarthe), 
+#     add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
 #     end_time,
 #     logging_step_size,
 #     qoi,
@@ -458,6 +470,7 @@ model_sidarthev.templates[-1].set_mass_action_rate_law("tau_1")
 # Rename the `tau` parameter to `tau2`
 from mira.modeling.amr.ops import replace_parameter_id
 j = template_model_to_petrinet_json(model_sidarthev)
+j = add_missing_parameter_names(j)
 model_sidarthev = template_model_from_amr_json(replace_parameter_id(j, "tau", "tau_2"))
 
 # Rename the model
@@ -473,6 +486,7 @@ GraphicalModel.for_jupyter(model_sidarthev)
 # Save as AMR
 with open("./data/monthly_demo_202408/model_sidarthev.json", "w") as f:
     j = template_model_to_petrinet_json(model_sidarthev)
+    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -506,6 +520,7 @@ tmd = TemplateModelDelta(model_sidarthe, model_sidarthev, refinement_function = 
 # Construct the SEIRHD model by editing the SIDARTHE model?
 
 amr = template_model_to_petrinet_json(model_sidarthe)
+amr = add_missing_parameter_names(amr)
 
 # Remove observables
 amr = remove_observable(amr, "R0")
@@ -696,6 +711,7 @@ generate_init_param_tables(model_seirhd)[1]
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd)
+    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%
@@ -707,7 +723,7 @@ logging_step_size = 1.0
 num_samples = 1
 
 results = pyciemss.sample(
-    template_model_to_petrinet_json(model_seirhd), 
+    add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd)), 
     end_time, 
     logging_step_size, 
     num_samples, 
@@ -749,6 +765,7 @@ generate_odesys(model_seirhd_mod)
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_mod.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_mod)
+    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -788,6 +805,7 @@ model_seirhd_mod_mask.annotations.description = "Edit of the SIDARTHE model from
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_mod_mask.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_mod_mask)
+    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -797,6 +815,7 @@ with open("./data/monthly_demo_202408/model_seirhd_mod_mask.json", "w") as f:
 
 # %%
 amr = template_model_to_petrinet_json(model_seirhd)
+amr = add_missing_parameter_names(amr)
 tm = template_model_from_amr_json(amr)
 
 model_seirhd_age = mira.metamodel.stratify(
@@ -818,8 +837,8 @@ model_seirhd_age.annotations.description = "Edit of the SIDARTHE model from Giod
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_age.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_age)
+    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
-
 
 # %%[markdown]
 # ## Problem 3

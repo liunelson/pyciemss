@@ -468,7 +468,8 @@
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    }
+                    },
+                    "name": "alpha"
                 },
                 {
                     "id": "beta",
@@ -477,7 +478,8 @@
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    }
+                    },
+                    "name": "beta"
                 },
                 {
                     "id": "delta",
@@ -486,7 +488,8 @@
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    }
+                    },
+                    "name": "delta"
                 },
                 {
                     "id": "epsilon",
@@ -495,7 +498,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "epsilon"
                 },
                 {
                     "id": "eta",
@@ -504,7 +508,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "eta"
                 },
                 {
                     "id": "gamma",
@@ -513,7 +518,8 @@
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    }
+                    },
+                    "name": "gamma"
                 },
                 {
                     "id": "kappa",
@@ -522,7 +528,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "kappa"
                 },
                 {
                     "id": "lambda",
@@ -531,7 +538,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "lambda"
                 },
                 {
                     "id": "mu",
@@ -540,7 +548,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "mu"
                 },
                 {
                     "id": "nu",
@@ -549,7 +558,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "nu"
                 },
                 {
                     "id": "rho",
@@ -558,7 +568,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "rho"
                 },
                 {
                     "id": "theta",
@@ -567,7 +578,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "theta"
                 },
                 {
                     "id": "xi",
@@ -576,7 +588,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "xi"
                 },
                 {
                     "id": "zeta",
@@ -585,7 +598,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "zeta"
                 },
                 {
                     "id": "tau",
@@ -594,7 +608,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "tau"
                 },
                 {
                     "id": "sigma",
@@ -603,7 +618,8 @@
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    }
+                    },
+                    "name": "sigma"
                 },
                 {
                     "id": "Event_trigger_Fig3b",
@@ -612,7 +628,8 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "Event_trigger_Fig3b"
                 },
                 {
                     "id": "Event_trigger_Fig3d",
@@ -621,7 +638,8 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "Event_trigger_Fig3d"
                 },
                 {
                     "id": "Event_trigger_Fig4b",
@@ -630,7 +648,8 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "Event_trigger_Fig4b"
                 },
                 {
                     "id": "Event_trigger_Fig4d",
@@ -639,7 +658,8 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "Event_trigger_Fig4d"
                 },
                 {
                     "id": "epsilon_modifier",
@@ -648,7 +668,8 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "epsilon_modifier"
                 },
                 {
                     "id": "alpha_modifier",
@@ -657,37 +678,44 @@
                     "units": {
                         "expression": "1",
                         "expression_mathml": "<cn>1</cn>"
-                    }
+                    },
+                    "name": "alpha_modifier"
                 },
                 {
                     "id": "ModelValue_16",
                     "description": "Initial for Event_trigger_Fig3b",
-                    "value": 0.0
+                    "value": 0.0,
+                    "name": "ModelValue_16"
                 },
                 {
                     "id": "ModelValue_17",
                     "description": "Initial for Event_trigger_Fig3d",
-                    "value": 0.0
+                    "value": 0.0,
+                    "name": "ModelValue_17"
                 },
                 {
                     "id": "ModelValue_18",
                     "description": "Initial for Event_trigger_Fig4b",
-                    "value": 0.0
+                    "value": 0.0,
+                    "name": "ModelValue_18"
                 },
                 {
                     "id": "ModelValue_19",
                     "description": "Initial for Event_trigger_Fig4d",
-                    "value": 0.0
+                    "value": 0.0,
+                    "name": "ModelValue_19"
                 },
                 {
                     "id": "ModelValue_21",
                     "description": "Initial for alpha_modifier",
-                    "value": 1.0
+                    "value": 1.0,
+                    "name": "ModelValue_21"
                 },
                 {
                     "id": "ModelValue_20",
                     "description": "Initial for epsilon_modifier",
-                    "value": 1.0
+                    "value": 1.0,
+                    "name": "ModelValue_20"
                 },
                 {
                     "id": "Italy",
@@ -696,7 +724,8 @@
                     "units": {
                         "expression": "0.001*liter",
                         "expression_mathml": "<apply><times/><cn>0.001</cn><ci>liter</ci></apply>"
-                    }
+                    },
+                    "name": "Italy"
                 }
             ],
             "observables": [
