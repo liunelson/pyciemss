@@ -570,6 +570,7 @@ model_seirhd = copy.deepcopy(tm)
 model_seirhd.annotations.name = "SEIRHD model"
 model_seirhd.annotations.description = "Edit of the SIDARTHE model from Giodano 2020."
 
+# %%
 GraphicalModel.for_jupyter(model_seirhd)
 
 # %%
@@ -578,9 +579,73 @@ generate_summary_table(model_seirhd)
 # %%
 generate_odesys(model_seirhd)
 
-# %%
+# %%[markdown]
 # Configure the model
 
+# %%
+# Estimate initial condition from NY dataset
+
+df_cases_cum = pandas.read_csv("./data/monthly_demo_202408/covid_confirmed_usafacts.csv")
+
+t_It = [mpl.dates.datestr2num(s) for s in df_cases_cum.columns[4:]][1:]
+
+# Infectious period ~12 days
+i = numpy.argwhere(df_cases_cum.columns == "2020-03-23")[0][0]
+j = numpy.argwhere(df_cases_cum.columns == "2020-04-03")[0][0] + 1
+
+# Estimate derivative (incident rate, i.e. new cases per day)
+y = numpy.asarray(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 5:]) - numpy.asarray(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:-1])
+It = y.sum(axis = 0)
+I0 = float(y[(i - 5):(j-5)].sum())
+
+Et = It * 0.25
+E0 = I0 * 0.25
+
+df_deaths_cum = pandas.read_csv("./data/monthly_demo_202408/covid_deaths_usafacts.csv")
+y = numpy.asarray(df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 5:]) - numpy.asarray(df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:-1])
+Dt = y.sum(axis = 0)
+D0 = float(Dt[:(j-5)].sum())
+
+t_Dt = [mpl.dates.datestr2num(s) for s in df_deaths_cum.columns[4:]][1:]
+
+# Assumption
+# R0 = cumulative_infections - cumulative_deaths at timepoint 2020-04-03
+x = df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).index
+i = numpy.argwhere(numpy.asarray(x) == "2020-04-03")[0][0]
+
+x = df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).index
+j = numpy.argwhere(numpy.asarray(x) == "2020-04-03")[0][0]
+
+R0 = float(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).iloc[i] - df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).iloc[j])
+
+# %%
+df_hosp = pandas.read_csv("./data/monthly_demo_202408/COVID-19_Reported_Patient_Impact_and_Hospital_Capacity_by_State_Timeseries__RAW__20240814.csv")
+
+y = df_hosp[df_hosp["state"] == "NY"]
+y = y.sort_values(by = ["date"])
+t_Ht = [mpl.dates.datestr2num(s) for s in y["date"]]
+
+# "Reported patients currently hospitalized in an inpatient bed who have suspected or confirmed COVID-19 in this state"
+Ht = y["inpatient_beds_used_covid"]
+H0 = float(numpy.asarray(Ht[df_hosp["date"] == "2020/04/03"])[0])
+
+# %%
+S0 = 19.34e6 - E0 - I0 - R0 - H0 - D0
+__ = [print(f"{name} = {x}") for name, x in zip(("S0", "E0", "I0", "R0", "H0", "D0"), (S0, E0, I0, R0, H0, D0))]
+
+# %%
+fig, ax = plt.subplots(1, 1, figsize = (8, 6))
+__ = ax.scatter(mpl.dates.datestr2num("2020-04-03"), S0, label = "S(t)")
+__ = ax.plot(t_It, Et, label = "E(t)")
+__ = ax.plot(t_It, It, label = "I(t)")
+__ = ax.scatter(mpl.dates.datestr2num("2020-04-03"), R0, label = "S(t)")
+__ = ax.plot(t_Ht, numpy.asarray(Ht), label = "H(t)")
+__ = ax.plot(t_Dt, Dt, label = "D(t)")
+__ = ax.legend()
+ax.xaxis.set_major_formatter(mpl.dates.DateFormatter("%y/%b"))
+# __ = plt.setp(ax, yscale = "log")
+
+# %%
 # Note: tedious to require existing parameter to add a value
 model_seirhd.add_parameter(parameter_id = "S0", name = "S0")
 model_seirhd.add_parameter(parameter_id = "E0", name = "E0")
@@ -593,21 +658,21 @@ model_seirhd.set_parameters(
     param_dict = {
         "b": 0.4,
         "invN": 1.0 / 19.34e6,
+        "rEI": 0.2,
         "rIR": 0.07,
         "rIH": 0.1,
-        "rEI": 0.2,
         "rHR": 0.1,
         "rHD": 0.1,
         "pIR": 0.8,
         "pIH": 0.2,
         "pHR": 0.88,
         "pHD": 0.12,
-        "S0": 19.34e6,
-        "E0": 530863,
-        "I0": 2123452,
-        "R0": 2069902,
-        "H0": 744,
-        "D0": 53550,
+        "S0": S0,
+        "E0": E0, # 530863,
+        "I0": I0, # 2123452,
+        "R0": R0, # 2069902,
+        "H0": H0, # 744,
+        "D0": D0, # 53550,
     }
 )
 
@@ -632,6 +697,29 @@ generate_init_param_tables(model_seirhd)[1]
 with open("./data/monthly_demo_202408/model_seirhd.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd)
     json.dump(j, f, indent = 4)
+
+# %%
+# Run this model
+
+start_time = 0.0
+end_time = 100.0
+logging_step_size = 1.0
+num_samples = 1
+
+results = pyciemss.sample(
+    template_model_to_petrinet_json(model_seirhd), 
+    end_time, 
+    logging_step_size, 
+    num_samples, 
+    start_time = start_time
+)
+
+# Plot results
+plot_simulate_results(results)
+
+# Note:
+# 
+
 
 # %%[markdown]
 # ### Question 1ii(1)
@@ -741,3 +829,6 @@ with open("./data/monthly_demo_202408/model_seirhd_age.json", "w") as f:
 # ### 
 
 
+
+
+# %%

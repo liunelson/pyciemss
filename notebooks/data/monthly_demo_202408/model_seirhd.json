@@ -294,32 +294,32 @@
                 {
                     "id": "S0",
                     "name": "S0",
-                    "value": 19340000.0
+                    "value": 18779479.75
                 },
                 {
                     "id": "E0",
                     "name": "E0",
-                    "value": 530863
+                    "value": 88846.25
                 },
                 {
                     "id": "I0",
                     "name": "I0",
-                    "value": 2123452
+                    "value": 355385.0
                 },
                 {
                     "id": "R0",
                     "name": "R0",
-                    "value": 2069902
+                    "value": 99821.0
                 },
                 {
                     "id": "H0",
                     "name": "H0",
-                    "value": 744
+                    "value": 12637.0
                 },
                 {
                     "id": "D0",
                     "name": "D0",
-                    "value": 53550
+                    "value": 3831.0
                 }
             ],
             "observables": [],
