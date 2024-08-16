@@ -1,0 +1,107 @@
+{
+  "id": "595e6ac5-e93f-49d4-8b31-50cf7d5aba87",
+  "createdOn": "2024-08-15T16:54:46.358+00:00",
+  "updatedOn": "2024-08-15T17:19:52.904+00:00",
+  "name": "SIR",
+  "fileNames": [],
+  "temporary": false,
+  "publicAsset": false,
+  "header": {
+    "name": "SIR",
+    "description": "This is a model from equations",
+    "schema": "https://github.com/DARPA-ASKEM/Model-Representations/blob/main/petrinet/petrinet_schema.json",
+    "schema_name": "petrinet",
+    "model_version": "0.1"
+  },
+  "model": {
+    "states": [
+      {
+        "id": "I",
+        "name": "I"
+      },
+      {
+        "id": "R",
+        "name": "R"
+      },
+      {
+        "id": "S",
+        "name": "S"
+      }
+    ],
+    "transitions": [
+      {
+        "id": "t0",
+        "input": [
+          "I"
+        ],
+        "output": [
+          "R"
+        ]
+      },
+      {
+        "id": "t1",
+        "input": [
+          "I",
+          "S"
+        ],
+        "output": [
+          "I",
+          "I"
+        ]
+      }
+    ]
+  },
+  "semantics": {
+    "ode": {
+      "rates": [
+        {
+          "target": "t0",
+          "expression": "g*I",
+          "expression_mathml": "<apply><times/><ci>g</ci><ci>I</ci></apply>"
+        },
+        {
+          "target": "t1",
+          "expression": "I*b*S",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>b</ci><ci>S</ci></apply>"
+        }
+      ],
+      "initials": [
+        {
+          "target": "R",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "I",
+          "expression": "1",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "S",
+          "expression": "100",
+          "expression_mathml": "<math></math>"
+        }
+      ],
+      "parameters": [
+        {
+          "id": "b",
+          "name": "b",
+          "value": 0.005
+        },
+        {
+          "id": "g",
+          "name": "g",
+          "value": 0.1
+        }
+      ],
+      "time": null
+    },
+    "typing": null
+  },
+  "metadata": {
+    "source": null,
+    "gollmCard": null,
+    "gollmExtractions": null,
+    "templateCard": null
+  }
+}

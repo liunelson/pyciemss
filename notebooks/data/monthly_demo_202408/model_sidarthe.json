@@ -463,269 +463,275 @@
             "parameters": [
                 {
                     "id": "beta",
+                    "name": "beta",
                     "description": "beta",
                     "value": 0.011,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.010889999999999999,
+                            "maximum": 0.01111
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    },
-                    "name": "beta"
+                    }
                 },
                 {
                     "id": "gamma",
+                    "name": "gamma",
                     "description": "gamma",
                     "value": 0.456,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.45144,
+                            "maximum": 0.46056
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    },
-                    "name": "gamma"
+                    }
                 },
                 {
                     "id": "delta",
+                    "name": "delta",
                     "description": "delta",
                     "value": 0.011,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.010889999999999999,
+                            "maximum": 0.01111
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    },
-                    "name": "delta"
+                    }
                 },
                 {
                     "id": "alpha",
+                    "name": "alpha",
                     "description": "alpha",
                     "value": 0.57,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.5642999999999999,
+                            "maximum": 0.5757
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
-                    },
-                    "name": "alpha"
+                    }
                 },
                 {
                     "id": "epsilon",
+                    "name": "epsilon",
                     "description": "epsilon",
                     "value": 0.171,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.16929000000000002,
+                            "maximum": 0.17271
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "epsilon"
+                    }
                 },
                 {
                     "id": "zeta",
+                    "name": "zeta",
                     "description": "zeta",
                     "value": 0.125,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.12375,
+                            "maximum": 0.12625
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "zeta"
+                    }
                 },
                 {
                     "id": "lambda",
+                    "name": "lambda",
                     "description": "lambda",
                     "value": 0.034,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.03366,
+                            "maximum": 0.03434
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "lambda"
+                    }
                 },
                 {
                     "id": "eta",
+                    "name": "eta",
                     "description": "eta",
                     "value": 0.125,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.12375,
+                            "maximum": 0.12625
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "eta"
+                    }
                 },
                 {
                     "id": "rho",
+                    "name": "rho",
                     "description": "rho",
                     "value": 0.034,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.03366,
+                            "maximum": 0.03434
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "rho"
+                    }
                 },
                 {
                     "id": "theta",
+                    "name": "theta",
                     "description": "theta",
                     "value": 0.371,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.36729,
+                            "maximum": 0.37471
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "theta"
+                    }
                 },
                 {
                     "id": "kappa",
+                    "name": "kappa",
                     "description": "kappa",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "kappa"
+                    }
                 },
                 {
                     "id": "mu",
+                    "name": "mu",
                     "description": "mu",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "mu"
+                    }
                 },
                 {
                     "id": "nu",
+                    "name": "nu",
                     "description": "nu",
                     "value": 0.027,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.02673,
+                            "maximum": 0.02727
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "nu"
+                    }
                 },
                 {
                     "id": "xi",
+                    "name": "xi",
                     "description": "xi",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "xi"
+                    }
                 },
                 {
                     "id": "tau",
+                    "name": "tau",
                     "description": "tau",
                     "value": 0.01,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.0099,
+                            "maximum": 0.0101
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "tau"
+                    }
                 },
                 {
                     "id": "sigma",
+                    "name": "sigma",
                     "description": "sigma",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
-                    },
-                    "name": "sigma"
-                },
-                {
-                    "id": "Event_trigger_Fig3b",
-                    "description": "Event_trigger_Fig3b",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "Event_trigger_Fig3b"
-                },
-                {
-                    "id": "Event_trigger_Fig3d",
-                    "description": "Event_trigger_Fig3d",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "Event_trigger_Fig3d"
-                },
-                {
-                    "id": "Event_trigger_Fig4b",
-                    "description": "Event_trigger_Fig4b",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "Event_trigger_Fig4b"
-                },
-                {
-                    "id": "Event_trigger_Fig4d",
-                    "description": "Event_trigger_Fig4d",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "Event_trigger_Fig4d"
-                },
-                {
-                    "id": "epsilon_modifier",
-                    "description": "epsilon_modifier",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "epsilon_modifier"
-                },
-                {
-                    "id": "alpha_modifier",
-                    "description": "alpha_modifier",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    },
-                    "name": "alpha_modifier"
-                },
-                {
-                    "id": "ModelValue_16",
-                    "description": "Initial for Event_trigger_Fig3b",
-                    "value": 0.0,
-                    "name": "ModelValue_16"
-                },
-                {
-                    "id": "ModelValue_17",
-                    "description": "Initial for Event_trigger_Fig3d",
-                    "value": 0.0,
-                    "name": "ModelValue_17"
-                },
-                {
-                    "id": "ModelValue_18",
-                    "description": "Initial for Event_trigger_Fig4b",
-                    "value": 0.0,
-                    "name": "ModelValue_18"
-                },
-                {
-                    "id": "ModelValue_19",
-                    "description": "Initial for Event_trigger_Fig4d",
-                    "value": 0.0,
-                    "name": "ModelValue_19"
-                },
-                {
-                    "id": "ModelValue_21",
-                    "description": "Initial for alpha_modifier",
-                    "value": 1.0,
-                    "name": "ModelValue_21"
-                },
-                {
-                    "id": "ModelValue_20",
-                    "description": "Initial for epsilon_modifier",
-                    "value": 1.0,
-                    "name": "ModelValue_20"
-                },
-                {
-                    "id": "Italy",
-                    "description": "Italy",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "0.001*liter",
-                        "expression_mathml": "<apply><times/><cn>0.001</cn><ci>liter</ci></apply>"
-                    },
-                    "name": "Italy"
+                    }
                 }
             ],
             "observables": [],
@@ -736,27 +742,17 @@
     },
     "metadata": {
         "annotations": {
-            "license": "CC0",
+            "license": null,
             "authors": [],
-            "references": [
-                "pubmed:32322102"
-            ],
+            "references": [],
             "time_scale": null,
             "time_start": null,
             "time_end": null,
             "locations": [],
-            "pathogens": [
-                "ncbitaxon:2697049"
-            ],
-            "diseases": [
-                "doid:0080600"
-            ],
-            "hosts": [
-                "ncbitaxon:9606"
-            ],
-            "model_types": [
-                "mamo:0000028"
-            ]
+            "pathogens": [],
+            "diseases": [],
+            "hosts": [],
+            "model_types": []
         }
     }
 }

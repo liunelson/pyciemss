@@ -510,6 +510,13 @@
                     "name": "alpha",
                     "description": "alpha",
                     "value": 0.57,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.5642999999999999,
+                            "maximum": 0.5757
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
@@ -520,6 +527,13 @@
                     "name": "beta",
                     "description": "beta",
                     "value": 0.011,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.010889999999999999,
+                            "maximum": 0.01111
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
@@ -530,6 +544,13 @@
                     "name": "delta",
                     "description": "delta",
                     "value": 0.011,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.010889999999999999,
+                            "maximum": 0.01111
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
@@ -540,6 +561,13 @@
                     "name": "epsilon",
                     "description": "epsilon",
                     "value": 0.171,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.16929000000000002,
+                            "maximum": 0.17271
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -550,6 +578,13 @@
                     "name": "eta",
                     "description": "eta",
                     "value": 0.125,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.12375,
+                            "maximum": 0.12625
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -560,6 +595,13 @@
                     "name": "gamma",
                     "description": "gamma",
                     "value": 0.456,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.45144,
+                            "maximum": 0.46056
+                        }
+                    },
                     "units": {
                         "expression": "1/(day*person)",
                         "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>day</ci><ci>person</ci></apply></apply>"
@@ -570,6 +612,13 @@
                     "name": "kappa",
                     "description": "kappa",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -580,6 +629,13 @@
                     "name": "lambda",
                     "description": "lambda",
                     "value": 0.034,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.03366,
+                            "maximum": 0.03434
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -590,6 +646,13 @@
                     "name": "mu",
                     "description": "mu",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -600,6 +663,13 @@
                     "name": "nu",
                     "description": "nu",
                     "value": 0.027,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.02673,
+                            "maximum": 0.02727
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -610,6 +680,13 @@
                     "name": "rho",
                     "description": "rho",
                     "value": 0.034,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.03366,
+                            "maximum": 0.03434
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -620,6 +697,13 @@
                     "name": "theta",
                     "description": "theta",
                     "value": 0.371,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.36729,
+                            "maximum": 0.37471
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -630,6 +714,13 @@
                     "name": "xi",
                     "description": "xi",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -640,6 +731,13 @@
                     "name": "zeta",
                     "description": "zeta",
                     "value": 0.125,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.12375,
+                            "maximum": 0.12625
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -650,6 +748,13 @@
                     "name": "tau",
                     "description": "tau",
                     "value": 0.01,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.0099,
+                            "maximum": 0.0101
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -660,6 +765,13 @@
                     "name": "sigma",
                     "description": "sigma",
                     "value": 0.017,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.01683,
+                            "maximum": 0.01717
+                        }
+                    },
                     "units": {
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
@@ -669,118 +781,26 @@
                     "id": "phi",
                     "name": "phi",
                     "description": "vaccination rate",
-                    "value": 0.0
+                    "value": 0.01,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.0099,
+                            "maximum": 0.0101
+                        }
+                    }
                 },
                 {
                     "id": "tau_1",
                     "name": "tau_1",
                     "description": "recognized death rate",
-                    "value": 0.003333333333333333
-                },
-                {
-                    "id": "Event_trigger_Fig3b",
-                    "name": "Event_trigger_Fig3b",
-                    "description": "Event_trigger_Fig3b",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "Event_trigger_Fig3d",
-                    "name": "Event_trigger_Fig3d",
-                    "description": "Event_trigger_Fig3d",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "Event_trigger_Fig4b",
-                    "name": "Event_trigger_Fig4b",
-                    "description": "Event_trigger_Fig4b",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "Event_trigger_Fig4d",
-                    "name": "Event_trigger_Fig4d",
-                    "description": "Event_trigger_Fig4d",
-                    "value": 0.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "epsilon_modifier",
-                    "name": "epsilon_modifier",
-                    "description": "epsilon_modifier",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "alpha_modifier",
-                    "name": "alpha_modifier",
-                    "description": "alpha_modifier",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "1",
-                        "expression_mathml": "<cn>1</cn>"
-                    }
-                },
-                {
-                    "id": "ModelValue_16",
-                    "name": "ModelValue_16",
-                    "description": "Initial for Event_trigger_Fig3b",
-                    "value": 0.0
-                },
-                {
-                    "id": "ModelValue_17",
-                    "name": "ModelValue_17",
-                    "description": "Initial for Event_trigger_Fig3d",
-                    "value": 0.0
-                },
-                {
-                    "id": "ModelValue_18",
-                    "name": "ModelValue_18",
-                    "description": "Initial for Event_trigger_Fig4b",
-                    "value": 0.0
-                },
-                {
-                    "id": "ModelValue_19",
-                    "name": "ModelValue_19",
-                    "description": "Initial for Event_trigger_Fig4d",
-                    "value": 0.0
-                },
-                {
-                    "id": "ModelValue_21",
-                    "name": "ModelValue_21",
-                    "description": "Initial for alpha_modifier",
-                    "value": 1.0
-                },
-                {
-                    "id": "ModelValue_20",
-                    "name": "ModelValue_20",
-                    "description": "Initial for epsilon_modifier",
-                    "value": 1.0
-                },
-                {
-                    "id": "Italy",
-                    "name": "Italy",
-                    "description": "Italy",
-                    "value": 1.0,
-                    "units": {
-                        "expression": "0.001*liter",
-                        "expression_mathml": "<apply><times/><cn>0.001</cn><ci>liter</ci></apply>"
+                    "value": 0.003333333333333333,
+                    "distribution": {
+                        "type": "StandardUniform1",
+                        "parameters": {
+                            "minimum": 0.0033,
+                            "maximum": 0.0033666666666666662
+                        }
                     }
                 }
             ],

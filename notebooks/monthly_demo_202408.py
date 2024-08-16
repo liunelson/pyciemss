@@ -146,7 +146,7 @@ def plot_simulate_results(results: dict) -> None:
 
     return None
 
-# Temporary walkaround for adding missing names/display_names in AMR
+# Workaround for adding missing names/display_names in AMR
 def add_missing_parameter_names(amr: dict) -> dict:
 
     for param in amr["semantics"]["ode"]["parameters"]:
@@ -155,6 +155,31 @@ def add_missing_parameter_names(amr: dict) -> dict:
 
     return amr
 
+# Workaround for adding distributions to parameters
+def add_missing_distributions(amr: dict) -> dict:
+
+    for param in amr["semantics"]["ode"]["parameters"]:
+        if ("value" in param.keys()):
+
+            d = param["value"] * 0.01
+            if numpy.abs(param["value"]) == 0.0:
+                d = 0.01
+                min = param["value"]
+                max = param["value"] + d
+            else:
+                min = param["value"] - d
+                max = param["value"] + d
+            
+
+            param["distribution"] = {
+                "type": "StandardUniform1",
+                "parameters": {
+                    "minimum": min,
+                    "maximum": max
+                }
+            }
+
+    return amr
 
 # %%[markdown]
 # ## Problem 1
@@ -173,12 +198,16 @@ def add_missing_parameter_names(amr: dict) -> dict:
 
 model_sidarthe = biomodels.get_template_model("BIOMD0000000955")
 model_sidarthe = mira.metamodel.ops.simplify_rate_laws(model_sidarthe)
+model_sidarthe.eliminate_unused_parameters()
+
+# workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)))
+model_sidarthe = template_model_from_amr_json(amr)
 
 # %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_sidarthe.json", "w") as f:
     j = template_model_to_petrinet_json(model_sidarthe)
-    j = add_missing_parameter_names(j) # workaround
     json.dump(j, f, indent = 4)
 
 # %%
@@ -219,7 +248,6 @@ model_sidarthe.annotations.name = "SIDARTHE model with observables"
 # Save as AMR
 with open("./data/monthly_demo_202408/model_sidarthe_with_observable.json", "w") as f:
     j = template_model_to_petrinet_json(model_sidarthe)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%
@@ -282,7 +310,7 @@ assert model_sidarthe.parameters["sigma"].value == pytest.approx(0.017)
 start_time = 0.0
 end_time = 100.0
 logging_step_size = 1.0
-num_samples = 1
+num_samples = 10
 
 results = pyciemss.sample(
     add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
@@ -373,7 +401,6 @@ print(f"`TotalInfected` reaches a max of {results["data"]["TotalInfected_observa
 # Strange that R0 looks constant at its last value (i.e. R0(t = 100) ~ 0.85) for all timepoints
 # It should change from 2.38, 1.66, 1.80, 1.60, 0.99, then 0.85
 
-
 # %%[markdown]
 # ### Question 1d
 # 
@@ -444,7 +471,7 @@ model_sidarthev = model_sidarthe.add_template(
 
 # Add new parameter `phi`
 model_sidarthev.add_parameter(
-    "phi", "phi", "vaccination rate", 0.0
+    "phi", "phi", "vaccination rate", 0.01
 )
 
 # Specify rate law of the new template using `phi`
@@ -470,12 +497,15 @@ model_sidarthev.templates[-1].set_mass_action_rate_law("tau_1")
 # Rename the `tau` parameter to `tau2`
 from mira.modeling.amr.ops import replace_parameter_id
 j = template_model_to_petrinet_json(model_sidarthev)
-j = add_missing_parameter_names(j)
 model_sidarthev = template_model_from_amr_json(replace_parameter_id(j, "tau", "tau_2"))
 
 # Rename the model
 model_sidarthev.annotations.name = "SIDARTHE-V model"
 model_sidarthev.annotations.description = "Edit of the SIDARTHE model from Giodano 2020 to include vaccination."
+
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthev)))
+model_sidarthev = template_model_from_amr_json(amr)
 
 generate_summary_table(model_sidarthev)
 
@@ -486,7 +516,6 @@ GraphicalModel.for_jupyter(model_sidarthev)
 # Save as AMR
 with open("./data/monthly_demo_202408/model_sidarthev.json", "w") as f:
     j = template_model_to_petrinet_json(model_sidarthev)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -520,7 +549,6 @@ tmd = TemplateModelDelta(model_sidarthe, model_sidarthev, refinement_function = 
 # Construct the SEIRHD model by editing the SIDARTHE model?
 
 amr = template_model_to_petrinet_json(model_sidarthe)
-amr = add_missing_parameter_names(amr)
 
 # Remove observables
 amr = remove_observable(amr, "R0")
@@ -538,6 +566,11 @@ amr = replace_state_id(amr, "Diagnosed", "I")
 amr = replace_state_id(amr, "Healed", "R")
 amr = replace_state_id(amr, "Threatened", "H")
 amr = replace_state_id(amr, "Extinct", "D")
+
+# Change names
+id_name_map = {id: name for id, name in zip(list("SEIRHD"), ["Susceptible", "Exposed", "Infected", "Recovered", "Hospitalized", "Deceased"])}
+for i, state in enumerate(amr["model"]["states"]):
+    amr["model"]["states"][i]["name"] = id_name_map[state["id"]]
 
 # Remove S -> E controlled by E (template/transition with name "t4")
 amr = remove_transition(amr, "t4")
@@ -584,6 +617,10 @@ model_seirhd = copy.deepcopy(tm)
 # Rename the model
 model_seirhd.annotations.name = "SEIRHD model"
 model_seirhd.annotations.description = "Edit of the SIDARTHE model from Giodano 2020."
+
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd)))
+model_seirhd = template_model_from_amr_json(amr)
 
 # %%
 GraphicalModel.for_jupyter(model_seirhd)
@@ -702,6 +739,11 @@ model_seirhd.set_initials(
     }
 )
 
+# %%
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd)))
+model_seirhd = template_model_from_amr_json(amr)
+
 generate_init_param_tables(model_seirhd)[0]
 
 # %%
@@ -711,7 +753,6 @@ generate_init_param_tables(model_seirhd)[1]
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%
@@ -720,7 +761,7 @@ with open("./data/monthly_demo_202408/model_seirhd.json", "w") as f:
 start_time = 0.0
 end_time = 100.0
 logging_step_size = 1.0
-num_samples = 1
+num_samples = 5
 
 results = pyciemss.sample(
     add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd)), 
@@ -762,10 +803,14 @@ model_seirhd_mod.annotations.description = "Edit of the SIDARTHE model from Giod
 generate_odesys(model_seirhd_mod)
 
 # %%
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd_mod)))
+model_seirhd_mod = template_model_from_amr_json(amr)
+
+# %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_mod.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_mod)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -802,10 +847,15 @@ model_seirhd_mod_mask.annotations.name = "SEIRHD model (modified beta, stratifie
 model_seirhd_mod_mask.annotations.description = "Edit of the SIDARTHE model from Giodano 2020 with beta modified per Srivastava 2021 and stratified by masking compliance."
 
 # %%
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd_mod_mask)))
+model_seirhd_mod_mask = template_model_from_amr_json(amr)
+
+
+# %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_mod_mask.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_mod_mask)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
@@ -814,12 +864,8 @@ with open("./data/monthly_demo_202408/model_seirhd_mod_mask.json", "w") as f:
 # Stratify instead by 18 age groups
 
 # %%
-amr = template_model_to_petrinet_json(model_seirhd)
-amr = add_missing_parameter_names(amr)
-tm = template_model_from_amr_json(amr)
-
 model_seirhd_age = mira.metamodel.stratify(
-    tm,
+    copy.deepcopy(model_seirhd),
     key = "age",
     strata = [f"{i}" for i in range(18)],
     structure = [],
@@ -832,12 +878,15 @@ model_seirhd_age = mira.metamodel.stratify(
 model_seirhd_age.annotations.name = "SEIRHD model (stratified by age)"
 model_seirhd_age.annotations.description = "Edit of the SIDARTHE model from Giodano 2020, stratified by 18 age groups."
 
+# %%
+# Workaround
+amr = add_missing_distributions(add_missing_parameter_names(template_model_to_petrinet_json(model_seirhd_age)))
+model_seirhd_age = template_model_from_amr_json(amr)
 
 # %%
 # Save as AMR
 with open("./data/monthly_demo_202408/model_seirhd_age.json", "w") as f:
     j = template_model_to_petrinet_json(model_seirhd_age)
-    j = add_missing_parameter_names(j)
     json.dump(j, f, indent = 4)
 
 # %%[markdown]
