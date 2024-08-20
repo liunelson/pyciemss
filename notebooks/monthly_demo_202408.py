@@ -313,7 +313,7 @@ logging_step_size = 1.0
 num_samples = 10
 
 results = pyciemss.sample(
-    add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
+    template_model_to_petrinet_json(model_sidarthe), 
     end_time, 
     logging_step_size, 
     num_samples, 
@@ -336,7 +336,7 @@ print(f"`TotalInfected` reaches a max of {results["data"]["TotalInfected_observa
 # After day 12, we set ε=0.143
 # After day 22, α=0.360, β=δ=0.005 and γ=0.200; also, ζ=η=0.034, μ=0.008, ν=0.015, λ=0.08, ρ=κ=ξ=σ=0.017
 # After day 28, α=0.210 γ=0.110
-# After day 38, ε=0.200, ρ=κ=ξ=0.020, σ=0.010 and ζ=η=0.025
+# After day 38, ε=0.200, ρ=κ= ξ=0.020, σ=0.010 and ζ=η=0.025
 
 static_parameter_interventions = {
     torch.tensor(4.0): {
@@ -381,7 +381,7 @@ static_parameter_interventions = {
 # %%
 # Simulate with interventions
 results = pyciemss.sample(
-    add_missing_parameter_names(template_model_to_petrinet_json(model_sidarthe)), 
+    template_model_to_petrinet_json(model_sidarthe), 
     end_time, 
     logging_step_size, 
     num_samples, 
@@ -641,34 +641,40 @@ df_cases_cum = pandas.read_csv("./data/monthly_demo_202408/covid_confirmed_usafa
 
 t_It = [mpl.dates.datestr2num(s) for s in df_cases_cum.columns[4:]][1:]
 
-# Infectious period ~12 days
 i = numpy.argwhere(df_cases_cum.columns == "2020-03-23")[0][0]
 j = numpy.argwhere(df_cases_cum.columns == "2020-04-03")[0][0] + 1
 
 # Estimate derivative (incident rate, i.e. new cases per day)
-y = numpy.asarray(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 5:]) - numpy.asarray(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:-1])
-It = y.sum(axis = 0)
-I0 = float(y[(i - 5):(j-5)].sum())
+ny_data_cum = df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:]
+ny_data_new = ny_data_cum.diff(axis = 1)
+ny_data_new_state = ny_data_new.sum(axis = 0)
+It = ny_data_new_state
+
+# Infectious period ~10-12 days
+i = numpy.argwhere(ny_data_new.columns == "2020-03-23")[0][0]
+j = numpy.argwhere(ny_data_new.columns == "2020-04-03")[0][0] + 1
+
+# Add up all daily cases within infection period to get the I(t = 0)
+I0 = ny_data_new_state.iloc[i:j].sum()
 
 Et = It * 0.25
 E0 = I0 * 0.25
 
 df_deaths_cum = pandas.read_csv("./data/monthly_demo_202408/covid_deaths_usafacts.csv")
-y = numpy.asarray(df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 5:]) - numpy.asarray(df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:-1])
-Dt = y.sum(axis = 0)
-D0 = float(Dt[:(j-5)].sum())
+ny_data_cum = df_deaths_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:]
+ny_data_new = ny_data_cum.diff(axis = 1)
+ny_data_new_state = ny_data_new.sum(axis = 0)
+Dt = ny_data_new_state
+D0 = ny_data_new_state.iloc[i:j].sum()
 
 t_Dt = [mpl.dates.datestr2num(s) for s in df_deaths_cum.columns[4:]][1:]
 
 # Assumption
 # R0 = cumulative_infections - cumulative_deaths at timepoint 2020-04-03
-x = df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).index
-i = numpy.argwhere(numpy.asarray(x) == "2020-04-03")[0][0]
-
-x = df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).index
-j = numpy.argwhere(numpy.asarray(x) == "2020-04-03")[0][0]
-
-R0 = float(df_cases_cum[df_cases_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).iloc[i] - df_deaths_cum[df_deaths_cum["State"] == "NY"].iloc[:, 4:].sum(axis = 0).iloc[j])
+i = numpy.argwhere(df_cases_cum.columns == "2020-04-03")[0][0]
+ny_state_cum_infections = df_cases_cum[(df_cases_cum["State"] == "NY")].sum(axis = 0).iloc[i]
+ny_state_cum_deaths = df_deaths_cum[(df_deaths_cum["State"] == "NY")].sum(axis = 0).iloc[i]
+R0 = float(ny_state_cum_infections - ny_state_cum_deaths)
 
 # %%
 df_hosp = pandas.read_csv("./data/monthly_demo_202408/COVID-19_Reported_Patient_Impact_and_Hospital_Capacity_by_State_Timeseries__RAW__20240814.csv")
