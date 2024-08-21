@@ -486,7 +486,7 @@ model_sidarthev = model_sidarthev.add_template(
     )
 )
 
-# Add new parameter `tau1`
+# Add new parameter `tau_1`
 model_sidarthev.add_parameter(
     "tau_1", "tau_1", "recognized death rate", (1.0 / 3.0) * model_sidarthe.parameters["tau"].value
 )
@@ -494,10 +494,20 @@ model_sidarthev.add_parameter(
 # Specify rate law of the new template using `phi`
 model_sidarthev.templates[-1].set_mass_action_rate_law("tau_1")
 
-# Rename the `tau` parameter to `tau2`
+# Rename the `tau` parameter to `tau_2`
 from mira.modeling.amr.ops import replace_parameter_id
 j = template_model_to_petrinet_json(model_sidarthev)
 model_sidarthev = template_model_from_amr_json(replace_parameter_id(j, "tau", "tau_2"))
+
+# Update the formula for `R0` observable
+model_sidarthev.observables["R0"] = mira.metamodel.template_model.Observable(
+    name = "R0", 
+    expression = sympy.Symbol("alpha") / (sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda"))
+        + (sympy.Symbol("beta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho"))) 
+        + (sympy.Symbol("gamma") * sympy.Symbol("zeta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa"))) 
+        + (sympy.Symbol("delta") * sympy.Symbol("eta") * sympy.Symbol("epsilon")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("eta") + sympy.Symbol("rho")) * (sympy.Symbol("nu") + sympy.Symbol("xi") + sympy.Symbol("tau_1"))) 
+        + (sympy.Symbol("delta") * sympy.Symbol("zeta") * sympy.Symbol("theta")) / ((sympy.Symbol("epsilon") + sympy.Symbol("eta") + sympy.Symbol("lambda")) * (sympy.Symbol("theta") + sympy.Symbol("mu") + sympy.Symbol("kappa")) * (sympy.Symbol("nu") + sympy.Symbol("xi") + sympy.Symbol("tau_1")))
+)
 
 # Rename the model
 model_sidarthev.annotations.name = "SIDARTHE-V model"

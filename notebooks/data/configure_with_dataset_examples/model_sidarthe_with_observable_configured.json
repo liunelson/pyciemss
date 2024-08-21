@@ -1,9 +1,9 @@
 {
     "header": {
-        "name": "SIDARTHE-V model",
+        "name": "SIDARTHE model with observables",
         "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
         "schema_name": "petrinet",
-        "description": "Edit of the SIDARTHE model from Giodano 2020 to include vaccination.",
+        "description": "Giordano2020 - SIDARTHE model of COVID-19 spread in Italy",
         "model_version": "0.1"
     },
     "properties": {},
@@ -128,16 +128,6 @@
                 "units": {
                     "expression": "person",
                     "expression_mathml": "<ci>person</ci>"
-                }
-            },
-            {
-                "id": "vaccinated",
-                "name": "vaccinated",
-                "grounding": {
-                    "identifiers": {
-                        "vo": "0001376"
-                    },
-                    "modifiers": {}
                 }
             }
         ],
@@ -341,30 +331,6 @@
                 "properties": {
                     "name": "t16"
                 }
-            },
-            {
-                "id": "VaccinationProcess",
-                "input": [
-                    "Susceptible"
-                ],
-                "output": [
-                    "vaccinated"
-                ],
-                "properties": {
-                    "name": "VaccinationProcess"
-                }
-            },
-            {
-                "id": "RecognizedDeathProcess",
-                "input": [
-                    "Recognized"
-                ],
-                "output": [
-                    "Extinct"
-                ],
-                "properties": {
-                    "name": "RecognizedDeathProcess"
-                }
             }
         ]
     },
@@ -443,23 +409,13 @@
                 },
                 {
                     "target": "t15",
-                    "expression": "Threatened*tau_2",
-                    "expression_mathml": "<apply><times/><ci>Threatened</ci><ci>tau_2</ci></apply>"
+                    "expression": "Threatened*tau",
+                    "expression_mathml": "<apply><times/><ci>Threatened</ci><ci>tau</ci></apply>"
                 },
                 {
                     "target": "t16",
                     "expression": "Threatened*sigma",
                     "expression_mathml": "<apply><times/><ci>Threatened</ci><ci>sigma</ci></apply>"
-                },
-                {
-                    "target": "VaccinationProcess",
-                    "expression": "Susceptible*phi",
-                    "expression_mathml": "<apply><times/><ci>Susceptible</ci><ci>phi</ci></apply>"
-                },
-                {
-                    "target": "RecognizedDeathProcess",
-                    "expression": "Recognized*tau_1",
-                    "expression_mathml": "<apply><times/><ci>Recognized</ci><ci>tau_1</ci></apply>"
                 }
             ],
             "initials": [
@@ -693,19 +649,6 @@
                     }
                 },
                 {
-                    "id": "tau_1",
-                    "name": "tau_1",
-                    "description": "recognized death rate",
-                    "value": 0.003333333333333333,
-                    "distribution": {
-                        "type": "StandardUniform1",
-                        "parameters": {
-                            "minimum": 0.0033,
-                            "maximum": 0.0033666666666666662
-                        }
-                    }
-                },
-                {
                     "id": "theta",
                     "name": "theta",
                     "description": "theta",
@@ -757,7 +700,7 @@
                     }
                 },
                 {
-                    "id": "tau_2",
+                    "id": "tau",
                     "name": "tau",
                     "description": "tau",
                     "value": 0.01,
@@ -789,19 +732,6 @@
                         "expression": "1/day",
                         "expression_mathml": "<apply><power/><ci>day</ci><cn>-1</cn></apply>"
                     }
-                },
-                {
-                    "id": "phi",
-                    "name": "phi",
-                    "description": "vaccination rate",
-                    "value": 0.01,
-                    "distribution": {
-                        "type": "StandardUniform1",
-                        "parameters": {
-                            "minimum": 0.0099,
-                            "maximum": 0.0101
-                        }
-                    }
                 }
             ],
             "observables": [
@@ -814,8 +744,8 @@
                 {
                     "id": "R0",
                     "name": "R0",
-                    "expression": "alpha/(epsilon + eta + lambda) + beta*epsilon/((eta + rho)*(epsilon + eta + lambda)) + delta*epsilon*eta/((eta + rho)*(epsilon + eta + lambda)*(nu + tau_1 + xi)) + delta*theta*zeta/((epsilon + eta + lambda)*(kappa + mu + theta)*(nu + tau_1 + xi)) + gamma*zeta/((epsilon + eta + lambda)*(kappa + mu + theta))",
-                    "expression_mathml": "<apply><plus/><apply><divide/><ci>alpha</ci><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply></apply><apply><divide/><apply><times/><ci>beta</ci><ci>epsilon</ci></apply><apply><times/><apply><plus/><ci>eta</ci><ci>rho</ci></apply><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply></apply></apply><apply><divide/><apply><times/><ci>delta</ci><ci>epsilon</ci><ci>eta</ci></apply><apply><times/><apply><plus/><ci>eta</ci><ci>rho</ci></apply><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply><apply><plus/><ci>nu</ci><ci>tau_1</ci><ci>xi</ci></apply></apply></apply><apply><divide/><apply><times/><ci>delta</ci><ci>theta</ci><ci>zeta</ci></apply><apply><times/><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply><apply><plus/><ci>kappa</ci><ci>mu</ci><ci>theta</ci></apply><apply><plus/><ci>nu</ci><ci>tau_1</ci><ci>xi</ci></apply></apply></apply><apply><divide/><apply><times/><ci>gamma</ci><ci>zeta</ci></apply><apply><times/><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply><apply><plus/><ci>kappa</ci><ci>mu</ci><ci>theta</ci></apply></apply></apply></apply>"
+                    "expression": "alpha/(epsilon + eta + lambda) + beta*epsilon/((eta + rho)*(epsilon + eta + lambda)) + delta*epsilon*eta/((eta + rho)*(nu + xi)*(epsilon + eta + lambda)) + delta*theta*zeta/((nu + xi)*(epsilon + eta + lambda)*(kappa + mu + theta)) + gamma*zeta/((epsilon + eta + lambda)*(kappa + mu + theta))",
+                    "expression_mathml": "<apply><plus/><apply><divide/><ci>alpha</ci><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply></apply><apply><divide/><apply><times/><ci>beta</ci><ci>epsilon</ci></apply><apply><times/><apply><plus/><ci>eta</ci><ci>rho</ci></apply><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply></apply></apply><apply><divide/><apply><times/><ci>delta</ci><ci>epsilon</ci><ci>eta</ci></apply><apply><times/><apply><plus/><ci>eta</ci><ci>rho</ci></apply><apply><plus/><ci>nu</ci><ci>xi</ci></apply><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply></apply></apply><apply><divide/><apply><times/><ci>delta</ci><ci>theta</ci><ci>zeta</ci></apply><apply><times/><apply><plus/><ci>nu</ci><ci>xi</ci></apply><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply><apply><plus/><ci>kappa</ci><ci>mu</ci><ci>theta</ci></apply></apply></apply><apply><divide/><apply><times/><ci>gamma</ci><ci>zeta</ci></apply><apply><times/><apply><plus/><ci>epsilon</ci><ci>eta</ci><ci>lambda</ci></apply><apply><plus/><ci>kappa</ci><ci>mu</ci><ci>theta</ci></apply></apply></apply></apply>"
                 }
             ],
             "time": {

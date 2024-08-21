@@ -421,28 +421,28 @@
             "initials": [
                 {
                     "target": "Susceptible",
-                    "expression": "0.9999963",
-                    "expression_mathml": "<cn>0.99999629999999995</cn>"
+                    "expression": "0.0",
+                    "expression_mathml": "<cn>0.0</cn>"
                 },
                 {
                     "target": "Diagnosed",
-                    "expression": "3.33333333e-7",
-                    "expression_mathml": "<cn>3.33333333e-7</cn>"
+                    "expression": "0.0",
+                    "expression_mathml": "<cn>0.0</cn>"
                 },
                 {
                     "target": "Infected",
-                    "expression": "3.33333333e-6",
-                    "expression_mathml": "<cn>3.3333333299999999e-6</cn>"
+                    "expression": "0.0",
+                    "expression_mathml": "<cn>0.0</cn>"
                 },
                 {
                     "target": "Ailing",
-                    "expression": "1.66666666e-8",
-                    "expression_mathml": "<cn>1.6666666599999999e-8</cn>"
+                    "expression": "0.0",
+                    "expression_mathml": "<cn>0.0</cn>"
                 },
                 {
                     "target": "Recognized",
-                    "expression": "3.33333333e-8",
-                    "expression_mathml": "<cn>3.33333333e-8</cn>"
+                    "expression": "0.0",
+                    "expression_mathml": "<cn>0.0</cn>"
                 },
                 {
                     "target": "Healed",
