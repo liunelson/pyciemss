@@ -406,36 +406,36 @@
                 {
                     "id": "S0",
                     "name": "S0",
-                    "value": 18779479.75,
+                    "value": 19114075.0,
                     "distribution": {
                         "type": "StandardUniform1",
                         "parameters": {
-                            "minimum": 18591684.9525,
-                            "maximum": 18967274.5475
+                            "minimum": 18922934.25,
+                            "maximum": 19305215.75
                         }
                     }
                 },
                 {
                     "id": "E0",
                     "name": "E0",
-                    "value": 88846.25,
+                    "value": 21955.0,
                     "distribution": {
                         "type": "StandardUniform1",
                         "parameters": {
-                            "minimum": 87957.7875,
-                            "maximum": 89734.7125
+                            "minimum": 21735.45,
+                            "maximum": 22174.55
                         }
                     }
                 },
                 {
                     "id": "I0",
                     "name": "I0",
-                    "value": 355385.0,
+                    "value": 87820.0,
                     "distribution": {
                         "type": "StandardUniform1",
                         "parameters": {
-                            "minimum": 351831.15,
-                            "maximum": 358938.85
+                            "minimum": 86941.8,
+                            "maximum": 88698.2
                         }
                     }
                 },
@@ -466,12 +466,12 @@
                 {
                     "id": "D0",
                     "name": "D0",
-                    "value": 3831.0,
+                    "value": 3692.0,
                     "distribution": {
                         "type": "StandardUniform1",
                         "parameters": {
-                            "minimum": 3792.69,
-                            "maximum": 3869.31
+                            "minimum": 3655.08,
+                            "maximum": 3728.92
                         }
                     }
                 }

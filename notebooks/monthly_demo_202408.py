@@ -34,20 +34,20 @@ from pyciemss.integration_utils.intervention_builder import (
 )
 from pyciemss.ouu.qoi import obs_max_qoi
 
-
 import mira
 from mira.sources import biomodels
 from mira.modeling.viz import GraphicalModel
 from mira.modeling.amr.petrinet import template_model_to_petrinet_json
 from mira.sources.amr.petrinet import template_model_from_amr_json
-# from mira.metamodel import *
+from mira.dkg.web_client import is_ontological_child_web
+from mira.metamodel import *
 # from mira.modeling import Model
 
 from mira.modeling.amr.ops import *
 from mira.metamodel.io import expression_to_mathml
 
 
-os.environ["MIRA_REST_URL"] = "http://34.230.33.149:8771/api"
+MIRA_REST_URL = "http://34.230.33.149:8771/api"
 
 # %%
 # Helper functions
@@ -466,7 +466,13 @@ model_sidarthev = model_sidarthe.add_template(
         subject = model_sidarthe.get_concepts_by_name("Susceptible")[0],
         outcome = vaccinated,
         name = "VaccinationProcess"
-    )
+    ),
+    parameter_mapping = {
+        "V0": Parameter(name = "V0", value = 0.0, display_name = "V0", description = "Initial value of V")
+    }
+    initial_mapping = {
+        vaccinated.name: Initial(concept = vaccinated, expression = sympy.Symbol("V0"))
+    }
 )
 
 # Add new parameter `phi`
@@ -532,12 +538,14 @@ with open("./data/monthly_demo_202408/model_sidarthev.json", "w") as f:
 # ### Compare SIDARTHE and SIDARTHE-V
 
 # %%
-from mira.dkg.web_client import is_ontological_child_web
-from mira.metamodel import TemplateModelDelta
-
-tmd = TemplateModelDelta(model_sidarthe, model_sidarthev, refinement_function = is_ontological_child_web)
-
-# Show plot...
+TemplateModelDelta.for_jupyter(
+    model_sidarthe, 
+    model_sidarthev, 
+    refinement_function = is_ontological_child_web,
+    tag1_color = "tab:blue",
+    tag2_color = "tab:green",
+    merge_color = "tab:orange",
+)
 
 # %%[markdown]
 # ### Question 2bi
@@ -660,6 +668,9 @@ ny_data_new = ny_data_cum.diff(axis = 1)
 ny_data_new_state = ny_data_new.sum(axis = 0)
 It = ny_data_new_state
 
+t_It = [mpl.dates.datestr2num(t) for t in It.index]
+
+
 # Infectious period ~10-12 days
 i = numpy.argwhere(ny_data_new.columns == "2020-03-23")[0][0]
 j = numpy.argwhere(ny_data_new.columns == "2020-04-03")[0][0] + 1
@@ -677,7 +688,7 @@ ny_data_new_state = ny_data_new.sum(axis = 0)
 Dt = ny_data_new_state
 D0 = ny_data_new_state.iloc[i:j].sum()
 
-t_Dt = [mpl.dates.datestr2num(s) for s in df_deaths_cum.columns[4:]][1:]
+t_Dt = [mpl.dates.datestr2num(t) for t in Dt.index]
 
 # Assumption
 # R0 = cumulative_infections - cumulative_deaths at timepoint 2020-04-03
@@ -789,10 +800,6 @@ results = pyciemss.sample(
 
 # Plot results
 plot_simulate_results(results)
-
-# Note:
-# 
-
 
 # %%[markdown]
 # ### Question 1ii(1)
@@ -910,9 +917,94 @@ with open("./data/monthly_demo_202408/model_seirhd_age.json", "w") as f:
 # 
 # 12-month evaluation, scenario 2
 # 
-# ### 
-
-
-
+# ### Question 1
+# 
+# 1. Start from the base SEIRHD model from Scenario 1
+# 2. Stratify all states and only beta by vaccination status (vaccinated, unvaccinated)
+# 3. Stratify only the vaccinated states and only beta by vaccine used (pfizer, moderna, jj)
+# 4. Stratify the mRNA-vaccinated states and beta by the number of doses (1, 2)
+# 5. Remove all 0-2 dose transitions
+# 
+# Edit the exposure transition rate laws associated to include an extra masking factor to beta
 
 # %%
+# Add a masking-effect factor `m` to the exposure process (S -> E controlled by I)
+model_seirhd_mask = copy.deepcopy(model_seirhd)
+model_seirhd_mask.add_parameter(
+    "m", "m", "Masking effect on the disease exposure process (0 = none, 1 = complete)", 0.0
+)
+
+# Find the exposure transition
+id = [template.name for template in model_seirhd_mask.templates if (template.subject.name == "S") & (template.outcome.name == "E")][0]
+
+# Change its rate law
+amr = template_model_to_petrinet_json(model_seirhd_mask)
+amr = replace_rate_law_sympy(amr, id, (1 - sympy.Symbol("m")) * sympy.Symbol("b") * sympy.Symbol("invN") * sympy.Symbol("S") * sympy.Symbol("I"))
+model_seirhd_mask = template_model_from_amr_json(amr)
+
+# Check
+generate_summary_table(model_seirhd_mask)
+
+# %%
+# Stratify by vaccination status
+# * only unvaccinated -> vaccinated is permitted
+# * only the infection rate `beta` and masking effect `m`
+
+
+# model_seirhd_mask_vacc = mira.metamodel.stratify(
+#     model_seirhd_mask,
+#     key = "vaccination",
+#     strata = ["unvaccinated", "vaccinated"],
+#     structure = [["unvaccinated", "vaccinated"]],
+#     directed = True,
+#     cartesian_control = True,
+#     params_to_stratify = {"b", "m"},
+#     param_renaming_uses_strata_names = True
+# )
+
+response = requests.post(MIRA_REST_URL + "/stratify", 
+    json = {
+        "template_model": json.loads(model_seirhd_mask.json()),
+        "key": "vaccination",
+        "strata": ["unvaccinated", "vaccinated"],
+        "structure": [["unvaccinated", "vaccinated"]],
+        "directed": True,
+        "cartesian_control": True,
+        "params_to_stratify": ["b", "m"],
+        "param_renaming_uses_strata_names": True
+    }
+)
+model_seirhd_mask_vacc = TemplateModel.from_json(response.json())
+
+GraphicalModel.for_jupyter(model_seirhd_mask_vacc)
+
+# %%
+generate_summary_table(model_seirhd_mask_vacc)
+
+# %%
+# Stratify by vaccine used
+# * only vaccinated pops
+# * only infection rates
+
+concepts_to_stratify = {c.name for c in model_seirhd_mask_vacc.get_concepts_name_map().values() if c.name.endswith("_vaccinated")}
+params_to_stratify = {p for p in model_seirhd_mask_vacc.parameters if p.startswith("b_")}
+
+model_seirhd_mask_vacc2 = mira.metamodel.stratify(
+    model_seirhd_mask_vacc,
+    key = "vaccine",
+    strata = ["pfizer", "moderna", "jj"],
+    structure = [],
+    directed = True,
+    cartesian_control = True,
+    concepts_to_stratify = concepts_to_stratify,
+    params_to_stratify = params_to_stratify,
+    param_renaming_uses_strata_names = True
+)
+
+GraphicalModel.for_jupyter(model_seirhd_mask_vacc2)
+
+# %%
+generate_summary_table(model_seirhd_mask_vacc2)
+
+# %%
+

@@ -1,0 +1,25 @@
+age_strata, 0to9, 10to19, 20above
+S_unvaccinated_0to9,0.43,0.14,0.43
+S_unvaccinated_10to19,0.11,0.49,0.4
+S_unvaccinated_20above,0.08,0.1,0.82
+S_vaccinated_jj_0to9,0.43,0.14,0.43
+S_vaccinated_jj_10to19,0.11,0.49,0.4
+S_vaccinated_jj_20above,0.08,0.1,0.82
+S_vaccinated_moderna_diff_0to9,0.43,0.14,0.43
+S_vaccinated_moderna_diff_10to19,0.11,0.49,0.4
+S_vaccinated_moderna_diff_20above,0.08,0.1,0.82
+S_vaccinated_moderna_one_0to9,0.43,0.14,0.43
+S_vaccinated_moderna_one_10to19,0.11,0.49,0.4
+S_vaccinated_moderna_one_20above,0.08,0.1,0.82
+S_vaccinated_moderna_two_0to9,0.43,0.14,0.43
+S_vaccinated_moderna_two_10to19,0.11,0.49,0.4
+S_vaccinated_moderna_two_20above,0.08,0.1,0.82
+S_vaccinated_pfizer_diff_0to9,0.43,0.14,0.43
+S_vaccinated_pfizer_diff_10to19,0.11,0.49,0.4
+S_vaccinated_pfizer_diff_20above,0.08,0.1,0.82
+S_vaccinated_pfizer_one_0to9,0.43,0.14,0.43
+S_vaccinated_pfizer_one_10to19,0.11,0.49,0.4
+S_vaccinated_pfizer_one_20above,0.08,0.1,0.82
+S_vaccinated_pfizer_two_0to9,0.43,0.14,0.43
+S_vaccinated_pfizer_two_10to19,0.11,0.49,0.4
+S_vaccinated_pfizer_two_20above,0.08,0.1,0.82
