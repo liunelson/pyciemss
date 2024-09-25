@@ -1,0 +1,395 @@
+{
+  "id": "74a3dfc9-fc19-4499-96a4-7d4da18bb55c",
+  "createdOn": "2024-09-16T21:28:32.448+00:00",
+  "updatedOn": "2024-09-16T21:44:30.360+00:00",
+  "name": "SIRHD",
+  "fileNames": [],
+  "temporary": false,
+  "publicAsset": true,
+  "header": {
+    "name": "SIRHD",
+    "description": "This is a model from equations",
+    "schema": "https://github.com/DARPA-ASKEM/Model-Representations/blob/main/petrinet/petrinet_schema.json",
+    "schema_name": "petrinet",
+    "model_version": "0.1"
+  },
+  "model": {
+    "states": [
+      {
+        "id": "D",
+        "name": "D",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C168970"
+          },
+          "modifiers": {}
+        },
+        "description": "Deceased population",
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "H",
+        "name": "H",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C25179"
+          },
+          "modifiers": {}
+        },
+        "description": "Hospitalized population",
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "I",
+        "name": "I",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000511"
+          },
+          "modifiers": {}
+        },
+        "description": "Infected population",
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "R",
+        "name": "R",
+        "grounding": {
+          "identifiers": {
+            "apollosv": "00000163"
+          },
+          "modifiers": {}
+        },
+        "description": "Recovered population",
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "S",
+        "name": "S",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000514"
+          },
+          "modifiers": {}
+        },
+        "description": "Susceptible population",
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      }
+    ],
+    "transitions": [
+      {
+        "id": "t0",
+        "input": [
+          "I",
+          "S"
+        ],
+        "output": [
+          "I",
+          "I"
+        ],
+        "name": "Infection",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C171133"
+          },
+          "modifiers": {}
+        }
+      },
+      {
+        "id": "t1",
+        "input": [
+          "I"
+        ],
+        "output": [
+          "R"
+        ],
+        "name": "Recovery",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C25746"
+          },
+          "modifiers": {}
+        }
+      },
+      {
+        "id": "t2",
+        "input": [
+          "H"
+        ],
+        "output": [
+          "R"
+        ],
+        "name": "HospitalizedRecovery",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C25746"
+          },
+          "modifiers": {}
+        }
+      },
+      {
+        "id": "t3",
+        "input": [
+          "I"
+        ],
+        "output": [
+          "H"
+        ],
+        "name": "Hospitalization",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C25179"
+          },
+          "modifiers": {}
+        }
+      },
+      {
+        "id": "t4",
+        "input": [
+          "H"
+        ],
+        "output": [
+          "D"
+        ],
+        "name": "HospitalizedDeath",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C168970"
+          },
+          "modifiers": {}
+        }
+      }
+    ]
+  },
+  "semantics": {
+    "ode": {
+      "rates": [
+        {
+          "target": "t0",
+          "expression": "(1/N)*b*I*S",
+          "expression_mathml": "<apply><times/><apply><divide/><cn>1</cn><ci>N</ci></apply><ci>b</ci><ci>I</ci><ci>S</ci></apply>"
+        },
+        {
+          "target": "t1",
+          "expression": "I*r_{IR}*p_{IR}",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>r_{IR}</ci><ci>p_{IR}</ci></apply>"
+        },
+        {
+          "target": "t2",
+          "expression": "H*r_{HR}*p_{HR}",
+          "expression_mathml": "<apply><times/><ci>H</ci><ci>r_{HR}</ci><ci>p_{HR}</ci></apply>"
+        },
+        {
+          "target": "t3",
+          "expression": "I*r_{IH}*p_{IH}",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>r_{IH}</ci><ci>p_{IH}</ci></apply>"
+        },
+        {
+          "target": "t4",
+          "expression": "H*r_{HD}*p_{HD}",
+          "expression_mathml": "<apply><times/><ci>H</ci><ci>r_{HD}</ci><ci>p_{HD}</ci></apply>"
+        }
+      ],
+      "initials": [
+        {
+          "target": "S",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "I",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "R",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "H",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        },
+        {
+          "target": "D",
+          "expression": "0",
+          "expression_mathml": "<math></math>"
+        }
+      ],
+      "parameters": [
+        {
+          "id": "N",
+          "name": "N",
+          "description": "Total population (minus Exposed)",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000001"
+            },
+            "modifiers": {}
+          },
+          "units": {
+            "expression": "person",
+            "expression_mathml": "<ci>person</ci>"
+          }
+        },
+        {
+          "id": "b",
+          "name": "b",
+          "description": "Infection rate (new infections per infected person per day)",
+          "value": 1,
+          "units": {
+            "expression": "person/day",
+            "expression_mathml": "<ci>person/day</ci>"
+          }
+        },
+        {
+          "id": "p_{HD}",
+          "name": "p_{HD}",
+          "description": "Transition probability from H to D",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000160"
+            },
+            "modifiers": {}
+          }
+        },
+        {
+          "id": "p_{HR}",
+          "name": "p_{HR}",
+          "description": "Transition probability from H to R",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000160"
+            },
+            "modifiers": {}
+          }
+        },
+        {
+          "id": "p_{IH}",
+          "name": "p_{IH}",
+          "description": "Transition probability from I to D ",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000160"
+            },
+            "modifiers": {}
+          }
+        },
+        {
+          "id": "p_{IR}",
+          "name": "p_{IR}",
+          "description": "Transition probability from I to R",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000160"
+            },
+            "modifiers": {}
+          }
+        },
+        {
+          "id": "r_{HD}",
+          "name": "r_{HD}",
+          "description": "Inverse of transition time from H to D",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000603"
+            },
+            "modifiers": {}
+          },
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<ci>1/day</ci>"
+          }
+        },
+        {
+          "id": "r_{HR}",
+          "name": "r_{HR}",
+          "description": "Inverse of transition time from H to R",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000603"
+            },
+            "modifiers": {}
+          },
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<ci>1/day</ci>"
+          }
+        },
+        {
+          "id": "r_{IH}",
+          "name": "r_{IH}",
+          "description": "Inverse of transition time from I to H",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000603"
+            },
+            "modifiers": {}
+          },
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<ci>1/day</ci>"
+          }
+        },
+        {
+          "id": "r_{IR}",
+          "name": "r_{IR}",
+          "description": "Inverse of transition time from I to R",
+          "value": 1,
+          "grounding": {
+            "identifiers": {
+              "probonto": "k0000603"
+            },
+            "modifiers": {}
+          },
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<ci>1/day</ci>"
+          }
+        }
+      ],
+      "observables": [],
+      "time": null
+    },
+    "typing": null
+  },
+  "metadata": {
+    "annotations": {
+      "authors": [],
+      "references": [],
+      "locations": [],
+      "pathogens": [],
+      "diseases": [],
+      "hosts": [],
+      "model_types": []
+    },
+    "source": null,
+    "gollmCard": null,
+    "gollmExtractions": null,
+    "templateCard": null
+  }
+}

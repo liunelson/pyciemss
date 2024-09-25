@@ -755,17 +755,27 @@
     },
     "metadata": {
         "annotations": {
-            "license": null,
+            "license": "CC0",
             "authors": [],
-            "references": [],
+            "references": [
+                "pubmed:32322102"
+            ],
             "time_scale": null,
             "time_start": null,
             "time_end": null,
             "locations": [],
-            "pathogens": [],
-            "diseases": [],
-            "hosts": [],
-            "model_types": []
+            "pathogens": [
+                "ncbitaxon:2697049"
+            ],
+            "diseases": [
+                "doid:0080600"
+            ],
+            "hosts": [
+                "ncbitaxon:9606"
+            ],
+            "model_types": [
+                "mamo:0000028"
+            ]
         }
     }
 }

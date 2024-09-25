@@ -267,6 +267,14 @@ df_initials
 df_params
 
 # %%
+# Create a value-less SIDARTHE model for configuration testing
+
+
+
+
+
+
+# %%
 # Check configuration:
 # 
 # N = 60e6
