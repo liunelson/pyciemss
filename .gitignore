@@ -345,3 +345,5 @@ heatmap/
 
 # nl-test
 notebooks/data/monthly_demo_202409/truth-*.csv
+notebooks/data/monthly_demo_202409/problem_4/*
+notebooks/data/monthly_demo_202409/problem_5/*

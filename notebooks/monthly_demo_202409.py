@@ -53,6 +53,104 @@ MIRA_REST_URL = "http://34.230.33.149:8771/api"
 # %%
 DATAPATH = "./data/monthly_demo_202409"
 
+# %%
+# Helper functions
+
+# Generate Sympy equations from a template model
+def generate_odesys(model, latex: bool = False, latex_align: bool = False) -> list:
+
+    odeterms = {var: 0 for var in model.get_concepts_name_map().keys()}
+
+    for t in model.templates:
+        if hasattr(t, "subject"):
+            var = t.subject.name
+            odeterms[var] -= t.rate_law.args[0]
+        
+        if hasattr(t, "outcome"):
+            var = t.outcome.name
+            odeterms[var] += t.rate_law.args[0]
+
+    # Time
+    symb = lambda x: sympy.Symbol(x)
+    try:
+        time = model.time.name
+    except:
+        time = "t"
+    finally:
+        t = symb(time)
+
+    # Construct Sympy equations
+    odesys = [
+        sympy.Eq(sympy.diff(sympy.Function(var)(t), t), terms) 
+        if latex == False
+        else sympy.latex(sympy.Eq(sympy.diff(sympy.Function(var)(t), t), terms))
+        for var, terms in odeterms.items()
+    ]
+    
+    if (latex == True) & (latex_align == True):
+        odesys = "\\begin{align*} \n    " + " \\\\ \n    ".join([eq.replace(" = ", " &= ") for eq in odesys]) + "\n\\end{align*}"
+        # odesys = "\\begin{align*}     " + " \\\\    ".join([eq.replace(" = ", " &= ") for eq in odesys]) + "\\end{align*}"
+
+    return odesys
+
+# Generate summary table of a template model
+def generate_summary_table(model) -> pandas.DataFrame:
+
+    data = {"name": [t.name for t in model.templates]}
+    for k in ("subject", "outcome", "controller"):
+        data[k] = [getattr(t, k).name if hasattr(t, k) else None for t in model.templates]
+
+    data["controllers"] = [[c.name for c in getattr(t, k)] if hasattr(t, "controllers") else None for t in model.templates]
+    data["controller(s)"] = [i if j == None else j for i, j in zip(data["controller"], data["controllers"])]
+    __ = data.pop("controller")
+    __ = data.pop("controllers")
+
+    data["rate_law"] = [t.rate_law for t in model.templates]
+    data["interactor_rate_law"] = [t.get_interactor_rate_law() for t in model.templates]
+
+    df = pandas.DataFrame(data)
+
+    return df
+
+# Generate initial condition and parameter tables
+def generate_init_param_tables(model) -> tuple[pandas.DataFrame, pandas.DataFrame]:
+
+    data = {}
+    data["name"] = [name for name, __ in model.initials.items()]
+    data["expression"] = [init.expression for __, init in model.initials.items()]
+    df_initials = pandas.DataFrame(data)
+
+    data = {}
+    data["name"] = [name for name, __ in model.parameters.items()]
+    data["value"] = [param.value for __, param in model.parameters.items()]
+    df_params = pandas.DataFrame(data)
+
+    return (df_initials, df_params)
+
+# Plot pyciemss.simulate results
+def plot_simulate_results(results: dict) -> None:
+
+    colors = mpl.colormaps["tab10"](range(10))
+    df = results["data"].groupby(["timepoint_id"]).mean()
+
+    fig, ax = plt.subplots(1, 1, figsize = (8, 6))
+
+    i = 0
+    names = []
+    for c in results["data"].columns:
+        if c.split("_")[-1] == "state":
+            for n in range(num_samples):
+                df = results["data"][results["data"]["sample_id"] == n]
+                __ = ax.plot(df["timepoint_unknown"], df[c], label = c, alpha = 0.5, color = colors[i, :])
+            
+            names.append(c)
+            i += 1
+
+    __ = ax.legend(handles = [mpl.lines.Line2D([0], [0], alpha = 0.5, color = colors[j, :], label = names[j]) for j in range(i)])
+
+    return None
+
+
 # %%[markdown]
 # ## Problem 1
 # 
@@ -60,7 +158,7 @@ DATAPATH = "./data/monthly_demo_202409"
 # Configuration: 
 # * December 1, 2021 to March 1, 2022
 # * Training period: December 2021
-# 
+
 
 # %%
 # Define SIRHD model from given equations
@@ -139,7 +237,7 @@ df["R"] = df["R"] - df["D"]
 df["N"] = 150e6
 df["S"] = df["N"] - df["I"] - df["R"] - df["H"] - df["D"]
 
-
+df = df.reset_index()
 df
 
 # %%
@@ -147,13 +245,91 @@ fig, ax = plt.subplots(1, 1, figsize = (6, 6))
 
 for k in "SIRHD":
     if k in df.columns:
-        t = numpy.array(pandas.to_datetime(df.index.to_series()).dt.to_pydatetime())
+        t = numpy.array(pandas.to_datetime(df['time']).dt.to_pydatetime())
+        # t = numpy.array(pandas.to_datetime(df.index.to_series()).dt.to_pydatetime())
         __ = ax.plot(t, df[k], label = k)
 
 __ = ax.legend()
-__ = plt.setp(ax, yscale = 'log')
+__ = plt.setp(ax, yscale = 'log', title = 'Prevalence derived from ForecastHub Gold')
+ax.tick_params(axis = 'x', labelrotation = 45)
 
 # %%
 df.to_csv(os.path.join(DATAPATH, "truthSIRHD.csv"))
+
+# %%[markdown]
+# ## Problem 5
+# 
+# Model A = SIR model from Hewitt 2024, stratified by county
+# Model B = 
+# Model C = 
+
+# %%
+# Model A
+# 
+# Configuration dataset from SI of Hewitt 2024
+
+
+
+# %%
+# Model C
+
+model_c = {}
+with open('./data/monthly_demo_202409/problem_5/modelC/Prob 5 Model C (new params, new rate laws, stratified, no H, replaced omega_W_W) (1).json', 'r') as fp:
+    model_c['amr'] = json.load(fp)
+    # model_c['tm'] = template_model_from_amr_json(model_c['amr'])
+
+
+# %%
+# Configuration from Agustin
+with open('./data/monthly_demo_202409/problem_5/modelC/Captive deer (outdoor ranch), only humans initially infected/cae2fdb4-7671-4918-b374-c197ef07d04a.json', 'r') as fp:
+    config = json.load(fp)
+
+# %%
+model = copy.deepcopy(model_c['amr'])
+
+# %%
+# Update the parameter values
+m = {p['id']: i for i, p in enumerate(model['semantics']['ode']['parameters'])}
+for p in config['parameterSemanticList']:
+    i = m[p['referenceId']]
+    model['semantics']['ode']['parameters'][i]['value'] = p['distribution']['parameters']['value']
+
+
+# Update the initial values
+m = {p['target']: i for i, p in enumerate(model['semantics']['ode']['initials'])}
+for p in config['initialSemanticList']:
+    i = m[p['target']]
+    model['semantics']['ode']['initials'][i]['expression'] = p['expression']
+    model['semantics']['ode']['initials'][i]['expression_mathml'] = p['expressionMathml']
+
+# %%
+tm = template_model_from_amr_json(copy.deepcopy(model))
+x, y = generate_init_param_tables(tm)
+x
+
+# %%
+y
+
+# %%
+with open('./data/monthly_demo_202409/problem_5/modelC/model.json', 'w') as fp:
+    json.dump(model, fp, indent = 4)
+
+# %%
+# Simulate
+start_time = 0.0
+end_time = 100.0
+logging_step_size = 1.0
+num_samples = 10
+
+results = pyciemss.sample(
+    './data/monthly_demo_202409/problem_5/modelC/model.json', 
+    end_time, 
+    logging_step_size, 
+    num_samples, 
+    start_time = start_time
+)
+
+# Plot results
+plot_simulate_results(results)
 
 # %%
