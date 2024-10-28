@@ -1,5 +1,5 @@
 # %%[markdown]
-# # Test Calibrate Interface
+# # Test simulate Interface
 #
 # Run Simulate with a simple model
 
