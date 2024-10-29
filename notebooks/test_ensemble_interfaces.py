@@ -8,11 +8,13 @@
 # %%
 import os
 import json
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import torch
 from tabulate import tabulate
+from tqdm import tqdm
 
 import pyciemss
 from pyciemss.integration_utils.result_processing import cdc_format
@@ -59,211 +61,304 @@ __ = ax.legend()
 # %%
 # Settings
 
-num_iterations = 10
-num_samples =  10
+num_iterations = 20
+num_samples =  200
 start_time = 0.0
+end_time = len(dataset) + 28.0 + 1.0
 logging_step_size = 1.0
 
-data_mapping_single = {
+# %%
+# Mapping model outputs (observables) of each model to ensemble model outputs
+def solution_mapping(model_solution: dict) -> dict:
+    mapped_dict = {}
+    mapped_dict["Susceptible"] = model_solution["susceptible"]
+    mapped_dict["Exposed"] = model_solution["exposed"]
+    mapped_dict["Infected"] = model_solution["infected"]
+    mapped_dict["Recovered"] = model_solution["recovered"]
+    mapped_dict["Hospitalized"] = model_solution["hospitalized"]
+    mapped_dict["Deceased"] = model_solution["deceased"]
+    mapped_dict["Cumulative_cases"] = model_solution["cumulative_cases"]
+    mapped_dict["Cumulative_hosp"] = model_solution["cumulative_hosp"]
+    return mapped_dict
+
+# %%
+# Mapping from dataset features to model outputs (observables)
+data_mapping = {
     'Infected': 'Cumulative_cases',
     'Hospitalized': 'Cumulative_hosp',
-    'Dead': 'deceased'
+    'Dead': 'Deceased'
 }
 
 # %%
-r = pyciemss.ensemble_calibrate(
-    model_paths_or_jsons = [model_paths[0]], 
-    solution_mappings = [lambda x: x],
-    data_path = dataset,
-    data_mapping = data_mapping_single,
-    num_iterations = num_iterations
-)
+# Calibrate each model as a single-model ensemble
+
+results = {}
+results['single_simulate_precalibrate'] = []
+results['single_calibrate'] = []
+results['single_simulate_postcalibrate'] = []
+
+for i, p in tqdm(enumerate(model_paths)):
+
+    # Step 1: simulate each model before calibration
+    r = pyciemss.ensemble_sample(
+        model_paths_or_jsons = [p],
+        solution_mappings = [solution_mapping],
+        start_time = start_time,
+        end_time = end_time,
+        logging_step_size = logging_step_size,
+        num_samples = num_samples,
+        dirichlet_alpha = torch.ones(1)
+    )
+    results['single_simulate_precalibrate'].append(r)
+
+    # Step 2: calibrate each model
+    r = pyciemss.ensemble_calibrate(
+        model_paths_or_jsons = [p], 
+        solution_mappings = [solution_mapping],
+        data_path = dataset,
+        data_mapping = data_mapping,
+        num_iterations = num_iterations
+    )
+    results['single_calibrate'].append(r)
+
+    # Simulate each model after calibration
+    rr = pyciemss.ensemble_sample(
+        model_paths_or_jsons = [p],
+        solution_mappings = [solution_mapping],
+        start_time = start_time,
+        end_time = end_time,
+        logging_step_size = logging_step_size,
+        num_samples = num_samples,
+        inferred_parameters = r['inferred_parameters']
+    )
+    results['single_simulate_postcalibrate'].append(rr)
 
 # %%
-
-
-
-
-
-
-
-# %%
-
-# %%
-# Load models and datasets
-
-# MODEL_PATH = "https://raw.githubusercontent.com/DARPA-ASKEM/simulation-integration/main/data/models/"
-# DATASET_PATH = "https://raw.githubusercontent.com/DARPA-ASKEM/simulation-integration/main/data/datasets/"
-
-MODEL_PATH = "./data/simulation-integration/data/models"
-DATASET_PATH = "./data/simulation-integration/data/datasets"
-
-model_paths = [
-    os.path.join(MODEL_PATH, "SEIRHD_NPI_Type1_petrinet.json"),
-    os.path.join(MODEL_PATH, "SEIRHD_NPI_Type2_petrinet.json")
-]
-
-dataset_paths = [
-    os.path.join(DATASET_PATH, "SIR_data_case_hosp.csv"),
-    os.path.join(DATASET_PATH, "traditional.csv")
-]
-
-# %%
-def generate_summary_table(model) -> pandas.DataFrame:
-
-    data = {"name": [t.name for t in model.templates]}
-    for k in ("subject", "outcome", "controller"):
-        data[k] = [getattr(t, k).name if hasattr(t, k) else None for t in model.templates]
-
-    data["controllers"] = [[c.name for c in getattr(t, k)] if hasattr(t, "controllers") else None for t in model.templates]
-    data["controller(s)"] = [i if j == None else j for i, j in zip(data["controller"], data["controllers"])]
-    __ = data.pop("controller")
-    __ = data.pop("controllers")
-
-    data["rate_law"] = [t.rate_law for t in model.templates]
-    data["interactor_rate_law"] = [t.get_interactor_rate_law() for t in model.templates]
-
-    df = pandas.DataFrame(data)
-
-    return df
-
-# %%
-for model_path in model_paths:
-    with open(model_path, "r") as fp:
-        tm = template_model_from_amr_json(json.load(fp))
-
-    # GraphicalModel.for_jupyter(tm)
-    print(f"{tm.annotations.name}")
-    print(tabulate(generate_summary_table(tm)))
-    print("\n")
-
-# %%
-start_time = 0.0
-end_time = 28.0
-logging_step_size = 1.0
-num_samples = 5
-solution_mappings = [
-    lambda x: x,
-    lambda x: x
-]
-
-# %%
-result = pyciemss.ensemble_sample(
-    model_paths,
-    solution_mappings = solution_mappings,
+# Repeat for ensemble model
+#
+# Step 1: simulate ensemble before calibration
+results['ensemble_simulate_precalibrate'] = pyciemss.ensemble_sample(
+    model_paths_or_jsons = model_paths,
+    solution_mappings = [solution_mapping, solution_mapping, solution_mapping],
     start_time = start_time,
     end_time = end_time,
     logging_step_size = logging_step_size,
     num_samples = num_samples,
-    time_units = 'days',
-    dirichlet_alpha = torch.tensor([1, 1, 1])
+    dirichlet_alpha = torch.tensor([1.0, 1.0, 1.0])
 )
 
 # %%
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# %%
-# Get test model (basic SIR)
-PATH = "./data"
-model_url = "https://raw.githubusercontent.com/DARPA-ASKEM/simulation-integration/main/data/models/SIR_param_in_observables.json"
-r = requests.get(model_url)
-if r.ok:
-    model = r.json()
-
-# Modify the model configuration 
-# by giving priors to parameter values
-
-# beta
-model["semantics"]["ode"]["parameters"][0] = {
-    'id': 'beta',
-    'value': 0.0025,
-    'distribution': {
-        'type': 'StandardUniform1',
-        'parameters': {
-            'minimum': 0.001, 
-            'maximum': 0.003
-        }
-    }
-}
-
-# gamma
-model["semantics"]["ode"]["parameters"][1] = {
-    'id': 'gamma',
-    'value': 0.07,
-    'distribution': {
-        'type': 'StandardUniform1',
-        'parameters': {
-            'minimum': 0.04,
-            'maximum': 0.15
-        }
-    },
-    'units': {
-        'expression': '1/day',
-        'expression_mathml': '<apply><power/><ci>day</ci><cn>-1</cn></apply>'
-    }
-}
-
-# Save modified model
-with open(os.path.join(PATH, "test_simulate_model.json"), "w") as fp:
-    json.dump(model, fp, indent = 4)
-
-
-# %%
-# Simulate
-start_time = 0.0
-end_time = 100.0
-logging_step_size = 1.0
-num_samples = 10
-
-results = pyciemss.sample(
-    model, 
-    end_time, 
-    logging_step_size, 
-    num_samples, 
-    start_time = start_time
+# Step 2: calibrate ensemble
+results['ensemble_calibrate'] = pyciemss.ensemble_calibrate(
+    model_paths_or_jsons = model_paths, 
+    solution_mappings = [solution_mapping, solution_mapping, solution_mapping],
+    data_path = dataset,
+    data_mapping = data_mapping,
+    num_iterations = num_iterations
 )
 
 # %%
-results["data"].head()
+# Step 3: simulate ensemble after calibration
+results['ensemble_simulate_postcalibrate'] = pyciemss.ensemble_sample(
+    model_paths_or_jsons = model_paths,
+    solution_mappings = [solution_mapping, solution_mapping, solution_mapping],
+    start_time = start_time,
+    end_time = end_time,
+    logging_step_size = logging_step_size,
+    num_samples = num_samples,
+    inferred_parameters = results['ensemble_calibrate']['inferred_parameters']
+)
 
 # %%
 # Plot results
 
-colors = mpl.colormaps["tab10"](range(10))
+fig, axes = plt.subplots(3, 4, figsize = (10, 10))
+for i, (v, c) in enumerate(data_mapping.items()):
+    for j in range(4):
+        ax = axes[i, j]
 
-df = results["data"].groupby(["timepoint_id"]).mean()
+        # Calibration data
+        x = dataset['Timestamp']
+        y = dataset[v]
+        h0, = ax.plot(x, y, linestyle = ':', label = 'Calibration Dataset')
 
-fig, ax = plt.subplots(1, 1, figsize = (8, 6))
+        # Single models
+        if j < 3:
 
-i = 0
-names = []
-for c in results["data"].columns:
-    if c.split("_")[-1] == "state":
-        for n in range(num_samples):
-            df = results["data"][results["data"]["sample_id"] == n]
-            __ = ax.plot(df["timepoint_unknown"], df[c], label = c, alpha = 0.5, color = colors[i, :])
-        
-        names.append(c)
-        i += 1
+            # Pre-calibration
+            r = results['single_simulate_precalibrate'][j]['data']
+            r = r.groupby(['timepoint_id']).aggregate('mean').reset_index()
+            x = r['timepoint_unknown']
+            y = r[f'{c}_state']
+            __  = ax.plot(x, y, label = 'Pre-calibration')
 
-__ = ax.legend(handles = [mpl.lines.Line2D([0], [0], alpha = 0.5, color = colors[j, :], label = names[j]) for j in range(i)])
+            # Post-calibration
+            r = results['single_simulate_postcalibrate'][j]['data']
+            r = r.groupby(['timepoint_id']).aggregate('mean').reset_index()
+            x = r['timepoint_unknown']
+            y = r[f'{c}_state']
+            __  = ax.plot(x, y, label = 'Post-Calibration')
+
+        # Ensemble model
+        else:
+            # Pre-calibration
+            r = results['ensemble_simulate_precalibrate']['data']
+            r = r.groupby(['timepoint_id']).aggregate('mean').reset_index()
+            x = r['timepoint_unknown']
+            y = r[f'{c}_state']
+            h1,  = ax.plot(x, y, label = 'Pre-calibration')
+
+            # Post-calibration
+            r = results['ensemble_simulate_postcalibrate']['data']
+            r = r.groupby(['timepoint_id']).aggregate('mean').reset_index()
+            x = r['timepoint_unknown']
+            y = r[f'{c}_state']
+            h2,  = ax.plot(x, y, label = 'Post-Calibration')
+
+        # Formatting
+        ax.ticklabel_format(axis = 'y', style = 'sci', scilimits = (0, 0))
+        if i == 0:
+            if j < 3:
+                l = results['single_calibrate'][j]['loss']
+                __ = plt.setp(ax, title = f'model_{j}\nLoss = {l:.1f}')
+            else:
+                l = results['ensemble_calibrate']['loss']
+                __ = plt.setp(ax, title = f'Ensemble Model\nLoss = {l:.1f}')
+        elif i == 2:
+            __ = plt.setp(ax, xlabel = 'Timepoint')
+        if i != 2:
+            __ = ax.tick_params(labelbottom = False)
+        if j == 0:
+            __ = plt.setp(ax, ylabel = c)
+
+__ = fig.legend([h0, h1, h2], ['Calibration Dataset',  'Pre-Calibration',  'Post-Calibration'], loc = 'lower center', ncols = 3)
 
 # %%
-# Save results["data"] as CSV file
-results["data"].to_csv("./data/test_simulate_interface.csv")
+# Plot prior/posterior distributions
+
+# Pick a single model and one of its parameters
+j = 0
+param = 'beta'
+
+fig, axes = plt.subplots(1, 2, figsize = (10, 4))
+
+# Single model
+ax = axes[0]
+
+# Before calibration
+r = results['single_simulate_precalibrate'][j]['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+d = r[f'model_{j}/persistent_{param}_param']
+c, b = np.histogram(d, bins = int(np.sqrt(num_samples)))
+x = 0.5 * (b[1:] + b[:-1])
+w = 0.9 * (b[1] - b[0])
+h0 = ax.bar(x, c, width = w, align = 'center', alpha = 0.5, label = 'Pre-calibration')
+
+# After calibration
+r = results['single_simulate_postcalibrate'][j]['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+d = r[f'model_{j}/persistent_{param}_param']
+c, b = np.histogram(d, bins = b)
+x = 0.5 * (b[1:] + b[:-1])
+w = 0.9 * (b[1] - b[0])
+h1 = ax.bar(x, c, width = w, align = 'center', alpha = 0.5, label = 'Post-calibration')
+
+
+# Ensemble model
+ax = axes[1]
+
+# Before calibration
+r = results['ensemble_simulate_precalibrate']['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+d = r[f'model_{j}/persistent_{param}_param']
+c, b = np.histogram(d, bins = int(np.sqrt(num_samples)))
+x = 0.5 * (b[1:] + b[:-1])
+w = 0.9 * (b[1] - b[0])
+__ = ax.bar(x, c, width = w, align = 'center', alpha = 0.5, label = 'Post-calibration')
+
+# After calibration
+r = results['ensemble_simulate_postcalibrate']['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+d = r[f'model_{j}/persistent_{param}_param']
+c, b = np.histogram(d, bins = b)
+x = 0.5 * (b[1:] + b[:-1])
+w = 0.9 * (b[1] - b[0])
+h1 = ax.bar(x, c, width = w, align = 'center', alpha = 0.5, label = 'Post-calibration')
+
+axes[0].ticklabel_format(axis = 'x', style = 'sci', scilimits = (0, 0))
+axes[1].ticklabel_format(axis = 'x', style = 'sci', scilimits = (0, 0))
+__ = plt.setp(axes[0], title = f'Model {j}\n as Single Model', xlabel = f'Values of the Parameter {param}', ylabel = 'Sample Counts')
+__ = plt.setp(axes[1], title = f'Model {j}\n as Part of Ensemble Model', xlabel = f'Values of the Parameter {param}')
+__ = ax.legend([h0, h1], ['Pre-Calibration', 'Post-Calibration'], loc = 'best', ncols = 1)
+
+
+# %%
+# Model weight distributions
+
+fig, axes = plt.subplots(1, 3, figsize = (10, 4))
+for j, __ in enumerate(model_paths):
+    ax = axes[j]
+
+    # Before calibration
+    r = results['ensemble_simulate_precalibrate']['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+    c, b = np.histogram(r[f'model_{j}/weight_param'], bins = int(np.sqrt(num_samples)), range = (0, 1))
+    x = 0.5 * (b[1:] + b[:-1])
+    w = 0.9 * (b[1] - b[0])
+    __ = ax.bar(x, c, width = w, align = 'center', alpha = 0.5)
+
+    # After calibration
+    r = results['ensemble_simulate_postcalibrate']['data'].groupby(['sample_id']).aggregate('mean').reset_index()
+    c, b = np.histogram(r[f'model_{j}/weight_param'], bins = int(np.sqrt(num_samples)), range = (0, 1))
+    x = 0.5 * (b[1:] + b[:-1])
+    w = 0.9 * (b[1] - b[0])
+    __ = ax.bar(x, c, width = w, align = 'center', alpha = 0.5)
+
+
+    __ = plt.setp(ax, xlabel = f'Weight of Model {j}\nin the Ensemble Model')
+    if j == 0:
+        __ = plt.setp(ax, ylabel = 'Sample Count')
+
+# %%
+# CDC Data Formatting
+
+ensemble_dataset = cdc_format(
+    results['ensemble_simulate_postcalibrate']['ensemble_quantiles'],
+    # solution_string_mapping = {v: v for k, v in data_mapping.items()},
+    solution_string_mapping = {
+        'Deceased_state': 'cum death'
+    },
+    forecast_start_date = end_date,
+    location = location,
+    drop_column_names = ['timepoint_id', 'number_days', 'output'],
+    train_end_point = len(dataset) - 1.0
+)
+ensemble_dataset = ensemble_dataset.reset_index(drop = True)
+
+print(tabulate(ensemble_dataset.head(10), headers = 'keys'))
+
+# %%
+# Plot CDC data
+
+fig, ax = plt.subplots(1, 1, figsize = (10, 4))
+
+# Calibrated Ensemble Forecast
+quantiles = ensemble_dataset['quantile'].unique()
+num_quantiles = len(quantiles)
+colors = [mpl.colormaps.get_cmap('YlOrBr')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
+colors += [mpl.colormaps.get_cmap('YlOrBr_r')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
+for i, q in enumerate(quantiles):
+    c = colors[i]
+    r = ensemble_dataset[ensemble_dataset['quantile'] == q]
+
+    x = r['target_end_date']
+    y = r['value']
+    __ = ax.plot(x, y, color = c, label = f'{q}')
+
+
+# Calibration dataset
+x = np.arange(np.datetime64(start_date), np.datetime64(end_date), np.timedelta64(1, 'D'))
+y = dataset['Dead']
+__ = ax.plot(x, y, linestyle = ':', label = 'Calibration Dataset')
+
+# Formatting
+ax.tick_params('x', labelrotation = 45.0)
+__ = plt.setp(ax, ylabel = 'Persons', title = 'Quantiles of "cum death" Forecast from Ensemble Model')
+__ = ax.legend(ncols = 2)
 
 # %%
