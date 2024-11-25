@@ -321,11 +321,14 @@ ensemble_dataset = cdc_format(
     results['ensemble_simulate_postcalibrate']['ensemble_quantiles'],
     # solution_string_mapping = {v: v for k, v in data_mapping.items()},
     solution_string_mapping = {
-        'Deceased_state': 'cum death'
+        'Deceased_state': 'cum death',
+        'model_0/deceased_observable_state': 'cum death 0',
+        'model_1/deceased_observable_state': 'cum death 1',
+        'model_2/deceased_observable_state': 'cum death 2'
     },
     forecast_start_date = end_date,
     location = location,
-    drop_column_names = ['timepoint_id', 'number_days', 'output'],
+    drop_column_names = ['timepoint_id', 'number_days'],
     train_end_point = len(dataset) - 1.0
 )
 ensemble_dataset = ensemble_dataset.reset_index(drop = True)
@@ -335,30 +338,57 @@ print(tabulate(ensemble_dataset.head(10), headers = 'keys'))
 # %%
 # Plot CDC data
 
-fig, ax = plt.subplots(1, 1, figsize = (10, 4))
+fig, ax = plt.subplots(1, 1, figsize = (10, 8))
 
 # Calibrated Ensemble Forecast
-quantiles = ensemble_dataset['quantile'].unique()
-num_quantiles = len(quantiles)
-colors = [mpl.colormaps.get_cmap('YlOrBr')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
-colors += [mpl.colormaps.get_cmap('YlOrBr_r')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
-for i, q in enumerate(quantiles):
-    c = colors[i]
-    r = ensemble_dataset[ensemble_dataset['quantile'] == q]
 
-    x = r['target_end_date']
-    y = r['value']
-    __ = ax.plot(x, y, color = c, label = f'{q}')
+outputs = ensemble_dataset['output'].unique()
+quantiles =ensemble_dataset['quantile'].unique()
+num_quantiles = len(quantiles)
+
+for output in outputs:
+
+    r = ensemble_dataset[ensemble_dataset['output'] == output]
+    
+    if output == 'cum death':
+        cmap = 'Greens'
+    elif output == 'cum death 0':
+        cmap = 'Reds'
+    elif output == 'cum death 1':
+        cmap = 'Blues'
+    elif output == 'cum death 2':
+        cmap = 'Purples'
+
+    colors = [mpl.colormaps.get_cmap(f'{cmap}')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
+    colors += [mpl.colormaps.get_cmap(f'{cmap}_r')(i) for i in np.linspace(0, 1, int(0.5 * (num_quantiles + 1)))]
+
+    for i, q in enumerate(quantiles):
+        c = colors[i]
+        rr = r[r['quantile'] == q].sort_values('target_end_date')
+
+        x = rr['target_end_date']
+        y = rr['value']
+        __ = ax.plot(x, y, color = c, label = f'{q}')
 
 
 # Calibration dataset
 x = np.arange(np.datetime64(start_date), np.datetime64(end_date), np.timedelta64(1, 'D'))
 y = dataset['Dead']
-__ = ax.plot(x, y, linestyle = ':', label = 'Calibration Dataset')
+__ = ax.plot(x, y, linestyle = ':', label = 'Calibration Dataset', color = 'k')
 
 # Formatting
 ax.tick_params('x', labelrotation = 45.0)
 __ = plt.setp(ax, ylabel = 'Persons', title = 'Quantiles of "cum death" Forecast from Ensemble Model')
-__ = ax.legend(ncols = 2)
+ 
+__ = ax.legend(
+    [
+        mpl.lines.Line2D([0], [0], color = 'k', linestyle = ':'),
+        mpl.lines.Line2D([0], [0], color = 'green', linestyle = '-'),
+        mpl.lines.Line2D([0], [0], color = 'red', linestyle = '-'),
+        mpl.lines.Line2D([0], [0], color = 'blue', linestyle = '-'),
+        mpl.lines.Line2D([0], [0], color = 'purple', linestyle = '-')
+    ], 
+    ['Calibration Data', 'Ensemble', 'Model A', 'Model B', 'Model C']
+)
 
 # %%
