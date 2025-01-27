@@ -1,0 +1,639 @@
+{
+  "id": "b5ddf540-7e9b-40bd-9733-90bc8798c789",
+  "createdOn": "2025-01-24T11:15:42.997+00:00",
+  "updatedOn": "2025-01-27T14:34:09.447+00:00",
+  "name": "SEIRHD Model",
+  "fileNames": [],
+  "temporary": false,
+  "publicAsset": false,
+  "header": {
+    "name": "SEIRHD Model",
+    "description": "Model",
+    "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
+    "schema_name": "petrinet",
+    "model_version": "0.1"
+  },
+  "model": {
+    "states": [
+      {
+        "id": "S",
+        "name": "S(t)",
+        "description": "Susceptible individuals in the population who have not been exposed to the virus.",
+        "grounding": {
+          "identifiers": {
+            "idomal": "0000196"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "I",
+        "name": "I(t)",
+        "description": "Infected individuals who are capable of spreading the virus.",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000639"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "E",
+        "name": "E(t)",
+        "description": "Exposed individuals who have been infected but are not yet infectious.",
+        "grounding": {
+          "identifiers": {
+            "apollosv": "00000154"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "H",
+        "name": "H(t)",
+        "description": "Hospitalized individuals receiving medical care due to severe symptoms.",
+        "grounding": {
+          "identifiers": {
+            "opmi": "0000484"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "R",
+        "name": "R(t)",
+        "description": "Recovered individuals who have overcome the infection and gained immunity.",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000592"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      },
+      {
+        "id": "D",
+        "name": "D(t)",
+        "description": "Deceased individuals who have succumbed to the infection.",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000511"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        }
+      }
+    ],
+    "transitions": [
+      {
+        "id": "t0",
+        "name": null,
+        "description": "Transition from susceptible to exposed due to infection by an infected individual.",
+        "grounding": {
+          "identifiers": {
+            "apollosv": "00000265"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "I",
+          "S"
+        ],
+        "output": [
+          "I",
+          "E"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t0",
+          "grounding": null,
+          "description": null
+        }
+      },
+      {
+        "id": "t1",
+        "name": null,
+        "description": "Transition from exposed to infected as individuals become infectious.",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000658"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "E"
+        ],
+        "output": [
+          "I"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t1",
+          "grounding": null,
+          "description": null
+        }
+      },
+      {
+        "id": "t2",
+        "name": null,
+        "description": "Transition from infected to hospitalized as symptoms worsen.",
+        "grounding": {
+          "identifiers": {
+            "ido": "0000630"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "I"
+        ],
+        "output": [
+          "H"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t2",
+          "grounding": null,
+          "description": null
+        }
+      },
+      {
+        "id": "t3",
+        "name": null,
+        "description": "Transition from infected to recovered as individuals overcome the infection.",
+        "grounding": {
+          "identifiers": {
+            "askemo": "0000013"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "I"
+        ],
+        "output": [
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t3",
+          "grounding": null,
+          "description": null
+        }
+      },
+      {
+        "id": "t4",
+        "name": null,
+        "description": "Transition from hospitalized to deceased due to severe symptoms.",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C168970"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "H"
+        ],
+        "output": [
+          "D"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t4",
+          "grounding": null,
+          "description": null
+        }
+      },
+      {
+        "id": "t5",
+        "name": null,
+        "description": "Transition from hospitalized to recovered as individuals receive treatment.",
+        "grounding": {
+          "identifiers": {
+            "ncit": "C25179"
+          },
+          "context": {},
+          "modifiers": {}
+        },
+        "input": [
+          "H"
+        ],
+        "output": [
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t5",
+          "grounding": null,
+          "description": null
+        }
+      }
+    ]
+  },
+  "properties": {},
+  "semantics": {
+    "ode": {
+      "rates": [
+        {
+          "target": "t0",
+          "description": "Transition from susceptible to exposed due to infection by an infected individual.",
+          "expression": "I*S*beta/N",
+          "expression_mathml": "<apply><divide/><apply><times/><ci>I</ci><ci>S</ci><ci>beta</ci></apply><ci>N</ci></apply>"
+        },
+        {
+          "target": "t1",
+          "description": "Transition from exposed to infected as individuals become infectious.",
+          "expression": "E*r_E_to_I",
+          "expression_mathml": "<apply><times/><ci>E</ci><ci>r_E_to_I</ci></apply>"
+        },
+        {
+          "target": "t2",
+          "description": "Transition from infected to hospitalized as symptoms worsen.",
+          "expression": "I*p_I_to_H*r_I_to_H",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>p_I_to_H</ci><ci>r_I_to_H</ci></apply>"
+        },
+        {
+          "target": "t3",
+          "description": "Transition from infected to recovered as individuals overcome the infection.",
+          "expression": "I*p_I_to_R*r_I_to_R",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>p_I_to_R</ci><ci>r_I_to_R</ci></apply>"
+        },
+        {
+          "target": "t4",
+          "description": "Transition from hospitalized to deceased due to severe symptoms.",
+          "expression": "H*p_H_to_D*r_H_to_D",
+          "expression_mathml": "<apply><times/><ci>H</ci><ci>p_H_to_D</ci><ci>r_H_to_D</ci></apply>"
+        },
+        {
+          "target": "t5",
+          "description": "Transition from hospitalized to recovered as individuals receive treatment.",
+          "expression": "H*p_H_to_R*r_H_to_R",
+          "expression_mathml": "<apply><times/><ci>H</ci><ci>p_H_to_R</ci><ci>r_H_to_R</ci></apply>"
+        }
+      ],
+      "initials": [
+        {
+          "target": "S",
+          "description": "Susceptible individuals in the population who have not been exposed to the virus.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "I",
+          "description": "Infected individuals who are capable of spreading the virus.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "E",
+          "description": "Exposed individuals who have been infected but are not yet infectious.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "H",
+          "description": "Hospitalized individuals receiving medical care due to severe symptoms.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "R",
+          "description": "Recovered individuals who have overcome the infection and gained immunity.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "D",
+          "description": "Deceased individuals who have succumbed to the infection.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        }
+      ],
+      "parameters": [
+        {
+          "id": "N",
+          "name": "N",
+          "description": "Total population size of LA County",
+          "grounding": {
+            "identifiers": {
+              "idomal": "0001255"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "person",
+            "expression_mathml": "<ci>person</ci>"
+          }
+        },
+        {
+          "id": "beta",
+          "name": "beta",
+          "description": "Transmission rate of the virus, representing new infections per infected person per day.",
+          "grounding": {
+            "identifiers": {
+              "apollosv": "00000191"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/(person*day)",
+            "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
+          }
+        },
+        {
+          "id": "r_E_to_I",
+          "name": "r_E_to_I",
+          "description": "Rate at which exposed individuals become infectious.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000011"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          }
+        },
+        {
+          "id": "p_I_to_H",
+          "name": "p_I_to_H",
+          "description": "Probability of an infected individual being hospitalized.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "dimensionless",
+            "expression_mathml": "<cn>1</cn>"
+          }
+        },
+        {
+          "id": "r_I_to_H",
+          "name": "r_I_to_H",
+          "description": "Rate at which infected individuals are hospitalized.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          }
+        },
+        {
+          "id": "p_I_to_R",
+          "name": "p_I_to_R",
+          "description": "Probability of an infected individual recovering without hospitalization.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000013"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "dimensionless",
+            "expression_mathml": "<cn>1</cn>"
+          }
+        },
+        {
+          "id": "r_I_to_R",
+          "name": "r_I_to_R",
+          "description": "Rate at which infected individuals recover without hospitalization.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000013"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          }
+        },
+        {
+          "id": "p_H_to_D",
+          "name": "p_H_to_D",
+          "description": "Probability of a hospitalized individual dying.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "dimensionless",
+            "expression_mathml": "<cn>1</cn>"
+          }
+        },
+        {
+          "id": "r_H_to_D",
+          "name": "r_H_to_D",
+          "description": "Rate at which hospitalized individuals die.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          }
+        },
+        {
+          "id": "p_H_to_R",
+          "name": "p_H_to_R",
+          "description": "Probability of a hospitalized individual recovering.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "dimensionless",
+            "expression_mathml": "<cn>1</cn>"
+          }
+        },
+        {
+          "id": "r_H_to_R",
+          "name": "r_H_to_R",
+          "description": "Rate at which hospitalized individuals recover.",
+          "grounding": {
+            "identifiers": {
+              "askemo": "0000014"
+            },
+            "context": {},
+            "modifiers": {}
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          }
+        }
+      ],
+      "observables": [],
+      "time": {
+        "id": "t",
+        "units": {
+          "expression": "date",
+          "expression_mathml": "<ci>date</ci>"
+        }
+      }
+    },
+    "span": [],
+    "typing": null
+  },
+  "metadata": {
+    "annotations": {
+      "authors": [],
+      "references": [],
+      "locations": [],
+      "pathogens": [],
+      "diseases": [],
+      "hosts": [],
+      "model_types": []
+    },
+    "source": null,
+    "description": "PGgyPlN1bW1hcnk8L2gyPgo8cD5UaGUgZG9jdW1lbnQgZGVzY3JpYmVzIGEgU0VJUkhEIG1vZGVsIHVzZWQgdG8gZm9yZWNhc3QgdGhlIHNwcmVhZCBvZiBDT1ZJRC0xOSBpbiBOZXcgWW9yayBTdGF0ZSwgZm9jdXNpbmcgb24gdGhlIGltcGFjdCBvZiBub24tcGhhcm1hY2V1dGljYWwgaW50ZXJ2ZW50aW9ucyAoTlBJcykgc3VjaCBhcyBtYXNraW5nIGFuZCBzb2NpYWwgZGlzdGFuY2luZy4gVGhlIG1vZGVsIGlzIHN0cnVjdHVyZWQgd2l0aCBkaWZmZXJlbnRpYWwgZXF1YXRpb25zIHJlcHJlc2VudGluZyB0cmFuc2l0aW9ucyBiZXR3ZWVuIHN0YXRlczogU3VzY2VwdGlibGUgKFMpLCBFeHBvc2VkIChFKSwgSW5mZWN0ZWQgKEkpLCBIb3NwaXRhbGl6ZWQgKEgpLCBSZWNvdmVyZWQgKFIpLCBhbmQgRGVhZCAoRCkuIFRoZSBtb2RlbCBpbmNvcnBvcmF0ZXMgcGFyYW1ldGVycyBsaWtlIHRyYW5zbWlzc2lvbiByYXRlICjOsiksIHRyYW5zaXRpb24gcmF0ZXMgKHIpLCBhbmQgcHJvYmFiaWxpdGllcyAocCkgZm9yIG1vdmluZyBiZXR3ZWVuIHN0YXRlcy4gVGhlIG1vZGVsIGlzIHVzZWQgdG8gc2ltdWxhdGUgc2NlbmFyaW9zIHdpdGggdmFyeWluZyBsZXZlbHMgb2YgbWFza2luZyBjb21wbGlhbmNlIGFuZCBzb2NpYWwgZGlzdGFuY2luZyB0byBwcmVkaWN0IGNhc2VzLCBob3NwaXRhbGl6YXRpb25zLCBhbmQgZGVhdGhzLiBUaGUgbW9kZWwgY2FuIGxpa2VseSBiZSByZXByZXNlbnRlZCBpbiBQZXRyaSBOZXQgZm9ybWF0IGR1ZSB0byBpdHMgc3RhdGUtdHJhbnNpdGlvbiBzdHJ1Y3R1cmUuPC9wPjxicj4KPGgyPlNwZWNzPC9oMj4KPGg0PkRvbWFpbjwvaDQ+Cjx1bD4KPGxpPkVwaWRlbWlvbG9neTwvbGk+CjxsaT5QdWJsaWMgSGVhbHRoPC9saT4KPGxpPkluZmVjdGlvdXMgRGlzZWFzZSBNb2RlbGluZzwvbGk+CjwvdWw+PGJyPgo8aDQ+VHlwZTwvaDQ+CjxwPk1hdGhlbWF0aWNhbCBNb2RlbDwvcD48YnI+CjxoND5TcGVjaWZpY2F0aW9uPC9oND4KPHA+VGhlIFNFSVJIRCBtb2RlbCBjb25zaXN0cyBvZiBzaXggc3RhdGVzOiBTdXNjZXB0aWJsZSAoUyksIEV4cG9zZWQgKEUpLCBJbmZlY3RlZCAoSSksIEhvc3BpdGFsaXplZCAoSCksIFJlY292ZXJlZCAoUiksIGFuZCBEZWFkIChEKS4gSXQgdXNlcyBkaWZmZXJlbnRpYWwgZXF1YXRpb25zIHRvIG1vZGVsIHRyYW5zaXRpb25zIGJldHdlZW4gdGhlc2Ugc3RhdGVzLiBUaGUgbW9kZWwgaW5jbHVkZXMgcGFyYW1ldGVycyBzdWNoIGFzIHRoZSB0cmFuc21pc3Npb24gcmF0ZSAozrIgPSAwLjQpLCB0cmFuc2l0aW9uIHJhdGVzIChlLmcuLCByKEXihpJJKSA9IDAuMi9kYXkpLCBhbmQgcHJvYmFiaWxpdGllcyAoZS5nLiwgcChJ4oaSUikgPSAwLjgpLiBUaGUgbW9kZWwgaXMgaW5pdGlhbGl6ZWQgd2l0aCBhIHBvcHVsYXRpb24gc2l6ZSBvZiAxOS4zNCBtaWxsaW9uLCByZXByZXNlbnRpbmcgTmV3IFlvcmsgU3RhdGUgaW4gMjAyMC48L3A+PGJyPgo8aDQ+U3RhdGVzPC9oND4KPHVsPgo8bGk+U3VzY2VwdGlibGUgKFMpOiBSZXByZXNlbnRzIGluZGl2aWR1YWxzIG5vdCB5ZXQgZXhwb3NlZCB0byB0aGUgdmlydXMuIFVuaXRzOiBpbmRpdmlkdWFscy4gVHJhbnNpdGlvbnMgdG8gRXhwb3NlZCAoRSkgYmFzZWQgb24gY29udGFjdCB3aXRoIEluZmVjdGVkIChJKS48L2xpPgo8bGk+RXhwb3NlZCAoRSk6IFJlcHJlc2VudHMgaW5kaXZpZHVhbHMgZXhwb3NlZCB0byB0aGUgdmlydXMgYnV0IG5vdCB5ZXQgaW5mZWN0aW91cy4gVW5pdHM6IGluZGl2aWR1YWxzLiBUcmFuc2l0aW9ucyB0byBJbmZlY3RlZCAoSSkgYXQgcmF0ZSByKEXihpJJKS48L2xpPgo8bGk+SW5mZWN0ZWQgKEkpOiBSZXByZXNlbnRzIGluZGl2aWR1YWxzIHdobyBhcmUgaW5mZWN0aW91cy4gVW5pdHM6IGluZGl2aWR1YWxzLiBUcmFuc2l0aW9ucyB0byBIb3NwaXRhbGl6ZWQgKEgpIG9yIFJlY292ZXJlZCAoUikgYmFzZWQgb24gcHJvYmFiaWxpdGllcyBwKEnihpJIKSBhbmQgcChJ4oaSUikuPC9saT4KPGxpPkhvc3BpdGFsaXplZCAoSCk6IFJlcHJlc2VudHMgaW5kaXZpZHVhbHMgaG9zcGl0YWxpemVkIGR1ZSB0byBpbmZlY3Rpb24uIFVuaXRzOiBpbmRpdmlkdWFscy4gVHJhbnNpdGlvbnMgdG8gUmVjb3ZlcmVkIChSKSBvciBEZWFkIChEKSBiYXNlZCBvbiBwcm9iYWJpbGl0aWVzIHAoSOKGklIpIGFuZCBwKEjihpJEKS48L2xpPgo8bGk+UmVjb3ZlcmVkIChSKTogUmVwcmVzZW50cyBpbmRpdmlkdWFscyB3aG8gaGF2ZSByZWNvdmVyZWQgZnJvbSB0aGUgaW5mZWN0aW9uLiBVbml0czogaW5kaXZpZHVhbHMuIE5vIGZ1cnRoZXIgdHJhbnNpdGlvbnMuPC9saT4KPGxpPkRlYWQgKEQpOiBSZXByZXNlbnRzIGluZGl2aWR1YWxzIHdobyBoYXZlIGRpZWQgZnJvbSB0aGUgaW5mZWN0aW9uLiBVbml0czogaW5kaXZpZHVhbHMuIE5vIGZ1cnRoZXIgdHJhbnNpdGlvbnMuPC9saT4KPC91bD48YnI+CjxoND5QYXJhbWV0ZXJzPC9oND4KPHVsPgo8bGk+VHJhbnNtaXNzaW9uIHJhdGUgKM6yKTogMC40IG5ldyBpbmZlY3Rpb25zIHBlciBpbmZlY3RlZCBwZXJzb24vZGF5LjwvbGk+CjxsaT5UcmFuc2l0aW9uIHJhdGUgcihF4oaSSSk6IDAuMi9kYXkuPC9saT4KPGxpPlByb2JhYmlsaXR5IHAoSeKGklIpOiAwLjguPC9saT4KPGxpPlByb2JhYmlsaXR5IHAoSeKGkkgpOiAwLjIuPC9saT4KPGxpPlRyYW5zaXRpb24gcmF0ZSByKEnihpJSKTogMC4wNy9kYXkuPC9saT4KPGxpPlRyYW5zaXRpb24gcmF0ZSByKEnihpJIKTogMC4xL2RheS48L2xpPgo8bGk+VHJhbnNpdGlvbiByYXRlIHIoSOKGklIpOiAwLjEvZGF5LjwvbGk+CjxsaT5UcmFuc2l0aW9uIHJhdGUgcihI4oaSRCk6IDAuMS9kYXkuPC9saT4KPGxpPlByb2JhYmlsaXR5IHAoSOKGklIpOiAwLjg4LjwvbGk+CjxsaT5Qcm9iYWJpbGl0eSBwKEjihpJEKTogMC4xMi48L2xpPgo8L3VsPjxicj4KPGgyPlVzZXM8L2gyPgo8aDQ+RGlyZWN0IFVzZTwvaDQ+CjxwPlRoZSBtb2RlbCBjYW4gYmUgdXNlZCB0byBzaW11bGF0ZSB0aGUgaW1wYWN0IG9mIGRpZmZlcmVudCBsZXZlbHMgb2YgbWFza2luZyBjb21wbGlhbmNlIGFuZCBzb2NpYWwgZGlzdGFuY2luZyBvbiB0aGUgc3ByZWFkIG9mIENPVklELTE5LCBoZWxwaW5nIHBvbGljeW1ha2VycyB1bmRlcnN0YW5kIHBvdGVudGlhbCBvdXRjb21lcyBvZiBpbnRlcnZlbnRpb25zLjwvcD48YnI+CjxoND5PdXQgT2YgU2NvcGUgVXNlPC9oND4KPHA+VGhlIG1vZGVsIG1heSBub3QgYWNjdXJhdGVseSBwcmVkaWN0IG91dGNvbWVzIGluIHJlZ2lvbnMgd2l0aCBzaWduaWZpY2FudGx5IGRpZmZlcmVudCBkZW1vZ3JhcGhpY3Mgb3IgaGVhbHRoY2FyZSBpbmZyYXN0cnVjdHVyZSB0aGFuIE5ldyBZb3JrIFN0YXRlLiBJdCBtYXkgYWxzbyBiZSBsZXNzIGFwcGxpY2FibGUgdG8gb3RoZXIgaW5mZWN0aW91cyBkaXNlYXNlcyB3aXRob3V0IG1vZGlmaWNhdGlvbi48L3A+PGJyPgo8aDI+QmlhcyBSaXNrcyBMaW1pdGF0aW9uczwvaDI+CjxoND5CaWFzZXM8L2g0Pgo8cD5UaGUgbW9kZWwgYXNzdW1lcyB1bmlmb3JtIGNvbXBsaWFuY2UgYW5kIGVmZmljYWN5IG9mIGludGVydmVudGlvbnMgYWNyb3NzIHRoZSBwb3B1bGF0aW9uLCB3aGljaCBtYXkgbm90IHJlZmxlY3QgcmVhbC13b3JsZCB2YXJpYWJpbGl0eS48L3A+PGJyPgo8aDQ+Umlza3M8L2g0Pgo8cD5UaGUgbW9kZWwncyBwcmVkaWN0aW9ucyBhcmUgc2Vuc2l0aXZlIHRvIHBhcmFtZXRlciB2YWx1ZXMsIHdoaWNoIG1heSBiZSB1bmNlcnRhaW4gb3IgdmFyeSBvdmVyIHRpbWUuPC9wPjxicj4KPGg0PkxpbWl0YXRpb25zPC9oND4KPHA+VGhlIG1vZGVsIGRvZXMgbm90IGFjY291bnQgZm9yIHNwYXRpYWwgaGV0ZXJvZ2VuZWl0eSBvciBkZW1vZ3JhcGhpYyBkaWZmZXJlbmNlcywgd2hpY2ggY291bGQgYWZmZWN0IHRyYW5zbWlzc2lvbiBkeW5hbWljcy48L3A+PGJyPgo8aDI+VGVzdGluZzwvaDI+CjxoND5WYWxpZGF0aW9uPC9oND4KPHA+VGhlIG1vZGVsIHdhcyB2YWxpZGF0ZWQgYnkgY29tcGFyaW5nIGl0cyBmb3JlY2FzdHMgd2l0aCBoaXN0b3JpY2FsIGRhdGEgZnJvbSB0aGUgQ292aWQtMTkgRm9yZWNhc3RIdWIgYW5kIEhIUyBob3NwaXRhbGl6YXRpb24gZGF0YS48L3A+PGJyPgo8aDQ+TWV0cmljczwvaDQ+CjxwPk1ldHJpY3MgdXNlZCB0byBldmFsdWF0ZSB0aGUgbW9kZWwgaW5jbHVkZSB0aGUgYWNjdXJhY3kgb2YgZm9yZWNhc3RzIGZvciBjYXNlcywgaG9zcGl0YWxpemF0aW9ucywgYW5kIGRlYXRocyBvdmVyIGEgZm91ci13ZWVrIHBlcmlvZC48L3A+PGJyPgo8aDI+R2V0dGluZyBTdGFydGVkPC9oMj4KPGg0PlN0ZXBzPC9oND4KPHVsPgo8bGk+UmV2aWV3IHRoZSBTRUlSSEQgbW9kZWwgc3RydWN0dXJlIGFuZCBwYXJhbWV0ZXJzLjwvbGk+CjxsaT5Jbml0aWFsaXplIHRoZSBtb2RlbCB3aXRoIHBvcHVsYXRpb24gYW5kIGluaXRpYWwgY29uZGl0aW9uIGRhdGEgZm9yIE5ldyBZb3JrIFN0YXRlLjwvbGk+CjxsaT5JbXBsZW1lbnQgbWFza2luZyBhbmQgc29jaWFsIGRpc3RhbmNpbmcgaW50ZXJ2ZW50aW9ucyBhcyBkZXNjcmliZWQgaW4gdGhlIGRvY3VtZW50LjwvbGk+CjxsaT5SdW4gc2ltdWxhdGlvbnMgdG8gZm9yZWNhc3QgY2FzZXMsIGhvc3BpdGFsaXphdGlvbnMsIGFuZCBkZWF0aHMuPC9saT4KPGxpPkNvbXBhcmUgc2ltdWxhdGlvbiByZXN1bHRzIHdpdGggaGlzdG9yaWNhbCBkYXRhIGZvciB2YWxpZGF0aW9uLjwvbGk+CjwvdWw+PGJyPgo8aDQ+RXhhbXBsZXM8L2g0Pgo8dWw+CjxsaT5FeGFtcGxlIDE6IFNpbXVsYXRlIHRoZSBpbXBhY3Qgb2YgNjAlIG1hc2tpbmcgY29tcGxpYW5jZSBvbiBDT1ZJRC0xOSBzcHJlYWQuPC9saT4KPGxpPkV4YW1wbGUgMjogRm9yZWNhc3Qgb3V0Y29tZXMgd2l0aCBhIDUwJSByZWR1Y3Rpb24gaW4gY29udGFjdCByYXRlIGR1ZSB0byBzb2NpYWwgZGlzdGFuY2luZy48L2xpPgo8L3VsPjxicj4KPGgyPkdsb3NzYXJ5PC9oMj4KPHVsPgo8bGk+U0VJUkhEOiBBIGNvbXBhcnRtZW50YWwgbW9kZWwgcmVwcmVzZW50aW5nIFN1c2NlcHRpYmxlLCBFeHBvc2VkLCBJbmZlY3RlZCwgSG9zcGl0YWxpemVkLCBSZWNvdmVyZWQsIGFuZCBEZWFkIHN0YXRlcy48L2xpPgo8bGk+TlBJOiBOb24tcGhhcm1hY2V1dGljYWwgaW50ZXJ2ZW50aW9ucywgc3VjaCBhcyBtYXNraW5nIGFuZCBzb2NpYWwgZGlzdGFuY2luZy48L2xpPgo8bGk+zrIgKGJldGEpOiBUcmFuc21pc3Npb24gcmF0ZSwgcmVwcmVzZW50aW5nIG5ldyBpbmZlY3Rpb25zIHBlciBpbmZlY3RlZCBwZXJzb24gcGVyIGRheS48L2xpPgo8L3VsPjxicj4KPGgyPkF1dGhvcnM8L2gyPgo8dWw+CjxsaT5BdXRob3IgMTwvbGk+CjxsaT5BdXRob3IgMjwvbGk+CjxsaT5BdXRob3IgMzwvbGk+CjwvdWw+PGJyPgo8aDI+Q2l0YXRpb25zPC9oMj4KPHVsPgo8bGk+U3JpdmFzdGF2IGV0IGFsLiAoRE9JOiAxMC4zOTM0L21iZS4yMDIxMDEwKTwvbGk+CjxsaT5odHRwczovL2RvaS5vcmcvMTAuMzM5MC9pamVycGgxODE3OTAyNzwvbGk+CjxsaT5odHRwczovL2RvaS5vcmcvMTAuMTA5OC9yc3BhLjIwMjAuMDM3NjwvbGk+CjwvdWw+PGJyPgo8aDI+TW9yZSBJbmZvcm1hdGlvbjwvaDI+CjxoND5GdW5kZWQgQnk8L2g0Pgo8cD5OYXRpb25hbCBJbnN0aXR1dGVzIG9mIEhlYWx0aCAoTklIKTwvcD48YnI+CjxoND5MaW5rczwvaDQ+Cjx1bD4KPGxpPmh0dHBzOi8vaGVhbHRoZGF0YS5nb3YvSG9zcGl0YWwvQ09WSUQtMTktUmVwb3J0ZWQtUGF0aWVudC1JbXBhY3QtYW5kLUhvc3BpdGFsLUNhcGEvZzYyaHN5ZWg8L2xpPgo8bGk+aHR0cHM6Ly9naXRodWIuY29tL21vYnMtbGFiL21peGluZy1wYXR0ZXJucy90cmVlL21haW48L2xpPgo8L3VsPjxicj4K",
+    "gollmCard": {
+      "summary": "The document describes a SEIRHD model used to forecast the spread of COVID-19 in New York State, focusing on the impact of non-pharmaceutical interventions (NPIs) such as masking and social distancing. The model is structured with differential equations representing transitions between states: Susceptible (S), Exposed (E), Infected (I), Hospitalized (H), Recovered (R), and Dead (D). The model incorporates parameters like transmission rate (β), transition rates (r), and probabilities (p) for moving between states. The model is used to simulate scenarios with varying levels of masking compliance and social distancing to predict cases, hospitalizations, and deaths. The model can likely be represented in Petri Net format due to its state-transition structure.",
+      "specs": {
+        "domain": [
+          "Epidemiology",
+          "Public Health",
+          "Infectious Disease Modeling"
+        ],
+        "type": "Mathematical Model",
+        "specification": "The SEIRHD model consists of six states: Susceptible (S), Exposed (E), Infected (I), Hospitalized (H), Recovered (R), and Dead (D). It uses differential equations to model transitions between these states. The model includes parameters such as the transmission rate (β = 0.4), transition rates (e.g., r(E→I) = 0.2/day), and probabilities (e.g., p(I→R) = 0.8). The model is initialized with a population size of 19.34 million, representing New York State in 2020.",
+        "states": [
+          "Susceptible (S): Represents individuals not yet exposed to the virus. Units: individuals. Transitions to Exposed (E) based on contact with Infected (I).",
+          "Exposed (E): Represents individuals exposed to the virus but not yet infectious. Units: individuals. Transitions to Infected (I) at rate r(E→I).",
+          "Infected (I): Represents individuals who are infectious. Units: individuals. Transitions to Hospitalized (H) or Recovered (R) based on probabilities p(I→H) and p(I→R).",
+          "Hospitalized (H): Represents individuals hospitalized due to infection. Units: individuals. Transitions to Recovered (R) or Dead (D) based on probabilities p(H→R) and p(H→D).",
+          "Recovered (R): Represents individuals who have recovered from the infection. Units: individuals. No further transitions.",
+          "Dead (D): Represents individuals who have died from the infection. Units: individuals. No further transitions."
+        ],
+        "parameters": [
+          "Transmission rate (β): 0.4 new infections per infected person/day.",
+          "Transition rate r(E→I): 0.2/day.",
+          "Probability p(I→R): 0.8.",
+          "Probability p(I→H): 0.2.",
+          "Transition rate r(I→R): 0.07/day.",
+          "Transition rate r(I→H): 0.1/day.",
+          "Transition rate r(H→R): 0.1/day.",
+          "Transition rate r(H→D): 0.1/day.",
+          "Probability p(H→R): 0.88.",
+          "Probability p(H→D): 0.12."
+        ]
+      },
+      "uses": {
+        "directUse": "The model can be used to simulate the impact of different levels of masking compliance and social distancing on the spread of COVID-19, helping policymakers understand potential outcomes of interventions.",
+        "outOfScopeUse": "The model may not accurately predict outcomes in regions with significantly different demographics or healthcare infrastructure than New York State. It may also be less applicable to other infectious diseases without modification."
+      },
+      "biasRisksLimitations": {
+        "biases": "The model assumes uniform compliance and efficacy of interventions across the population, which may not reflect real-world variability.",
+        "risks": "The model's predictions are sensitive to parameter values, which may be uncertain or vary over time.",
+        "limitations": "The model does not account for spatial heterogeneity or demographic differences, which could affect transmission dynamics."
+      },
+      "testing": {
+        "validation": "The model was validated by comparing its forecasts with historical data from the Covid-19 ForecastHub and HHS hospitalization data.",
+        "metrics": "Metrics used to evaluate the model include the accuracy of forecasts for cases, hospitalizations, and deaths over a four-week period."
+      },
+      "gettingStarted": {
+        "steps": [
+          "Review the SEIRHD model structure and parameters.",
+          "Initialize the model with population and initial condition data for New York State.",
+          "Implement masking and social distancing interventions as described in the document.",
+          "Run simulations to forecast cases, hospitalizations, and deaths.",
+          "Compare simulation results with historical data for validation."
+        ],
+        "examples": [
+          "Example 1: Simulate the impact of 60% masking compliance on COVID-19 spread.",
+          "Example 2: Forecast outcomes with a 50% reduction in contact rate due to social distancing."
+        ]
+      },
+      "glossary": [
+        "SEIRHD: A compartmental model representing Susceptible, Exposed, Infected, Hospitalized, Recovered, and Dead states.",
+        "NPI: Non-pharmaceutical interventions, such as masking and social distancing.",
+        "β (beta): Transmission rate, representing new infections per infected person per day."
+      ],
+      "authors": [
+        "Author 1",
+        "Author 2",
+        "Author 3"
+      ],
+      "citations": [
+        "Srivastav et al. (DOI: 10.3934/mbe.2021010)",
+        "https://doi.org/10.3390/ijerph18179027",
+        "https://doi.org/10.1098/rspa.2020.0376"
+      ],
+      "moreInformation": {
+        "fundedBy": "National Institutes of Health (NIH)",
+        "links": [
+          "https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62hsyeh",
+          "https://github.com/mobs-lab/mixing-patterns/tree/main"
+        ]
+      }
+    },
+    "gollmExtractions": null,
+    "templateCard": null
+  }
+}
