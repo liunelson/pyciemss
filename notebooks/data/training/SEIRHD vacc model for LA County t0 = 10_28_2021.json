@@ -416,47 +416,47 @@
         },
         {
           "target": "I_unvaccinated",
-          "expression": "3458.66666666667",
+          "expression": "74627.5033984375",
           "expression_mathml": "<cn>3458.6666666666665</cn>"
         },
         {
           "target": "E_unvaccinated",
-          "expression": "6917.33333333333",
+          "expression": "18685.229697265626",
           "expression_mathml": "<cn>6917.333333333333</cn>"
         },
         {
           "target": "S_vaccinated",
-          "expression": "5977629.36",
+          "expression": "5800387.06",
           "expression_mathml": "<cn>5977629.3599999994</cn>"
         },
         {
           "target": "E_vaccinated",
-          "expression": "3458.66666666667",
+          "expression": "13871.368671875",
           "expression_mathml": "<cn>3458.6666666666665</cn>"
         },
         {
           "target": "I_vaccinated",
-          "expression": "1729.33333333333",
+          "expression": "57201.92359375",
           "expression_mathml": "<cn>1729.3333333333333</cn>"
         },
         {
           "target": "H",
-          "expression": "673",
+          "expression": "1870.0147839355468",
           "expression_mathml": "<cn>673</cn>"
         },
         {
           "target": "R",
-          "expression": "1484896",
+          "expression": "1492107.08875",
           "expression_mathml": "<cn>1484896</cn>"
         },
         {
           "target": "D",
-          "expression": "26604",
+          "expression": "27094.82611328125",
           "expression_mathml": "<cn>26604</cn>"
         },
         {
           "target": "Cumulative_cases",
-          "expression": "1490084",
+          "expression": "1625624.34375",
           "expression_mathml": "<cn>1490084</cn>"
         }
       ],

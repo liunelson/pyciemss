@@ -306,37 +306,37 @@
         {
           "target": "S",
           "description": "Susceptible individuals in the population who have not been exposed to the virus.",
-          "expression": "0.0",
+          "expression": "8302263.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
           "target": "I",
           "description": "Infected individuals who are capable of spreading the virus.",
-          "expression": "0.0",
+          "expression": "10376.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
           "target": "E",
           "description": "Exposed individuals who have been infected but are not yet infectious.",
-          "expression": "0.0",
+          "expression": "5188.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
           "target": "H",
           "description": "Hospitalized individuals receiving medical care due to severe symptoms.",
-          "expression": "0.0",
+          "expression": "673.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
           "target": "R",
           "description": "Recovered individuals who have overcome the infection and gained immunity.",
-          "expression": "0.0",
+          "expression": "14784896.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
           "target": "D",
           "description": "Deceased individuals who have succumbed to the infection.",
-          "expression": "0.0",
+          "expression": "26604.0",
           "expression_mathml": "<cn>0.0</cn>"
         }
       ],
@@ -352,7 +352,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 9830000,
           "units": {
             "expression": "person",
             "expression_mathml": "<ci>person</ci>"
@@ -369,10 +369,17 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.45,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
+          },
+          "distribution": {
+            "type": "StandardUniform1",
+            "parameters": {
+              "minimum": 0.4,
+              "maximum": 0.5
+            }
           }
         },
         {
@@ -386,10 +393,17 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.2,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "distribution": {
+            "type": "StandardUniform1",
+            "parameters": {
+              "minimum": 0.1,
+              "maximum": 0.25
+            }
           }
         },
         {
@@ -403,7 +417,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.2,
           "units": {
             "expression": "dimensionless",
             "expression_mathml": "<cn>1</cn>"
@@ -420,7 +434,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.1,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -437,10 +451,17 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.8,
           "units": {
             "expression": "dimensionless",
             "expression_mathml": "<cn>1</cn>"
+          },
+          "distribution": {
+            "type": "StandardUniform1",
+            "parameters": {
+              "minimum": 0.063,
+              "maximum": 0.077
+            }
           }
         },
         {
@@ -454,7 +475,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.07,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -471,7 +492,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.12,
           "units": {
             "expression": "dimensionless",
             "expression_mathml": "<cn>1</cn>"
@@ -488,10 +509,17 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.1,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "distribution": {
+            "type": "StandardUniform1",
+            "parameters": {
+              "minimum": 0.09,
+              "maximum": 0.11
+            }
           }
         },
         {
@@ -505,7 +533,7 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.88,
           "units": {
             "expression": "dimensionless",
             "expression_mathml": "<cn>1</cn>"
@@ -522,10 +550,17 @@
             "context": {},
             "modifiers": {}
           },
-          "value": 0,
+          "value": 0.16,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "distribution": {
+            "type": "StandardUniform1",
+            "parameters": {
+              "minimum": 0.12,
+              "maximum": 0.2
+            }
           }
         }
       ],
