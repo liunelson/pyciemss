@@ -129,7 +129,11 @@ for p in pois_:
     x = (x - y.min()) / (x.max() - x.min())
     y = (y - y.min()) / (y.max() - y.min())
     coef = np.polyfit(x, y, 1)
-    poi_scores.append(np.abs(coef[0]))
+
+    poi_scores.append(coef[0])
+
+# Sort the scores in descending order of their absolute value
+poi_scores = sorted(poi_scores, key = abs, reverse = True)
 
 # %%
 fig, axes = plt.subplots(1, 2, figsize = (8, 4))
@@ -142,6 +146,15 @@ for ax, p, s in zip(axes, pois_, poi_scores):
     __ = ax.plot(x, np.poly1d(coef)(x), label = 'Fit')
     __ = plt.setp(ax, xlabel = f'Normalized {p}', ylabel = ooi, title = f'Score = {s:.5f}')
     __ = ax.legend()
+
+# %%
+fig, ax = plt.subplots(1, 1, figsize = (4, 3))
+
+__ = ax.plot(np.zeros((len(pois), )), [-1, 3], color = 'k', linewidth = 0.75)
+__ = ax.barh(pois, poi_scores)
+
+__ = plt.setp(ax, ylim = (-0.5, 1.5), xlabel = 'Sensitivity Score', ylabel = 'Model Parameters')
+__ = ax.invert_yaxis()
 
 # %%
 # Scatter plot
