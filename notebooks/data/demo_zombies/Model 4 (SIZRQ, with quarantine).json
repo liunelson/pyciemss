@@ -1,0 +1,722 @@
+{
+  "id": "810da102-7f92-47e4-bb46-56e29eff860a",
+  "createdOn": "2025-02-21T23:42:23.777+00:00",
+  "updatedOn": "2025-02-22T00:08:47.500+00:00",
+  "name": "Model 4 (SIZRQ, with quarantine)",
+  "fileNames": [],
+  "temporary": false,
+  "publicAsset": false,
+  "header": {
+    "name": "Model 4 (SIZRQ, with quarantine)",
+    "description": "Model",
+    "schema": "https://raw.githubusercontent.com/DARPA-ASKEM/Model-Representations/petrinet_v0.6/petrinet/petrinet_schema.json",
+    "schema_name": "petrinet",
+    "model_version": "0.1"
+  },
+  "model": {
+    "states": [
+      {
+        "id": "S",
+        "name": "S(t)",
+        "description": "Susceptible individuals who have not been infected by zombies.",
+        "grounding": {
+          "id": "c2bc8139-137e-43c0-bfa5-61531cba6bc3",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000514"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "S"
+      },
+      {
+        "id": "Z",
+        "name": "Z(t)",
+        "description": "Individuals who have been turned into zombies.",
+        "grounding": {
+          "id": "50c09609-f235-4a3b-8ecf-622f82a240f5",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {},
+          "context": {},
+          "modifiers": {},
+          "empty": true
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "Z"
+      },
+      {
+        "id": "I",
+        "name": "I(t)",
+        "description": "Infected individuals who are in the latent period before becoming zombies.",
+        "grounding": {
+          "id": "e79fda1b-2600-4806-ad9b-0540e4fbeab7",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000511"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "I"
+      },
+      {
+        "id": "R",
+        "name": "R(t)",
+        "description": "Removed individuals who have died from natural causes or zombie attacks.",
+        "grounding": {
+          "id": "71e3b40e-e36d-443c-9c89-14bbe20ac7e3",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000592"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "R"
+      },
+      {
+        "id": "Q",
+        "name": "Q(t)",
+        "description": "Quarantined individuals who are either infected or zombies and are isolated from the population.",
+        "grounding": {
+          "id": "93ede9f3-b913-4351-a619-b664d801c85a",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {},
+          "context": {},
+          "modifiers": {},
+          "empty": true
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "Q"
+      }
+    ],
+    "transitions": [
+      {
+        "id": "t0",
+        "name": null,
+        "description": "Birth of new susceptible individuals.",
+        "grounding": null,
+        "input": [],
+        "output": [
+          "S"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t0",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t0"
+      },
+      {
+        "id": "t1",
+        "name": null,
+        "description": "Transmission of zombification from zombies to susceptible individuals.",
+        "grounding": {
+          "id": "96d9e1f0-f1eb-4c12-af64-6153710ebfe3",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000511"
+          },
+          "context": {
+            "stage": "mild",
+            "species": "ncbitaxon:9606"
+          },
+          "modifiers": {},
+          "empty": false
+        },
+        "input": [
+          "Z",
+          "S"
+        ],
+        "output": [
+          "Z",
+          "I"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t1",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t1"
+      },
+      {
+        "id": "t2",
+        "name": null,
+        "description": "Natural death of susceptible individuals.",
+        "grounding": {
+          "id": "7040f978-7569-411d-ad9c-61b64ed89d47",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000511"
+          },
+          "context": {
+            "stage": "severe",
+            "species": "ncbitaxon:9606"
+          },
+          "modifiers": {},
+          "empty": false
+        },
+        "input": [
+          "S"
+        ],
+        "output": [
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t2",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t2"
+      },
+      {
+        "id": "t3",
+        "name": null,
+        "description": "Death of infected individuals and their transition to the removed class.",
+        "grounding": null,
+        "input": [
+          "I"
+        ],
+        "output": [
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t3",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t3"
+      },
+      {
+        "id": "t4",
+        "name": null,
+        "description": "Transition of infected individuals to zombies.",
+        "grounding": null,
+        "input": [
+          "I"
+        ],
+        "output": [
+          "Q"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t4",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t4"
+      },
+      {
+        "id": "t5",
+        "name": null,
+        "description": "Destruction of zombies by susceptible individuals.",
+        "grounding": null,
+        "input": [
+          "I"
+        ],
+        "output": [
+          "Z"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t5",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t5"
+      },
+      {
+        "id": "t6",
+        "name": null,
+        "description": "Quarantine of zombies.",
+        "grounding": null,
+        "input": [
+          "S",
+          "Z"
+        ],
+        "output": [
+          "S",
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t6",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t6"
+      },
+      {
+        "id": "t7",
+        "name": null,
+        "description": "Resurrection of removed individuals as zombies.",
+        "grounding": null,
+        "input": [
+          "Z"
+        ],
+        "output": [
+          "Q"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t7",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t7"
+      },
+      {
+        "id": "t8",
+        "name": null,
+        "description": "Destruction of quarantined zombies.",
+        "grounding": null,
+        "input": [
+          "R"
+        ],
+        "output": [
+          "Z"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t8",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t8"
+      },
+      {
+        "id": "t9",
+        "name": null,
+        "description": "Transition of quarantined zombies back to the removed class.",
+        "grounding": null,
+        "input": [
+          "Q"
+        ],
+        "output": [
+          "R"
+        ],
+        "expression": null,
+        "properties": {
+          "name": "t9",
+          "grounding": null,
+          "description": null
+        },
+        "conceptReference": "t9"
+      }
+    ]
+  },
+  "properties": {},
+  "semantics": {
+    "ode": {
+      "rates": [
+        {
+          "target": "t0",
+          "description": "Birth of new susceptible individuals.",
+          "expression": "Pi",
+          "expression_mathml": "<ci>Pi</ci>"
+        },
+        {
+          "target": "t1",
+          "description": "Transmission of zombification from zombies to susceptible individuals.",
+          "expression": "S*Z*beta",
+          "expression_mathml": "<apply><times/><ci>S</ci><ci>Z</ci><ci>beta</ci></apply>"
+        },
+        {
+          "target": "t2",
+          "description": "Natural death of susceptible individuals.",
+          "expression": "S*delta",
+          "expression_mathml": "<apply><times/><ci>S</ci><ci>delta</ci></apply>"
+        },
+        {
+          "target": "t3",
+          "description": "Death of infected individuals and their transition to the removed class.",
+          "expression": "I*delta",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>delta</ci></apply>"
+        },
+        {
+          "target": "t4",
+          "description": "Transition of infected individuals to zombies.",
+          "expression": "I*kappa",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>kappa</ci></apply>"
+        },
+        {
+          "target": "t5",
+          "description": "Destruction of zombies by susceptible individuals.",
+          "expression": "I*rho",
+          "expression_mathml": "<apply><times/><ci>I</ci><ci>rho</ci></apply>"
+        },
+        {
+          "target": "t6",
+          "description": "Quarantine of zombies.",
+          "expression": "S*Z*alpha",
+          "expression_mathml": "<apply><times/><ci>S</ci><ci>Z</ci><ci>alpha</ci></apply>"
+        },
+        {
+          "target": "t7",
+          "description": "Resurrection of removed individuals as zombies.",
+          "expression": "Z*sigma",
+          "expression_mathml": "<apply><times/><ci>Z</ci><ci>sigma</ci></apply>"
+        },
+        {
+          "target": "t8",
+          "description": "Destruction of quarantined zombies.",
+          "expression": "R*zeta",
+          "expression_mathml": "<apply><times/><ci>R</ci><ci>zeta</ci></apply>"
+        },
+        {
+          "target": "t9",
+          "description": "Transition of quarantined zombies back to the removed class.",
+          "expression": "Q*gamma",
+          "expression_mathml": "<apply><times/><ci>Q</ci><ci>gamma</ci></apply>"
+        }
+      ],
+      "initials": [
+        {
+          "target": "S",
+          "description": "Susceptible individuals who have not been infected by zombies.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "Z",
+          "description": "Individuals who have been turned into zombies.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "I",
+          "description": "Infected individuals who are in the latent period before becoming zombies.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "R",
+          "description": "Removed individuals who have died from natural causes or zombie attacks.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        },
+        {
+          "target": "Q",
+          "description": "Quarantined individuals who are either infected or zombies and are isolated from the population.",
+          "expression": "0.0",
+          "expression_mathml": "<cn>0.0</cn>"
+        }
+      ],
+      "parameters": [
+        {
+          "id": "Pi",
+          "name": "Pi",
+          "description": "Birth rate of susceptible individuals.",
+          "grounding": {
+            "id": "4f6d23dc-d329-41c9-978e-850f72de21d5",
+            "identifiers": {
+              "ido": "0000511"
+            },
+            "context": {
+              "stage": "predromal",
+              "species": "ncbitaxon:9606"
+            },
+            "modifiers": {},
+            "empty": false
+          },
+          "value": 0,
+          "units": {
+            "expression": "person/day",
+            "expression_mathml": "<apply><divide/><ci>person</ci><ci>day</ci></apply>"
+          },
+          "conceptReference": "Pi"
+        },
+        {
+          "id": "beta",
+          "name": "beta",
+          "description": "Transmission rate of zombification through contact between susceptible individuals and zombies.",
+          "value": 0,
+          "units": {
+            "expression": "1/(person*day)",
+            "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
+          },
+          "conceptReference": "beta"
+        },
+        {
+          "id": "delta",
+          "name": "delta",
+          "description": "Natural death rate of susceptible individuals.",
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "delta"
+        },
+        {
+          "id": "kappa",
+          "name": "kappa",
+          "description": "Rate at which infected individuals become zombies.",
+          "grounding": {
+            "id": "51459cf1-f931-4ba2-94e6-fe543b37dad8",
+            "identifiers": {
+              "ido": "0000511"
+            },
+            "context": {
+              "stage": "predromal",
+              "species": "ncbitaxon:9606"
+            },
+            "modifiers": {},
+            "empty": false
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "kappa"
+        },
+        {
+          "id": "rho",
+          "name": "rho",
+          "description": "Rate at which zombies are removed from the population through destruction.",
+          "grounding": {
+            "id": "ac92a17d-3268-421b-8d57-760e21e120e8",
+            "identifiers": {
+              "ido": "0000511"
+            },
+            "context": {
+              "hospitalization": "ncit:C25179",
+              "species": "ncbitaxon:9606"
+            },
+            "modifiers": {},
+            "empty": false
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "rho"
+        },
+        {
+          "id": "alpha",
+          "name": "alpha",
+          "description": "Rate at which susceptible individuals destroy zombies during encounters.",
+          "grounding": {
+            "id": "0b4b242d-b651-4920-a03e-8ecc3aed5ff8",
+            "identifiers": {
+              "ido": "0000511"
+            },
+            "context": {
+              "stage": "predromal",
+              "species": "ncbitaxon:9606"
+            },
+            "modifiers": {},
+            "empty": false
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/(person*day)",
+            "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
+          },
+          "conceptReference": "alpha"
+        },
+        {
+          "id": "sigma",
+          "name": "sigma",
+          "description": "Rate at which zombies are quarantined.",
+          "grounding": {
+            "id": "5f5bb24d-096a-43c3-bdf8-3a762eef30d6",
+            "identifiers": {
+              "ido": "0000514"
+            },
+            "context": {},
+            "modifiers": {},
+            "empty": false
+          },
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "sigma"
+        },
+        {
+          "id": "zeta",
+          "name": "zeta",
+          "description": "Rate at which removed individuals resurrect as zombies.",
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "zeta"
+        },
+        {
+          "id": "gamma",
+          "name": "gamma",
+          "description": "Rate at which quarantined zombies are destroyed.",
+          "value": 0,
+          "units": {
+            "expression": "1/day",
+            "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
+          },
+          "conceptReference": "gamma"
+        }
+      ],
+      "observables": [],
+      "time": {
+        "id": "t",
+        "units": {
+          "expression": "date",
+          "expression_mathml": "<ci>date</ci>"
+        }
+      }
+    },
+    "span": [],
+    "typing": null
+  },
+  "metadata": {
+    "annotations": {
+      "authors": [],
+      "references": [],
+      "locations": [],
+      "pathogens": [],
+      "diseases": [],
+      "hosts": [],
+      "model_types": []
+    },
+    "source": null,
+    "description": "PGgyPlN1bW1hcnk8L2gyPgo8cD5UaGUgbW9kZWwgZGVzY3JpYmVkIGluIHRoZSBkb2N1bWVudCBpcyBhIG1hdGhlbWF0aWNhbCByZXByZXNlbnRhdGlvbiBvZiBhIHpvbWJpZSBvdXRicmVhaywgdXNpbmcgYXNzdW1wdGlvbnMgYmFzZWQgb24gcG9wdWxhciB6b21iaWUgbW92aWVzLiBUaGUgbW9kZWwgaXMgc3RydWN0dXJlZCB0byBzaW11bGF0ZSB0aGUgZHluYW1pY3Mgb2YgYSB6b21iaWUgaW5mZWN0aW9uLCBpbmNsdWRpbmcgdGhlIGludGVyYWN0aW9ucyBiZXR3ZWVuIHN1c2NlcHRpYmxlIGh1bWFucywgem9tYmllcywgYW5kIHJlbW92ZWQgaW5kaXZpZHVhbHMuIFRoZSBtb2RlbCBpcyBleHRlbmRlZCB0byBpbmNsdWRlIGxhdGVudCBpbmZlY3Rpb24sIHF1YXJhbnRpbmUsIGFuZCB0cmVhdG1lbnQgc2NlbmFyaW9zLCBhbmQgaXQgZXhwbG9yZXMgdGhlIGltcGFjdCBvZiBpbXB1bHNpdmUgZXJhZGljYXRpb24gc3RyYXRlZ2llcy4gVGhlIG1vZGVsIGNhbiBsaWtlbHkgYmUgcmVwcmVzZW50ZWQgaW4gUGV0cmkgTmV0IGZvcm1hdCwgYXMgaXQgaW52b2x2ZXMgdHJhbnNpdGlvbnMgYmV0d2VlbiBkaWZmZXJlbnQgc3RhdGVzIChlLmcuLCBzdXNjZXB0aWJsZSwgaW5mZWN0ZWQsIHpvbWJpZSwgcmVtb3ZlZCkgYW5kIHBhcmFtZXRlcnMgdGhhdCBnb3Zlcm4gdGhlc2UgdHJhbnNpdGlvbnMuPC9wPjxicj4KPGgyPlNwZWNzPC9oMj4KPGg0PkRvbWFpbjwvaDQ+Cjx1bD4KPGxpPkVwaWRlbWlvbG9neTwvbGk+CjxsaT5JbmZlY3Rpb3VzIERpc2Vhc2UgTW9kZWxpbmc8L2xpPgo8bGk+TWF0aGVtYXRpY2FsIEJpb2xvZ3k8L2xpPgo8L3VsPjxicj4KPGg0PlR5cGU8L2g0Pgo8cD5NYXRoZW1hdGljYWwgTW9kZWw8L3A+PGJyPgo8aDQ+U3BlY2lmaWNhdGlvbjwvaDQ+CjxwPlRoZSBtb2RlbCBjb25zaXN0cyBvZiBzZXZlcmFsIHN0YXRlczogU3VzY2VwdGlibGUgKFMpLCBab21iaWUgKFopLCBJbmZlY3RlZCAoSSksIFJlbW92ZWQgKFIpLCBhbmQgUXVhcmFudGluZWQgKFEpLiBJdCBpbmNsdWRlcyBwYXJhbWV0ZXJzIHN1Y2ggYXMgdHJhbnNtaXNzaW9uIHJhdGUgKGJldGEpLCBuYXR1cmFsIGRlYXRoIHJhdGUgKGRlbHRhKSwgem9tYmlmaWNhdGlvbiByYXRlIChyaG8pLCBhbmQgcXVhcmFudGluZSByYXRlIChrYXBwYSkuIFRoZSBtb2RlbCB1c2VzIG9yZGluYXJ5IGRpZmZlcmVudGlhbCBlcXVhdGlvbnMgKE9ERXMpIHRvIGRlc2NyaWJlIHRoZSBkeW5hbWljcyBvZiB0aGUgc3lzdGVtLCB3aXRoIG1hc3MtYWN0aW9uIHRyYW5zbWlzc2lvbiB0ZXJtcyBhbmQgbm9ubGluZWFyIGludGVyYWN0aW9ucy48L3A+PGJyPgo8aDQ+U3RhdGVzPC9oND4KPHVsPgo8bGk+U3VzY2VwdGlibGUgKFMpOiBSZXByZXNlbnRzIHRoZSBwb3B1bGF0aW9uIG9mIGh1bWFucyB3aG8gYXJlIG5vdCB5ZXQgaW5mZWN0ZWQuIE1lYXN1cmVkIGluIG51bWJlciBvZiBpbmRpdmlkdWFscy4gVHJhbnNpdGlvbnMgdG8gSW5mZWN0ZWQgKEkpIG9yIFpvbWJpZSAoWikgdXBvbiBjb250YWN0IHdpdGggYSB6b21iaWUuPC9saT4KPGxpPlpvbWJpZSAoWik6IFJlcHJlc2VudHMgdGhlIHBvcHVsYXRpb24gb2Ygem9tYmllcy4gTWVhc3VyZWQgaW4gbnVtYmVyIG9mIGluZGl2aWR1YWxzLiBDYW4gdHJhbnNpdGlvbiB0byBSZW1vdmVkIChSKSBpZiBkZXN0cm95ZWQgb3IgdG8gUXVhcmFudGluZWQgKFEpIGlmIGNhcHR1cmVkLjwvbGk+CjxsaT5JbmZlY3RlZCAoSSk6IFJlcHJlc2VudHMgaHVtYW5zIHdobyBoYXZlIGJlZW4gYml0dGVuIGFuZCBhcmUgaW4gdGhlIGxhdGVudCBwZXJpb2QgYmVmb3JlIGJlY29taW5nIHpvbWJpZXMuIE1lYXN1cmVkIGluIG51bWJlciBvZiBpbmRpdmlkdWFscy4gQ2FuIHRyYW5zaXRpb24gdG8gWm9tYmllIChaKSBvciBSZW1vdmVkIChSKS48L2xpPgo8bGk+UmVtb3ZlZCAoUik6IFJlcHJlc2VudHMgaW5kaXZpZHVhbHMgd2hvIGhhdmUgZGllZCBmcm9tIG5hdHVyYWwgY2F1c2VzIG9yIGJlZW4gZGVzdHJveWVkIGFzIHpvbWJpZXMuIE1lYXN1cmVkIGluIG51bWJlciBvZiBpbmRpdmlkdWFscy4gQ2FuIHRyYW5zaXRpb24gYmFjayB0byBab21iaWUgKFopIGlmIHJlYW5pbWF0ZWQuPC9saT4KPGxpPlF1YXJhbnRpbmVkIChRKTogUmVwcmVzZW50cyB6b21iaWVzIHRoYXQgaGF2ZSBiZWVuIGNhcHR1cmVkIGFuZCBpc29sYXRlZC4gTWVhc3VyZWQgaW4gbnVtYmVyIG9mIGluZGl2aWR1YWxzLiBDYW4gdHJhbnNpdGlvbiB0byBSZW1vdmVkIChSKSBpZiBkZXN0cm95ZWQuPC9saT4KPC91bD48YnI+CjxoND5QYXJhbWV0ZXJzPC9oND4KPHVsPgo8bGk+VHJhbnNtaXNzaW9uIHJhdGUgKGJldGEpOiBUaGUgcmF0ZSBhdCB3aGljaCBzdXNjZXB0aWJsZSBpbmRpdmlkdWFscyBiZWNvbWUgaW5mZWN0ZWQgdXBvbiBjb250YWN0IHdpdGggem9tYmllcy4gVW5pdDogcGVyIGluZGl2aWR1YWwgcGVyIHRpbWUuPC9saT4KPGxpPk5hdHVyYWwgZGVhdGggcmF0ZSAoZGVsdGEpOiBUaGUgcmF0ZSBhdCB3aGljaCBzdXNjZXB0aWJsZSBhbmQgaW5mZWN0ZWQgaW5kaXZpZHVhbHMgZGllIGZyb20gbm9uLXpvbWJpZS1yZWxhdGVkIGNhdXNlcy4gVW5pdDogcGVyIGluZGl2aWR1YWwgcGVyIHRpbWUuPC9saT4KPGxpPlpvbWJpZmljYXRpb24gcmF0ZSAocmhvKTogVGhlIHJhdGUgYXQgd2hpY2ggaW5mZWN0ZWQgaW5kaXZpZHVhbHMgYmVjb21lIHpvbWJpZXMuIFVuaXQ6IHBlciBpbmRpdmlkdWFsIHBlciB0aW1lLjwvbGk+CjxsaT5RdWFyYW50aW5lIHJhdGUgKGthcHBhKTogVGhlIHJhdGUgYXQgd2hpY2ggaW5mZWN0ZWQgb3Igem9tYmllIGluZGl2aWR1YWxzIGFyZSBjYXB0dXJlZCBhbmQgaXNvbGF0ZWQuIFVuaXQ6IHBlciBpbmRpdmlkdWFsIHBlciB0aW1lLjwvbGk+CjxsaT5ab21iaWUgZGVzdHJ1Y3Rpb24gcmF0ZSAoYWxwaGEpOiBUaGUgcmF0ZSBhdCB3aGljaCB6b21iaWVzIGFyZSBkZXN0cm95ZWQgYnkgaHVtYW5zLiBVbml0OiBwZXIgaW5kaXZpZHVhbCBwZXIgdGltZS48L2xpPgo8bGk+UmVhbmltYXRpb24gcmF0ZSAoemV0YSk6IFRoZSByYXRlIGF0IHdoaWNoIHJlbW92ZWQgaW5kaXZpZHVhbHMgYXJlIHJlYW5pbWF0ZWQgYXMgem9tYmllcy4gVW5pdDogcGVyIGluZGl2aWR1YWwgcGVyIHRpbWUuPC9saT4KPC91bD48YnI+CjxoMj5Vc2VzPC9oMj4KPGg0PkRpcmVjdCBVc2U8L2g0Pgo8cD5UaGUgbW9kZWwgY2FuIGJlIHVzZWQgdG8gc2ltdWxhdGUgdGhlIHNwcmVhZCBvZiBhIHpvbWJpZSBpbmZlY3Rpb24gYW5kIGV2YWx1YXRlIHRoZSBlZmZlY3RpdmVuZXNzIG9mIGRpZmZlcmVudCBpbnRlcnZlbnRpb24gc3RyYXRlZ2llcywgc3VjaCBhcyBxdWFyYW50aW5lLCB0cmVhdG1lbnQsIGFuZCBlcmFkaWNhdGlvbiBlZmZvcnRzLjwvcD48YnI+CjxoND5PdXQgT2YgU2NvcGUgVXNlPC9oND4KPHA+VXNpbmcgdGhlIG1vZGVsIHRvIHByZWRpY3QgcmVhbC13b3JsZCBpbmZlY3Rpb3VzIGRpc2Vhc2Ugb3V0YnJlYWtzIHdpdGhvdXQgY29uc2lkZXJpbmcgdGhlIHNwZWNpZmljIGJpb2xvZ2ljYWwgbWVjaGFuaXNtcyBhbmQgcGFyYW1ldGVycyBvZiB0aGUgZGlzZWFzZSB3b3VsZCBiZSBpbmFwcHJvcHJpYXRlLjwvcD48YnI+CjxoMj5CaWFzIFJpc2tzIExpbWl0YXRpb25zPC9oMj4KPGg0PkJpYXNlczwvaDQ+CjxwPlRoZSBtb2RlbCBhc3N1bWVzIGEgaG9tb2dlbmVvdXMgcG9wdWxhdGlvbiBhbmQgZG9lcyBub3QgYWNjb3VudCBmb3Igc3BhdGlhbCBkaXN0cmlidXRpb24gb3IgaW5kaXZpZHVhbCB2YXJpYWJpbGl0eSwgd2hpY2ggY2FuIGludHJvZHVjZSBiaWFzIGluIHRoZSBzaW11bGF0aW9uIHJlc3VsdHMuPC9wPjxicj4KPGg0PlJpc2tzPC9oND4KPHA+VGhlIG1vZGVsJ3MgYXNzdW1wdGlvbnMgYWJvdXQgem9tYmllIGJlaGF2aW9yIGFuZCBpbmZlY3Rpb24gZHluYW1pY3MgbWF5IG5vdCBhY2N1cmF0ZWx5IHJlZmxlY3QgcmVhbC13b3JsZCBzY2VuYXJpb3MsIGxlYWRpbmcgdG8gbWlzbGVhZGluZyBjb25jbHVzaW9ucyBpZiBhcHBsaWVkIHRvIGFjdHVhbCBpbmZlY3Rpb3VzIGRpc2Vhc2VzLjwvcD48YnI+CjxoND5MaW1pdGF0aW9uczwvaDQ+CjxwPlRoZSBtb2RlbCBkb2VzIG5vdCBjb25zaWRlciBsb25nLXRlcm0gZHluYW1pY3MsIHN1Y2ggYXMgYmlydGggYW5kIGRlYXRoIHJhdGVzIG92ZXIgZXh0ZW5kZWQgcGVyaW9kcywgd2hpY2ggbGltaXRzIGl0cyBhcHBsaWNhYmlsaXR5IHRvIHNob3J0LXRlcm0gb3V0YnJlYWsgc2NlbmFyaW9zLjwvcD48YnI+CjxoMj5UZXN0aW5nPC9oMj4KPGg0PlZhbGlkYXRpb248L2g0Pgo8cD5UaGUgbW9kZWwgd2FzIHZhbGlkYXRlZCB0aHJvdWdoIG51bWVyaWNhbCBzaW11bGF0aW9ucyB1c2luZyBFdWxlcidzIG1ldGhvZCBhbmQgY29tcGFyaXNvbiB3aXRoIHRoZW9yZXRpY2FsIGV4cGVjdGF0aW9ucyBvZiB6b21iaWUgb3V0YnJlYWsgZHluYW1pY3MuPC9wPjxicj4KPGg0Pk1ldHJpY3M8L2g0Pgo8cD5NZXRyaWNzIHVzZWQgdG8gZXZhbHVhdGUgdGhlIG1vZGVsIGluY2x1ZGUgdGhlIGJhc2ljIHJlcHJvZHVjdGl2ZSByYXRpbyAoUjApIGFuZCB0aGUgc3RhYmlsaXR5IG9mIGVxdWlsaWJyaXVtIHBvaW50cywgc3VjaCBhcyB0aGUgZGlzZWFzZS1mcmVlIGFuZCBkb29tc2RheSBlcXVpbGlicmlhLjwvcD48YnI+CjxoMj5HZXR0aW5nIFN0YXJ0ZWQ8L2gyPgo8aDQ+U3RlcHM8L2g0Pgo8dWw+CjxsaT5SZXZpZXcgdGhlIG1vZGVsIGVxdWF0aW9ucyBhbmQgcGFyYW1ldGVycyB0byB1bmRlcnN0YW5kIHRoZSBkeW5hbWljcyBvZiB0aGUgc3lzdGVtLjwvbGk+CjxsaT5TZXQgaW5pdGlhbCBjb25kaXRpb25zIGZvciB0aGUgc3VzY2VwdGlibGUsIGluZmVjdGVkLCB6b21iaWUsIGFuZCByZW1vdmVkIHBvcHVsYXRpb25zLjwvbGk+CjxsaT5DaG9vc2UgYXBwcm9wcmlhdGUgcGFyYW1ldGVyIHZhbHVlcyBiYXNlZCBvbiB0aGUgc2NlbmFyaW8gYmVpbmcgc2ltdWxhdGVkIChlLmcuLCBxdWFyYW50aW5lLCB0cmVhdG1lbnQpLjwvbGk+CjxsaT5Vc2UgbnVtZXJpY2FsIG1ldGhvZHMsIHN1Y2ggYXMgRXVsZXIncyBtZXRob2QsIHRvIHNvbHZlIHRoZSBPREVzIGFuZCBzaW11bGF0ZSB0aGUgb3V0YnJlYWsuPC9saT4KPGxpPkFuYWx5emUgdGhlIHJlc3VsdHMgdG8gZXZhbHVhdGUgdGhlIGltcGFjdCBvZiBkaWZmZXJlbnQgaW50ZXJ2ZW50aW9uIHN0cmF0ZWdpZXMuPC9saT4KPC91bD48YnI+CjxoND5FeGFtcGxlczwvaDQ+Cjx1bD4KPGxpPlJ1biBhIHNpbXVsYXRpb24gd2l0aCBubyBpbnRlcnZlbnRpb24gdG8gb2JzZXJ2ZSB0aGUgbmF0dXJhbCBwcm9ncmVzc2lvbiBvZiB0aGUgb3V0YnJlYWsuPC9saT4KPGxpPkltcGxlbWVudCBhIHF1YXJhbnRpbmUgc3RyYXRlZ3kgYW5kIGNvbXBhcmUgdGhlIHJlc3VsdHMgdG8gdGhlIGJhc2VsaW5lIHNjZW5hcmlvLjwvbGk+CjxsaT5JbnRyb2R1Y2UgYSB0cmVhdG1lbnQgb3B0aW9uIGFuZCBldmFsdWF0ZSBpdHMgZWZmZWN0aXZlbmVzcyBpbiByZWR1Y2luZyB0aGUgem9tYmllIHBvcHVsYXRpb24uPC9saT4KPC91bD48YnI+CjxoMj5HbG9zc2FyeTwvaDI+Cjx1bD4KPGxpPlN1c2NlcHRpYmxlIChTKTogSW5kaXZpZHVhbHMgbm90IHlldCBpbmZlY3RlZCBieSB0aGUgem9tYmllIHZpcnVzLjwvbGk+CjxsaT5ab21iaWUgKFopOiBSZWFuaW1hdGVkIGluZGl2aWR1YWxzIHdobyBjYW4gaW5mZWN0IG90aGVycy48L2xpPgo8bGk+SW5mZWN0ZWQgKEkpOiBJbmRpdmlkdWFscyBiaXR0ZW4gYnkgem9tYmllcyBidXQgbm90IHlldCB0dXJuZWQuPC9saT4KPGxpPlJlbW92ZWQgKFIpOiBJbmRpdmlkdWFscyB3aG8gaGF2ZSBkaWVkIG9yIGJlZW4gZGVzdHJveWVkLjwvbGk+CjxsaT5RdWFyYW50aW5lZCAoUSk6IFpvbWJpZXMgaXNvbGF0ZWQgZnJvbSB0aGUgZ2VuZXJhbCBwb3B1bGF0aW9uLjwvbGk+CjxsaT5UcmFuc21pc3Npb24gcmF0ZSAoYmV0YSk6IFJhdGUgb2YgaW5mZWN0aW9uIHNwcmVhZC48L2xpPgo8bGk+TmF0dXJhbCBkZWF0aCByYXRlIChkZWx0YSk6IFJhdGUgb2Ygbm9uLXpvbWJpZS1yZWxhdGVkIGRlYXRocy48L2xpPgo8bGk+Wm9tYmlmaWNhdGlvbiByYXRlIChyaG8pOiBSYXRlIG9mIGluZmVjdGVkIGluZGl2aWR1YWxzIHR1cm5pbmcgaW50byB6b21iaWVzLjwvbGk+CjxsaT5RdWFyYW50aW5lIHJhdGUgKGthcHBhKTogUmF0ZSBvZiBjYXB0dXJpbmcgYW5kIGlzb2xhdGluZyB6b21iaWVzLjwvbGk+CjxsaT5ab21iaWUgZGVzdHJ1Y3Rpb24gcmF0ZSAoYWxwaGEpOiBSYXRlIG9mIGRlc3Ryb3lpbmcgem9tYmllcy48L2xpPgo8bGk+UmVhbmltYXRpb24gcmF0ZSAoemV0YSk6IFJhdGUgb2YgZGVhZCBpbmRpdmlkdWFscyBiZWNvbWluZyB6b21iaWVzLjwvbGk+CjwvdWw+PGJyPgo8aDI+QXV0aG9yczwvaDI+Cjx1bD4KPGxpPlBoaWxpcCBNdW56PC9saT4KPGxpPklvYW4gSHVkZWE8L2xpPgo8bGk+Sm9lIEltYWQ8L2xpPgo8bGk+Um9iZXJ0IEouIFNtaXRoPzwvbGk+CjwvdWw+PGJyPgo8aDI+Q2l0YXRpb25zPC9oMj4KPHVsPgo8bGk+QnJvb2tzLCBNYXgsIDIwMDMgVGhlIFpvbWJpZSBTdXJ2aXZhbCBHdWlkZSAtIENvbXBsZXRlIFByb3RlY3Rpb24gZnJvbSB0aGUgTGl2aW5nIERlYWQsIFRocmVlIFJpdmVycyBQcmVzcy48L2xpPgo8bGk+Um9tZXJvLCBHZW9yZ2UgQS4gKHdyaXRlciwgZGlyZWN0b3IpLCAxOTY4IE5pZ2h0IG9mIHRoZSBMaXZpbmcgRGVhZC48L2xpPgo8bGk+RGF2aXMsIFdhZGUsIDE5ODggUGFzc2FnZSBvZiBEYXJrbmVzcyAtIFRoZSBFdGhub2Jpb2xvZ3kgb2YgdGhlIEhhaXRpYW4gWm9tYmllLCBTaW1vbiBhbmQgU2NodXN0ZXIuPC9saT4KPGxpPkRhdmlzLCBXYWRlLCAxOTg1IFRoZSBTZXJwZW50IGFuZCB0aGUgUmFpbmJvdywgU2ltb24gYW5kIFNjaHVzdGVyLjwvbGk+CjxsaT5XaWxsaWFtcywgVG9ueSwgMjAwMyBLbmlnaHQgb2YgdGhlIExpdmluZyBEZWFkIC0gVGhlIENpbmVtYSBvZiBHZW9yZ2UgQS4gUm9tZXJvLCBXYWxsZmxvd2VyIFByZXNzLjwvbGk+CjxsaT5DYXBjb20sIFNoaW5qaSBNaWthbWkgKGNyZWF0b3IpLCAxOTk2LTIwMDcgUmVzaWRlbnQgRXZpbC48L2xpPgo8bGk+Q2FwY29tLCBLZWlqaSBJbmFmdW5lIChjcmVhdG9yKSwgMjAwNiBEZWFkIFJpc2luZy48L2xpPgo8bGk+UGVnZywgU2ltb24gKHdyaXRlciwgY3JlYXRvciwgYWN0b3IpLCAyMDAyIFNoYXVuIG9mIHRoZSBEZWFkLjwvbGk+CjxsaT5Cb3lsZSwgRGFubnkgKGRpcmVjdG9yKSwgMjAwMyAyOCBEYXlzIExhdGVyLjwvbGk+CjxsaT5TbnlkZXIsIFphY2sgKGRpcmVjdG9yKSwgMjAwNCBEYXduIG9mIHRoZSBEZWFkLjwvbGk+CjxsaT5CcmF1ZXIsIEYuIENvbXBhcnRtZW50YWwgTW9kZWxzIGluIEVwaWRlbWlvbG9neS4gSW46IEJyYXVlciwgRi4sIHZhbiBkZW4gRHJpZXNzY2hlLCBQLiwgV3UsIEouIChlZHMpLiBNYXRoZW1hdGljYWwgRXBpZGVtaW9sb2d5LiBTcHJpbmdlciBCZXJsaW4gMjAwOC48L2xpPgo8bGk+SGVmZmVybmFuLCBKLk0uLCBTbWl0aCwgUi5KLiwgV2FobCwgTC5NLiAoMjAwNSkuIFBlcnNwZWN0aXZlcyBvbiB0aGUgQmFzaWMgUmVwcm9kdWN0aXZlIFJhdGlvLiBKIFIgU29jIEludGVyZmFjZSAyKDQpLCAyODEtMjkzLjwvbGk+CjxsaT52YW4gZGVuIERyaWVzc2NoZSwgUC4sIFdhdG1vdWdoLCBKLiAoMjAwMikgUmVwcm9kdWN0aW9uIG51bWJlcnMgYW5kIHN1Yi10aHJlc2hvbGQgZW5kZW1pYyBlcXVpbGlicmlhIGZvciBjb21wYXJ0bWVudGFsIG1vZGVscyBvZiBkaXNlYXNlIHRyYW5zbWlzc2lvbi4gTWF0aC4gQmlvc2NpLiAxODAsIDI5LTQ4LjwvbGk+CjxsaT5Ccm9va3MsIE1heCwgMjAwNiBXb3JsZCBXYXIgWiAtIEFuIE9yYWwgSGlzdG9yeSBvZiB0aGUgWm9tYmllIFdhciwgVGhyZWUgUml2ZXJzIFByZXNzLjwvbGk+CjxsaT5CYWlub3YsIEQuRC4gJiBTaW1lb25vdiwgUC5TLiBTeXN0ZW1zIHdpdGggSW1wdWxzaXZlIEVmZmVjdC4gRWxsaXMgSG9yd29vZCBMdGQsIENoaWNoZXN0ZXIgKDE5ODkpLjwvbGk+CjxsaT5CYWlub3YsIEQuRC4gJiBTaW1lb25vdiwgUC5TLiBJbXB1bHNpdmUgZGlmZmVyZW50aWFsIGVxdWF0aW9uczogcGVyaW9kaWMgc29sdXRpb25zIGFuZCBhcHBsaWNhdGlvbnMuIExvbmdtYW4gU2NpZW50aWZpYyBhbmQgVGVjaG5pY2FsLCBCdXJudCBNaWxsICgxOTkzKS48L2xpPgo8bGk+QmFpbm92LCBELkQuICYgU2ltZW9ub3YsIFAuUy4gSW1wdWxzaXZlIERpZmZlcmVudGlhbCBFcXVhdGlvbnM6IEFzeW1wdG90aWMgUHJvcGVydGllcyBvZiB0aGUgU29sdXRpb25zLiBXb3JsZCBTY2llbnRpZmljLCBTaW5nYXBvcmUgKDE5OTUpLjwvbGk+CjxsaT5MYWtzaG1pa2FudGhhbSwgVi4sIEJhaW5vdiwgRC5ELiAmIFNpbWVvbm92LCBQLlMuIFRoZW9yeSBvZiBJbXB1bHNpdmUgRGlmZmVyZW50aWFsIEVxdWF0aW9ucy4gV29ybGQgU2NpZW50aWZpYywgU2luZ2Fwb3JlICgxOTg5KS48L2xpPgo8L3VsPjxicj4KPGgyPk1vcmUgSW5mb3JtYXRpb248L2gyPgo8aDQ+RnVuZGVkIEJ5PC9oND4KPHA+TlNFUkMgRGlzY292ZXJ5IGdyYW50LCBPbnRhcmlvIEVhcmx5IFJlc2VhcmNoZXIgQXdhcmQsIE1JVEFDUyBmdW5kaW5nLjwvcD48YnI+CjxoND5MaW5rczwvaDQ+Cjx1bD4KPGxpPmh0dHBzOi8vd3d3Lm5vdmFwdWJsaXNoZXJzLmNvbS9jYXRhbG9nL3Byb2R1Y3RfaW5mby5waHA/cHJvZHVjdHNfaWQ9MTA0MTg8L2xpPgo8L3VsPjxicj4K",
+    "gollmCard": {
+      "summary": "The model described in the document is a mathematical representation of a zombie outbreak, using assumptions based on popular zombie movies. The model is structured to simulate the dynamics of a zombie infection, including the interactions between susceptible humans, zombies, and removed individuals. The model is extended to include latent infection, quarantine, and treatment scenarios, and it explores the impact of impulsive eradication strategies. The model can likely be represented in Petri Net format, as it involves transitions between different states (e.g., susceptible, infected, zombie, removed) and parameters that govern these transitions.",
+      "specs": {
+        "domain": [
+          "Epidemiology",
+          "Infectious Disease Modeling",
+          "Mathematical Biology"
+        ],
+        "type": "Mathematical Model",
+        "specification": "The model consists of several states: Susceptible (S), Zombie (Z), Infected (I), Removed (R), and Quarantined (Q). It includes parameters such as transmission rate (beta), natural death rate (delta), zombification rate (rho), and quarantine rate (kappa). The model uses ordinary differential equations (ODEs) to describe the dynamics of the system, with mass-action transmission terms and nonlinear interactions.",
+        "states": [
+          "Susceptible (S): Represents the population of humans who are not yet infected. Measured in number of individuals. Transitions to Infected (I) or Zombie (Z) upon contact with a zombie.",
+          "Zombie (Z): Represents the population of zombies. Measured in number of individuals. Can transition to Removed (R) if destroyed or to Quarantined (Q) if captured.",
+          "Infected (I): Represents humans who have been bitten and are in the latent period before becoming zombies. Measured in number of individuals. Can transition to Zombie (Z) or Removed (R).",
+          "Removed (R): Represents individuals who have died from natural causes or been destroyed as zombies. Measured in number of individuals. Can transition back to Zombie (Z) if reanimated.",
+          "Quarantined (Q): Represents zombies that have been captured and isolated. Measured in number of individuals. Can transition to Removed (R) if destroyed."
+        ],
+        "parameters": [
+          "Transmission rate (beta): The rate at which susceptible individuals become infected upon contact with zombies. Unit: per individual per time.",
+          "Natural death rate (delta): The rate at which susceptible and infected individuals die from non-zombie-related causes. Unit: per individual per time.",
+          "Zombification rate (rho): The rate at which infected individuals become zombies. Unit: per individual per time.",
+          "Quarantine rate (kappa): The rate at which infected or zombie individuals are captured and isolated. Unit: per individual per time.",
+          "Zombie destruction rate (alpha): The rate at which zombies are destroyed by humans. Unit: per individual per time.",
+          "Reanimation rate (zeta): The rate at which removed individuals are reanimated as zombies. Unit: per individual per time."
+        ]
+      },
+      "uses": {
+        "directUse": "The model can be used to simulate the spread of a zombie infection and evaluate the effectiveness of different intervention strategies, such as quarantine, treatment, and eradication efforts.",
+        "outOfScopeUse": "Using the model to predict real-world infectious disease outbreaks without considering the specific biological mechanisms and parameters of the disease would be inappropriate."
+      },
+      "biasRisksLimitations": {
+        "biases": "The model assumes a homogeneous population and does not account for spatial distribution or individual variability, which can introduce bias in the simulation results.",
+        "risks": "The model's assumptions about zombie behavior and infection dynamics may not accurately reflect real-world scenarios, leading to misleading conclusions if applied to actual infectious diseases.",
+        "limitations": "The model does not consider long-term dynamics, such as birth and death rates over extended periods, which limits its applicability to short-term outbreak scenarios."
+      },
+      "testing": {
+        "validation": "The model was validated through numerical simulations using Euler's method and comparison with theoretical expectations of zombie outbreak dynamics.",
+        "metrics": "Metrics used to evaluate the model include the basic reproductive ratio (R0) and the stability of equilibrium points, such as the disease-free and doomsday equilibria."
+      },
+      "gettingStarted": {
+        "steps": [
+          "Review the model equations and parameters to understand the dynamics of the system.",
+          "Set initial conditions for the susceptible, infected, zombie, and removed populations.",
+          "Choose appropriate parameter values based on the scenario being simulated (e.g., quarantine, treatment).",
+          "Use numerical methods, such as Euler's method, to solve the ODEs and simulate the outbreak.",
+          "Analyze the results to evaluate the impact of different intervention strategies."
+        ],
+        "examples": [
+          "Run a simulation with no intervention to observe the natural progression of the outbreak.",
+          "Implement a quarantine strategy and compare the results to the baseline scenario.",
+          "Introduce a treatment option and evaluate its effectiveness in reducing the zombie population."
+        ]
+      },
+      "glossary": [
+        "Susceptible (S): Individuals not yet infected by the zombie virus.",
+        "Zombie (Z): Reanimated individuals who can infect others.",
+        "Infected (I): Individuals bitten by zombies but not yet turned.",
+        "Removed (R): Individuals who have died or been destroyed.",
+        "Quarantined (Q): Zombies isolated from the general population.",
+        "Transmission rate (beta): Rate of infection spread.",
+        "Natural death rate (delta): Rate of non-zombie-related deaths.",
+        "Zombification rate (rho): Rate of infected individuals turning into zombies.",
+        "Quarantine rate (kappa): Rate of capturing and isolating zombies.",
+        "Zombie destruction rate (alpha): Rate of destroying zombies.",
+        "Reanimation rate (zeta): Rate of dead individuals becoming zombies."
+      ],
+      "authors": [
+        "Philip Munz",
+        "Ioan Hudea",
+        "Joe Imad",
+        "Robert J. Smith?"
+      ],
+      "citations": [
+        "Brooks, Max, 2003 The Zombie Survival Guide - Complete Protection from the Living Dead, Three Rivers Press.",
+        "Romero, George A. (writer, director), 1968 Night of the Living Dead.",
+        "Davis, Wade, 1988 Passage of Darkness - The Ethnobiology of the Haitian Zombie, Simon and Schuster.",
+        "Davis, Wade, 1985 The Serpent and the Rainbow, Simon and Schuster.",
+        "Williams, Tony, 2003 Knight of the Living Dead - The Cinema of George A. Romero, Wallflower Press.",
+        "Capcom, Shinji Mikami (creator), 1996-2007 Resident Evil.",
+        "Capcom, Keiji Inafune (creator), 2006 Dead Rising.",
+        "Pegg, Simon (writer, creator, actor), 2002 Shaun of the Dead.",
+        "Boyle, Danny (director), 2003 28 Days Later.",
+        "Snyder, Zack (director), 2004 Dawn of the Dead.",
+        "Brauer, F. Compartmental Models in Epidemiology. In: Brauer, F., van den Driessche, P., Wu, J. (eds). Mathematical Epidemiology. Springer Berlin 2008.",
+        "Heffernan, J.M., Smith, R.J., Wahl, L.M. (2005). Perspectives on the Basic Reproductive Ratio. J R Soc Interface 2(4), 281-293.",
+        "van den Driessche, P., Watmough, J. (2002) Reproduction numbers and sub-threshold endemic equilibria for compartmental models of disease transmission. Math. Biosci. 180, 29-48.",
+        "Brooks, Max, 2006 World War Z - An Oral History of the Zombie War, Three Rivers Press.",
+        "Bainov, D.D. & Simeonov, P.S. Systems with Impulsive Effect. Ellis Horwood Ltd, Chichester (1989).",
+        "Bainov, D.D. & Simeonov, P.S. Impulsive differential equations: periodic solutions and applications. Longman Scientific and Technical, Burnt Mill (1993).",
+        "Bainov, D.D. & Simeonov, P.S. Impulsive Differential Equations: Asymptotic Properties of the Solutions. World Scientific, Singapore (1995).",
+        "Lakshmikantham, V., Bainov, D.D. & Simeonov, P.S. Theory of Impulsive Differential Equations. World Scientific, Singapore (1989)."
+      ],
+      "moreInformation": {
+        "fundedBy": "NSERC Discovery grant, Ontario Early Researcher Award, MITACS funding.",
+        "links": [
+          "https://www.novapublishers.com/catalog/product_info.php?products_id=10418"
+        ]
+      }
+    },
+    "gollmExtractions": null,
+    "templateCard": null
+  }
+}
