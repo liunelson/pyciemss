@@ -1,7 +1,7 @@
 {
-  "id": "900d1c49-32fc-4d5b-b72b-71186073d565",
+  "id": "f935b8fb-da88-4713-859c-241dece550d8",
   "createdOn": "2025-02-21T23:45:31.881+00:00",
-  "updatedOn": "2025-02-21T23:46:30.135+00:00",
+  "updatedOn": "2025-02-24T15:16:56.024+00:00",
   "name": "Model 2 (SZR, basic)",
   "fileNames": [],
   "temporary": false,
@@ -14,69 +14,6 @@
     "model_version": "0.1"
   },
   "model": {
-    "states": [
-      {
-        "id": "S",
-        "name": "S(t)",
-        "description": "Susceptible individuals who have not been infected by zombies.",
-        "grounding": {
-          "id": "3c1b4444-5154-496b-9867-bcd5da00bb32",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {
-            "ido": "0000514"
-          },
-          "context": {},
-          "modifiers": {},
-          "empty": false
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "S"
-      },
-      {
-        "id": "Z",
-        "name": "Z(t)",
-        "description": "Individuals who have been turned into zombies.",
-        "grounding": {
-          "id": "3b313de1-356a-49aa-8710-e0f73a72bb7c",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {},
-          "context": {},
-          "modifiers": {},
-          "empty": true
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "Z"
-      },
-      {
-        "id": "R",
-        "name": "R(t)",
-        "description": "Removed individuals who are either deceased or have been cured.",
-        "grounding": {
-          "id": "a3627303-38e2-4c0d-8879-e8746595f0bf",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {
-            "ido": "0000592"
-          },
-          "context": {},
-          "modifiers": {},
-          "empty": false
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "R"
-      }
-    ],
     "transitions": [
       {
         "id": "t0",
@@ -201,6 +138,69 @@
         },
         "conceptReference": "t4"
       }
+    ],
+    "states": [
+      {
+        "id": "S",
+        "name": "S(t)",
+        "description": "Susceptible individuals who have not been infected by zombies.",
+        "grounding": {
+          "id": "3c1b4444-5154-496b-9867-bcd5da00bb32",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000514"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "S"
+      },
+      {
+        "id": "Z",
+        "name": "Z(t)",
+        "description": "Individuals who have been turned into zombies.",
+        "grounding": {
+          "id": "3b313de1-356a-49aa-8710-e0f73a72bb7c",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {},
+          "context": {},
+          "modifiers": {},
+          "empty": true
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "Z"
+      },
+      {
+        "id": "R",
+        "name": "R(t)",
+        "description": "Removed individuals who are either deceased or have been cured.",
+        "grounding": {
+          "id": "a3627303-38e2-4c0d-8879-e8746595f0bf",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000592"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "R"
+      }
     ]
   },
   "properties": {},
@@ -242,20 +242,20 @@
         {
           "target": "S",
           "description": "Susceptible individuals who have not been infected by zombies.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "500",
+          "expression_mathml": "<cn>500</cn>"
         },
         {
           "target": "Z",
           "description": "Individuals who have been turned into zombies.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "0",
+          "expression_mathml": "<cn>0</cn>"
         },
         {
           "target": "R",
           "description": "Removed individuals who are either deceased or have been cured.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "0",
+          "expression_mathml": "<cn>0</cn>"
         }
       ],
       "parameters": [
@@ -264,13 +264,9 @@
           "name": "Pi",
           "description": "Birth rate of susceptible individuals.",
           "grounding": {
-            "id": "9a7f5f1e-6242-4718-9b53-21b6b80204ff",
+            "id": "a04b52e2-926a-4e39-9812-5811030f7dd8",
             "identifiers": {
               "ido": "0000511"
-            },
-            "context": {
-              "stage": "predromal",
-              "species": "ncbitaxon:9606"
             },
             "modifiers": {},
             "empty": false
@@ -286,7 +282,7 @@
           "id": "beta",
           "name": "beta",
           "description": "Transmission rate of zombification through contact with zombies.",
-          "value": 0,
+          "value": 0.0095,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<mfrac><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></mfrac>"
@@ -297,7 +293,7 @@
           "id": "delta",
           "name": "delta",
           "description": "Natural death rate of susceptible individuals.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<mfrac><cn>1</cn><ci>day</ci></mfrac>"
@@ -309,18 +305,14 @@
           "name": "alpha",
           "description": "Rate at which zombies are destroyed by humans.",
           "grounding": {
-            "id": "fbe30aa1-34ea-4d22-a1a8-e3eb01ba678e",
+            "id": "5af9552a-9aed-4a31-908e-bab0ef7fa1a0",
             "identifiers": {
               "ido": "0000511"
-            },
-            "context": {
-              "stage": "predromal",
-              "species": "ncbitaxon:9606"
             },
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.005,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<mfrac><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></mfrac>"
@@ -331,7 +323,7 @@
           "id": "zeta",
           "name": "zeta",
           "description": "Rate at which removed individuals resurrect as zombies.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<mfrac><cn>1</cn><ci>day</ci></mfrac>"

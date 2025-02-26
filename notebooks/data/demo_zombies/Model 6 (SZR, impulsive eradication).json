@@ -1,7 +1,7 @@
 {
-  "id": "169ee1e0-4dc7-4ddc-8612-4587d756f234",
+  "id": "2708da4e-9562-494c-9f20-ab046fdbc9fd",
   "createdOn": "2025-02-21T23:55:41.162+00:00",
-  "updatedOn": "2025-02-22T00:03:22.729+00:00",
+  "updatedOn": "2025-02-24T15:16:56.025+00:00",
   "name": "Model 6 (SZR, impulsive eradication)",
   "fileNames": [],
   "temporary": false,
@@ -14,69 +14,6 @@
     "model_version": "0.1"
   },
   "model": {
-    "states": [
-      {
-        "id": "Z",
-        "name": "Z(t)",
-        "description": "Represents the population of zombies at time t. Zombies are reanimated human corpses that can infect humans through contact.",
-        "grounding": {
-          "id": "b127ba18-484d-4bcc-a5f6-62e7ef3e5ddb",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {},
-          "context": {},
-          "modifiers": {},
-          "empty": true
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "Z"
-      },
-      {
-        "id": "S",
-        "name": "S(t)",
-        "description": "Represents the population of susceptible humans at time t. These are individuals who can be infected by zombies.",
-        "grounding": {
-          "id": "a1806617-8f9a-4368-b9ab-da77a258e388",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {
-            "ido": "0000514"
-          },
-          "context": {},
-          "modifiers": {},
-          "empty": false
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "S"
-      },
-      {
-        "id": "R",
-        "name": "R(t)",
-        "description": "Represents the population of removed individuals at time t. These are individuals who have died from natural causes or zombie attacks and can potentially resurrect as zombies.",
-        "grounding": {
-          "id": "b2e35aaa-2d69-4d29-ac53-0c341f6d3375",
-          "createdOn": null,
-          "updatedOn": null,
-          "identifiers": {
-            "ido": "0000592"
-          },
-          "context": {},
-          "modifiers": {},
-          "empty": false
-        },
-        "units": {
-          "expression": "person",
-          "expression_mathml": "<ci>person</ci>"
-        },
-        "conceptReference": "R"
-      }
-    ],
     "transitions": [
       {
         "id": "t0",
@@ -218,6 +155,69 @@
         },
         "conceptReference": "t5"
       }
+    ],
+    "states": [
+      {
+        "id": "S",
+        "name": "S(t)",
+        "description": "Represents the population of susceptible humans at time t. These are individuals who can be infected by zombies.",
+        "grounding": {
+          "id": "a1806617-8f9a-4368-b9ab-da77a258e388",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000514"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "S"
+      },
+      {
+        "id": "Z",
+        "name": "Z(t)",
+        "description": "Represents the population of zombies at time t. Zombies are reanimated human corpses that can infect humans through contact.",
+        "grounding": {
+          "id": "b127ba18-484d-4bcc-a5f6-62e7ef3e5ddb",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {},
+          "context": {},
+          "modifiers": {},
+          "empty": true
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "Z"
+      },
+      {
+        "id": "R",
+        "name": "R(t)",
+        "description": "Represents the population of removed individuals at time t. These are individuals who have died from natural causes or zombie attacks and can potentially resurrect as zombies.",
+        "grounding": {
+          "id": "b2e35aaa-2d69-4d29-ac53-0c341f6d3375",
+          "createdOn": null,
+          "updatedOn": null,
+          "identifiers": {
+            "ido": "0000592"
+          },
+          "context": {},
+          "modifiers": {},
+          "empty": false
+        },
+        "units": {
+          "expression": "person",
+          "expression_mathml": "<ci>person</ci>"
+        },
+        "conceptReference": "R"
+      }
     ]
   },
   "properties": {},
@@ -265,20 +265,20 @@
         {
           "target": "Z",
           "description": "Represents the population of zombies at time t. Zombies are reanimated human corpses that can infect humans through contact.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "0",
+          "expression_mathml": "<cn>0</cn>"
         },
         {
           "target": "S",
           "description": "Represents the population of susceptible humans at time t. These are individuals who can be infected by zombies.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "500",
+          "expression_mathml": "<cn>500</cn>"
         },
         {
           "target": "R",
           "description": "Represents the population of removed individuals at time t. These are individuals who have died from natural causes or zombie attacks and can potentially resurrect as zombies.",
-          "expression": "0.0",
-          "expression_mathml": "<cn>0.0</cn>"
+          "expression": "0",
+          "expression_mathml": "<cn>0</cn>"
         }
       ],
       "parameters": [
@@ -287,17 +287,14 @@
           "name": "k",
           "description": "A parameter representing the rate of zombie infection through contact with susceptible individuals.",
           "grounding": {
-            "id": "e3590851-b116-444a-96ed-db08bf201120",
+            "id": "a0ec8f3a-4a4e-495c-92e6-08fc8d497cd7",
             "identifiers": {
               "ncit": "C28554"
-            },
-            "context": {
-              "county_property": "low_risk"
             },
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.25,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
@@ -309,13 +306,9 @@
           "name": "n",
           "description": "A parameter representing the natural death rate of susceptible individuals.",
           "grounding": {
-            "id": "d4540686-ce0e-4bec-9865-b1edca94e21d",
+            "id": "5f330663-ec21-4edd-8b5f-63799c48a562",
             "identifiers": {
               "ido": "0000511"
-            },
-            "context": {
-              "disease_severity": "ncit:C25269",
-              "diagnosis": "ncit:C113725"
             },
             "modifiers": {},
             "empty": false
@@ -332,13 +325,9 @@
           "name": "Pi",
           "description": "A parameter representing the birth rate of susceptible individuals.",
           "grounding": {
-            "id": "7fe23deb-474f-49fa-9468-186a7b0a81ef",
+            "id": "b89be184-4f7b-4d75-967e-e0fcd827c545",
             "identifiers": {
               "ido": "0000511"
-            },
-            "context": {
-              "stage": "predromal",
-              "species": "ncbitaxon:9606"
             },
             "modifiers": {},
             "empty": false
@@ -354,7 +343,7 @@
           "id": "beta",
           "name": "beta",
           "description": "A parameter representing the transmission rate of zombification through contact between zombies and susceptibles.",
-          "value": 0,
+          "value": 0.0055,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
@@ -365,7 +354,7 @@
           "id": "delta",
           "name": "delta",
           "description": "A parameter representing the rate of natural death among susceptible individuals.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -377,18 +366,14 @@
           "name": "alpha",
           "description": "A parameter representing the rate at which zombies are destroyed by susceptible individuals.",
           "grounding": {
-            "id": "7a90c6c7-49b7-40f4-9700-4aa3e85bb34c",
+            "id": "32a61ad4-6332-4787-acda-5473b941ac7e",
             "identifiers": {
               "ido": "0000511"
-            },
-            "context": {
-              "stage": "predromal",
-              "species": "ncbitaxon:9606"
             },
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.0075,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
@@ -399,7 +384,7 @@
           "id": "zeta",
           "name": "zeta",
           "description": "A parameter representing the rate at which removed individuals resurrect as zombies.",
-          "value": 0,
+          "value": 0.09,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"

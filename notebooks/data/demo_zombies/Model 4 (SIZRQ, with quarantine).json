@@ -407,7 +407,7 @@
         {
           "target": "S",
           "description": "Susceptible individuals who have not been infected by zombies.",
-          "expression": "0.0",
+          "expression": "500.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
@@ -463,7 +463,7 @@
           "id": "beta",
           "name": "beta",
           "description": "Transmission rate of zombification through contact between susceptible individuals and zombies.",
-          "value": 0,
+          "value": 0.0095,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
@@ -474,7 +474,7 @@
           "id": "delta",
           "name": "delta",
           "description": "Natural death rate of susceptible individuals.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -497,7 +497,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -520,7 +520,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.005,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -543,7 +543,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.005,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<apply><divide/><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></apply>"
@@ -563,7 +563,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -574,7 +574,7 @@
           "id": "zeta",
           "name": "zeta",
           "description": "Rate at which removed individuals resurrect as zombies.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"
@@ -585,7 +585,7 @@
           "id": "gamma",
           "name": "gamma",
           "description": "Rate at which quarantined zombies are destroyed.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<apply><divide/><cn>1</cn><ci>day</ci></apply>"

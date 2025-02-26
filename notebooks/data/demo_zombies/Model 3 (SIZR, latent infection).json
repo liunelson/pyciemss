@@ -313,7 +313,7 @@
         {
           "target": "S",
           "description": "Susceptible individuals who have not been infected by zombies.",
-          "expression": "0.0",
+          "expression": "500.0",
           "expression_mathml": "<cn>0.0</cn>"
         },
         {
@@ -363,7 +363,7 @@
           "id": "beta",
           "name": "beta",
           "description": "Transmission rate of zombification through contact between susceptible and zombie individuals.",
-          "value": 0,
+          "value": 0.0055,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<mfrac><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></mfrac>"
@@ -397,7 +397,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.005,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<mfrac><cn>1</cn><ci>day</ci></mfrac>"
@@ -420,7 +420,7 @@
             "modifiers": {},
             "empty": false
           },
-          "value": 0,
+          "value": 0.0075,
           "units": {
             "expression": "1/(person*day)",
             "expression_mathml": "<mfrac><cn>1</cn><apply><times/><ci>person</ci><ci>day</ci></apply></mfrac>"
@@ -431,7 +431,7 @@
           "id": "zeta",
           "name": "zeta",
           "description": "Rate at which removed individuals resurrect as zombies.",
-          "value": 0,
+          "value": 0.0001,
           "units": {
             "expression": "1/day",
             "expression_mathml": "<mfrac><cn>1</cn><ci>day</ci></mfrac>"
